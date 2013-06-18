@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="90%" height="65" backgroundImage="@Embed(source='/assets/categoryBtnBg.png')" backgroundSize="100%" click="categoryClick(event)" doubleClickEnabled="true" doubleClick="gotoEditMode(event)" backgroundAlpha="1" dragEnter="dragEnterHandler(event);" dragExit="dragExitHandler(event);" dragDrop="dragDropHandler(event);" borderStyle="none" borderThickness="1" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+	<mx:Style source="/assets/hangmanStyle.css"/>
+	<mx:states>
+		<mx:State name="editMode">
+			<mx:RemoveChild target="{label2}"/>
+			<mx:AddChild position="lastChild">
+				<mx:TextInput text="{nameData}"
+					textAlign="left"
+					id="txtName"
+					focusOut="gotoDefaultMode()"
+					change="updateText()" left="42" top="10" maxChars="50"/>
+			</mx:AddChild>
+			<mx:RemoveChild target="{swfloader1}"/>
+		</mx:State>
+	</mx:states>
+	<mx:Script>
+		<![CDATA[
+		import events.CategoryEvent;
+		import events.QuestionMoveEvent;
+		import mx.events.DragEvent;
+		import mx.managers.DragManager;
+		import mx.core.DragSource;
+		[Bindable]
+		protected var nameData:String = "";
+		[Bindable]
+		protected var itemsData:int = 0;
+		[Bindable]
+		protected var posData:int = 0;
+		public override function set data(value:Object):void
+		{
+			super.data = value;
+			if (value != null)
+			{
+				nameData = data.name;
+				itemsData = data.items;
+				posData = data.pos + 1;
+			}
+		}
+		[Bindable]
+		private var trashIcon:TrashIcon = new TrashIcon();
+		private function categoryClick(e:MouseEvent):void
+		{
+			this.dispatchEvent(Event(new Event(CategoryEvent.CATEGORY_CLICK, true)));
+		}
+		private function btnDelete(e:MouseEvent):void
+		{
+			this.dispatchEvent(Event(new Event(CategoryEvent.CATEGORY_DELETE, true)));
+		}
+		private function gotoEditMode(e:MouseEvent):void
+		{
+			currentState = "editMode";
+			txtName.setFocus();
+			txtName.setSelection(0, txtName.text.length);
+			txtName.addEventListener(KeyboardEvent.KEY_UP, handleKeyUpTxt);
+		}
+		private function handleKeyUpTxt(e:KeyboardEvent):void
+		{
+			if (e.keyCode == 13)
+			{
+				gotoDefaultMode();
+				parentDocument.btnNewCategory.setFocus();
+				txtName.removeEventListener(KeyboardEvent.KEY_UP, handleKeyUpTxt);
+			}
+		}
+		private function updateText():void
+		{
+			this.dispatchEvent(Event(new CategoryEvent(CategoryEvent.CATEGORY_RENAME, txtName.text, true)));
+		}
+		private function gotoDefaultMode():void
+		{
+			label2.text = txtName.text;
+			currentState = "";
+			if (txtName.text.length < 1)
+			{
+				txtName.text = "Category";
+				this.dispatchEvent(Event(new CategoryEvent(CategoryEvent.CATEGORY_RENAME, txtName.text, true)));
+			}
+		}
+		private function dragEnterHandler(event:DragEvent):void
+		{
+			//try not to let item be dragged to its own category..
+			if (parentDocument.categoryTL.selectedIndex == data.pos)
+			{
+				this.revertBorder();
+			}
+			else
+			{
+				this.setStyle("borderStyle", "solid");
+				this.setStyle("borderColor", "#00ff00");
+				this.setStyle("borderThickness", 2);
+				DragManager.acceptDragDrop(this);
+			}
+		}
+		private function dragExitHandler(event:DragEvent):void
+		{
+			this.revertBorder();
+		}
+		// Called if the target accepts the dragged object and the user
+		// releases the mouse button while over the drop target.
+		private function dragDropHandler(event:DragEvent):void
+		{
+			this.dispatchEvent(Event(new QuestionMoveEvent(QuestionMoveEvent.QUESTION_MOVE, data.cid, true)));
+			this.revertBorder();
+		}
+		private function revertBorder():void
+		{
+			this.setStyle("borderStyle", "none");
+			this.setStyle("borderThickness", 1);
+			this.setStyle("borderColor", "#b7babc");
+		}
+		]]>
+	</mx:Script>
+	<mx:Label text="{nameData}" top="9" left="45" fontSize="20" color="#000000" id="label2" click="gotoEditMode(event)" maxWidth="175" styleName="HangmanCategoryLabel"/>
+	<mx:SWFLoader right="-8" bottom="0" source="{trashIcon}" click="btnDelete(event)" id="swfloader1" width="38" height="31"/>
+	<mx:Label text="{itemsData} questions" left="8" bottom="2" color="#000000" id="lblNumQuestions"/>
+	<mx:Label text="{posData}." fontFamily="Georgia" fontSize="28" color="#000000" left="6" top="3" id="label1"/>
+</mx:Canvas>
