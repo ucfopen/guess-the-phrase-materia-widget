@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" showCloseButton="true" close="closeMe()" creationComplete="init()" color="#FFFFFF" fontSize="14" backgroundColor="#313131" styleName="panelTitleSmall" backgroundAlpha="1.0" title="Warning - Category Contains Questions" height="250" width="404">
+	<mx:states>
+		<mx:State name="delete">
+			<mx:RemoveChild target="{radioDelete}"/>
+			<mx:RemoveChild target="{radioMove}"/>
+			<mx:RemoveChild target="{comboMoveTo}"/>
+			<mx:SetProperty name="height" value="146"/>
+			<mx:SetProperty name="title" value="{catItem.name}"/>
+			<mx:SetProperty target="{text1}" name="text" value="Please press continue to confirm that you wish to delete the category."/>
+			<mx:SetProperty target="{text1}" name="height" value="45"/>
+		</mx:State>
+	</mx:states>
+	<mx:Script>
+		<![CDATA[
+		import mx.core.Application;
+		import mx.events.MoveEvent;
+		import mx.events.ItemClickEvent;
+		import mx.collections.ArrayCollection;
+		import mx.managers.PopUpManager;
+		import events.ConfirmDeleteEvent;
+		[Bindable]
+		public var catItem:Object;
+		[Bindable]
+		public var catList:ArrayCollection = new ArrayCollection;
+		private var option:String = "delete";
+		private var moveToCategory:int = -1;
+		private var moveToCategoryId:int = -1;
+		private function init():void
+		{
+//				//trace("currently deleteting index " + catList.getItemIndex(catItem) + " with id: " + catItem.cid);
+			//take off the category being deleted from the options to move to.
+			catList.removeItemAt(catList.getItemIndex(catItem));
+		}
+		private function handleRadioSelected(e:ItemClickEvent):void
+		{
+			option = e.currentTarget.selectedValue;
+			if (option == "Move")
+			{
+				handleMoveChange(e);
+			}
+		}
+		private function handleCBClick(e:MouseEvent):void
+		{
+			radioMove.selected = true;
+			handleMoveChange(e);
+		}
+		private function handleMoveChange(e:Event):void
+		{
+			option = "move";
+			moveToCategory = comboMoveTo.selectedItem.pos;
+			moveToCategoryId = comboMoveTo.selectedItem.cid;
+			//trace("moving to " + moveToCategory);
+		}
+		private function closeMe():void
+		{
+			this.dispatchEvent(Event(new Event(ConfirmDeleteEvent.CANCEL_CLICK, true)));
+		}
+		public function btnContinue():void
+		{
+			//trace("option: " + option + " -- moveTo: " + moveToCategory);
+			this.dispatchEvent(Event(new ConfirmDeleteEvent(ConfirmDeleteEvent.CONTINUE_CLICK, option, moveToCategory, moveToCategoryId, true)));
+			closeMe();
+		}
+		]]>
+	</mx:Script>
+	<mx:VBox left="10" right="10" top="10" width="100%" paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10" verticalScrollPolicy="off" verticalGap="8">
+		<mx:Text y="10" text="Would you like to move the questions to a different category or delete them?" left="10" right="10" height="44" color="#FFFFFF" enabled="true" selectable="false" textAlign="center" id="text1" fontFamily="Arial" width="100%"/>
+		<mx:RadioButtonGroup id="optionRadioGroup" itemClick="handleRadioSelected(event)"/>
+		<mx:RadioButton value="Delete" label="Delete the questions from this category." top="62" left="10" selected="true" id="radioDelete" groupName="optionRadioGroup" styleName="HangmanRadio" color="#F8F8F8"/>
+		<mx:HBox>
+			<mx:RadioButton value="Move" label="Move the questions to: " top="97" left="10" id="radioMove" groupName="optionRadioGroup" styleName="HangmanRadio" color="#F8F8F8"/>
+			<mx:ComboBox left="184" top="97" dataProvider="{catList}" labelField="name" id="comboMoveTo" click="handleCBClick(event)" change="handleMoveChange(event)"></mx:ComboBox>
+		</mx:HBox>
+		<mx:HBox bottom="10" right="10" paddingTop="18" width="100%" horizontalAlign="right">
+			<mx:Button label="Cancel" fontSize="15" click="closeMe()">
+				<mx:icon>@Embed(source='/assets/materia/swf/kogneatoSymbols.swf#FL_Symbol_Reject')</mx:icon>
+			</mx:Button>
+			<mx:Button fontSize="15" click="btnContinue()" styleName="blueButton" label="{optionRadioGroup.selectedValue}">
+				<mx:icon>@Embed(source='/assets/materia/swf/kogneatoSymbols.swf#FL_Symbol_Accept')</mx:icon>
+			</mx:Button>
+		</mx:HBox>
+	</mx:VBox>
+</mx:TitleWindow>

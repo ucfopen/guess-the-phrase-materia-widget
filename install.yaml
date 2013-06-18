@@ -1,0 +1,37 @@
+---
+general:
+  name: Hangman
+  group: Materia
+  height: 620
+  width: 800
+  in_catalog: Yes
+  is_editable: Yes
+  is_playable: Yes
+  is_qset_encrypted: Yes
+  is_answer_encrypted: Yes
+  is_storage_enabled: No
+  api_version: 2
+files:
+  creator: swf/hangman-creator.swf
+  player: swf/hangman-engine.swf
+  flash_version: 10
+score:
+  is_scorable: Yes
+  score_module: Hangman
+  score_type: SERVER
+meta_data:
+  features:
+    - Customizable
+    - Scorable
+  supported_data:
+    - Question/Answer
+  about: >
+    Hangman is a guessing game played by
+    guessing letters in a word using the
+    provided clues. Each wrong guess builds
+    another part of a hanged man. Five wrong
+    guesses and the player loses.
+  excerpt: >
+    Students are provided with a clue and
+    must guess the word or phrase within a
+    certain amount of letters.
