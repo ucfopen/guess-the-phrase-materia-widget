@@ -50,7 +50,7 @@ class Score_Modules_Hangman extends Score_Module
 	 		// if qset option allows partial scores, calculate
 			if ($missed)
 			{
-				if ($is_partial) return round(100 - (($missed / $answer_size) * 100));
+				if ($is_partial) return (100 - (($missed / $answer_size) * 100));
 				else return 0;
 			}
 			return 100;
