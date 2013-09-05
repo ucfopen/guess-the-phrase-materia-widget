@@ -12,6 +12,7 @@ qset:
         name: Parts of a Cell
         items:
           -
+            materiaType: question
             id: null
             type: QA
             questions:
@@ -24,6 +25,7 @@ qset:
                 value: 100
                 text: cell membrane
           -
+            materiaType: question
             id: null
             type: QA
             questions:
@@ -37,6 +39,7 @@ qset:
                 value: 100
                 text: nucleus
           -
+            materiaType: question
             id: null
             type: QA
             questions:
@@ -49,6 +52,7 @@ qset:
                 value: 100
                 text: mitochondria
           -
+            materiaType: question
             id: null
             type: QA
             questions:
@@ -62,6 +66,7 @@ qset:
                 value: 100
                 text: chloroplast
           -
+            materiaType: question
             id: null
             type: QA
             questions:
@@ -74,6 +79,7 @@ qset:
                 value: 100
                 text: cytoplasm
           -
+            materiaType: question
             id: null
             type: QA
             questions:
