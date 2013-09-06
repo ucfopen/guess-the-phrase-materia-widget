@@ -60,9 +60,12 @@
 
 		public override function onSaveClicked(mode:String = 'save'):void
 		{
+			var qSet:Object = generateQSET();
+			scrubErrorsFromQSet(qSet);
+
 			if(!checkForErrors())
 			{
-				ExternalInterface.call("__materia_flash_save", instanceTitle, generateQSET(), questionSetVersion);
+				ExternalInterface.call("__materia_flash_save", instanceTitle, qSet, questionSetVersion);
 			}
 			else
 			{
