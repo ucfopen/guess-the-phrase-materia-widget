@@ -61,7 +61,6 @@
 		public override function onSaveClicked(mode:String = 'save'):void
 		{
 			var qSet:Object = generateQSET();
-			scrubErrorsFromQSet(qSet);
 
 			if(!checkForErrors())
 			{
@@ -175,7 +174,9 @@
 			_qSet.options["attempts"] = attemptsSlider.value;
 			_qSet.options["partial"] = partialScoring.selected;
 			validateQIDs(_qSet); // make sure it is right to send the qids we are sending
-			return _qSet.convertToObject();
+			var result:Object = _qSet.convertToObject();
+			scrubErrorsFromQSet(result); 
+			return result;
 		}
 		/**
 		 *	Check to make sure we have valid info everywhere
