@@ -1,0 +1,16 @@
+{
+"framerate":60,
+"images":["assets/spritesheets/rope.png"],
+"frames":[
+    [0, 0, 32, 512, 0, 0, 0],
+    [32, 0, 32, 512, 0, 0, 0],
+    [64, 0, 32, 512, 0, 0, 0],
+    [96, 0, 32, 512, 0, 0, 0]
+],
+"animations":{
+    "stage4": {"speed": 1, "frames": [3]},
+    "stage1": {"speed": 1, "frames": [0]},
+    "stage2": {"speed": 1, "frames": [1]},
+    "stage3": {"speed": 1, "frames": [2]}
+}
+}

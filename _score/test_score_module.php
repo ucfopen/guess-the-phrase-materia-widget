@@ -1,10 +1,15 @@
 <?php
 /**
+ *
+ * @package	    Materia
+ * @subpackage  scoring
+ * @category    Modules
+ * @author      ADD NAME HERE
+ * 
  * @group App
  * @group Materia
  * @group Score
  * @group Hangman
- *
  */
 class Test_Score_Modules_Hangman extends \Basetest
 {
