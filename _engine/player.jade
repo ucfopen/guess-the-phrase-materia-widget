@@ -1,0 +1,94 @@
+doctype 5
+
+html(lang='en', ng-app='HangmanEngine')
+  head
+    title Hangman Engine
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0, target-densitydpi=device-dpi')
+    meta(name='apple-mobile-web-app-capable', content='yes')
+
+    link(href='http://fonts.googleapis.com/css?family=Purple+Purse', rel='stylesheet', type='text/css')
+    link(href='player.css', rel='stylesheet', type='text/css')
+
+    //- Development scripts
+    script(src='//localhost:35729/livereload.js', defer)
+    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular.js')
+    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-animate.js')
+    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-touch.js')
+
+    //- Production scripts
+    //- script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular.min.js')
+    //- script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-animate.min.js')
+    //- script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-touch.min.js')
+
+    script(src='/js/materia.require.js', data-embed='false')
+    script(src='http://code.createjs.com/createjs-2013.09.25.min.js')
+    script(src='assets/lib/modernizr.js', data-embed='false')
+    script(src='assets/lib/hammer.min.js', data-embed='false')
+    script(src='angular-player.js')
+    script(src='draw.js')
+    script(src='player.js')
+
+  body(ng-cloak, on-keyup, ng-controller='HangmanEngineCtrl')
+    div.overlay(ng-hide='inGame')
+
+      div.portal 
+        h1 Hangman
+        p(ng-show='curItem < 1') Press or type letters to guess words and phrases.
+        p(ng-show='curItem > 1') Game completed!
+
+        div.loader(ng-show='loading')
+          center
+            div.bar
+            div Loading...
+
+        div#start.start(ng-show='!loading && curItem < 2', ng-click='startGame()') Start
+      div.finished(ng-show='!loading && curItem == total-1', ng-click='endGame()')
+        p View your score.
+        p FINISH
+
+    div.game
+      canvas#stage(aria-hidden='true', height='620', width='800')
+      div.anvil-container(class='stage-{{anvilStage}}')
+        img.anvil(src='assets/img/anvil.png', aria-hidden='true')
+      div.podium(aria-hidden='true')
+
+      div.title
+      div.question-num {{ curItem+1 }}
+      div.total-questions
+
+      div.answer(ng-class='{transition: inQues}')
+        div.row(ng-repeat='word in curAns')
+          span.box(ng-repeat='letter in word', ng-class='{quirks: cssQuirks}')
+            span.letter(
+              ng-class='{spin: added[$parent.$index][$index] != "", space: $index != 11 && added[$parent.$index][$index] == " "}'
+            ) {{ added[$parent.$index][$index] }}
+          span.box(ng-show='dash[$index]')
+            span.letter.dash -
+      div.question(ng-class='{transition: inQues}', ng-show='inGame')
+        | {{ ques }}
+        div.tail
+
+      div.attempts(ng-show='inQues')
+        span(
+          ng-repeat='attempt in max',
+          ng-class='{shown:attempt.fail}'
+        ) x
+
+      div.keyboard-bg(aria-hidden='true')
+      div.keyboard(
+        aria-hidden='true',
+        ng-show='inQues',
+        ng-init="keys=[['0','1','2','3','4','5','6','7','8','9'],['q','w','e','r','t','y','u','i','o','p'],['a','s','d','f','g','h','j','k','l'],['z','x','c','v','b','n','m']]"
+      )
+        center
+          div.row(ng-repeat='row in keys')
+            span.key(
+              ng-repeat='key in keys[$index]',
+              ng-class='{faded:keyboard[key].hit == 1}',
+              ng-click='getUserInput(key)'
+            ) {{ key }}
+          div.descript PRESS OR TYPE
+
+      div.next(ng-show='!inQues && inGame', ng-click='startQuestion()') Next
+

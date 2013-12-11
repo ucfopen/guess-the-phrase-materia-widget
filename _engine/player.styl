@@ -1,0 +1,465 @@
+// Timing functions
+easeOutQuad = cubic-bezier(0.250, 0.460, 0.450, 0.940)
+easeInOutSine = cubic-bezier(0.445, 0.050, 0.550, 0.950)
+easeInOutQuad = cubic-bezier(0.455, 0.030, 0.515, 0.955)
+customEase = cubic-bezier(0.125, 0.705, 0.245, 0.930)
+
+html, body
+  position relative
+  height 100%
+  padding 0
+  margin 0
+  font-family "Purple Purse"
+  cursor default
+  color #2D3E49
+  overflow hidden
+  user-select none
+
+.game
+  height inherit
+  background url('_assets/img/background.png')
+  background-size 800px 620px
+
+canvas
+  position absolute
+  top 0
+  left 0
+
+  &.anvil-struck
+    animation-name falldown-getup
+    animation-duration 3000ms
+    animation-iteration-count 1
+
+.ng-hide-add, .ng-hide-remove
+  display block !important
+
+.overlay
+  position absolute
+  z-index 100
+  height 100%
+  width 100%
+  transition all 1500ms easeInOutSine
+
+  &.ng-hide
+
+    .portal
+      transform scale(7)
+
+  .portal
+    position absolute
+    background transparent
+    top 131px
+    left 541px
+    height 248px
+    width 248px
+    box-shadow 0 0 20em 45em #0A1127
+    border-radius 100%
+    transition 1200ms
+    transform scale(0.98)
+
+    p
+      font-size 30px
+      top 120px
+      left -460px
+      width 400px
+
+    h1, p
+      position absolute
+      color #FFF
+      text-align center
+
+    h1
+      left -500px
+      top -60px
+      font-size 100px
+
+    .loader
+      position absolute
+      z-index -1
+      height 248px
+      width 248px
+      border-radius 100%
+      color #FFF
+      background #6CB8A5
+      transition all 800ms easeOutQuad
+
+      &.ng-hide
+        opacity 0
+
+      .bar
+        background white
+        width 200px
+        height 10px
+        margin 110px 0 0 0
+        transform-origin 0 50%
+        transform scale(0, 1)
+        transition 200ms
+
+      div:nth-child(2)
+        margin 10px 0 0 0
+
+.title
+  position absolute
+  top 36px
+  left 110px
+  width 497px
+  font-size 34px
+  text-align center
+
+.question-num
+  position absolute
+  left 16px
+  top 129px
+  width 71px
+  font-size 36px
+  text-align center
+  color #FFF
+
+.total-questions
+  position absolute
+  width 50px
+  left 25px
+  top 172px
+  color #FFF
+  text-align center
+
+.question
+  position absolute
+  overflow visible
+  z-index 10
+  top 308px
+  left 60px
+  height 100px
+  width 441px
+  padding 18px
+  border-radius 32px
+  font-size 19px
+  text-align center
+  background rgba(255,255,255,0.9)
+  transform-origin 100% 0
+  transition 500ms customEase
+
+  &.transition
+    animation-name shrink-transition
+    animation-duration 1400ms
+    animation-timing-function customEase
+
+  &.ng-hide
+    transform scale(0)
+
+  p
+    margin 0
+
+  img
+    position absolute
+    right -244px
+    top 0
+    height 87px
+
+  .tail
+    position absolute
+    right -50px
+    top 35px
+    height 0
+    width 0
+    border-top 25px solid transparent
+    border-bottom 25px solid transparent
+    border-left 50px solid rgba(255,255,255,0.9)
+
+.answer
+  position absolute
+  top 110px
+  left 127px
+  width 488px
+  height 163px
+  font-size 30px
+  opacity 1
+
+  &.transition
+    animation-name fade-transition
+    animation-duration 1000ms
+    animation-timing-function linear
+
+  .row
+    margin 7px 0 16px 7px
+    transition all 400ms easeOutQuad
+    transform-origin 50% 100%
+    perspective 500px
+    
+    .box
+      position relative
+      height 40px
+      width 35px
+      margin 0 39px 0 0
+
+      &.quirks
+
+        &:nth-child(1) .letter
+          left 0
+        &:nth-child(2) .letter
+          left 40px
+        &:nth-child(3) .letter
+          left 80px
+        &:nth-child(4) .letter
+          left 120px
+        &:nth-child(5) .letter
+          left 160px
+        &:nth-child(6) .letter
+          left 200px
+        &:nth-child(7) .letter
+          left 240px
+        &:nth-child(8) .letter
+          left 280px
+        &:nth-child(9) .letter
+          left 320px
+        &:nth-child(10) .letter
+          left 360px
+        &:nth-child(11) .letter
+          left 400px
+        &:nth-child(12) .letter
+          left 440px
+        &:nth-child(13) .letter
+          left 480px
+
+      .letter
+        position absolute
+        height 40px
+        width 35px
+        background #EEEAC0
+        border 1px solid #CAC395
+        text-align center
+        transform-origin 50% 0
+        transition all 400ms easeOutQuad
+        transform rotateY(-180deg)
+        color rgba(45, 62, 73, 0)
+
+        &.incorrect
+          color #D35B5B
+
+        &.space, &.punc
+          background url('')
+
+        &.spin
+          transform rotateY(360deg)
+          color rgba(45, 62, 73, 1)
+
+.attempts
+  position absolute
+  z-index 5
+  top 385px
+  left 566px
+  width 170px
+  font-size 19px
+  text-align center
+  transform rotate(2deg)
+  color white
+  font-family arial
+  transition 500ms
+  opacity 1
+
+  &.ng-hide
+    opacity 0
+
+  span 
+    background rgba(0,0,0,0.8)
+    padding 0 6px
+    margin 0 2px
+    color rgba(0,0,0,0)
+    transition 200ms
+
+    &.shown
+      color #D16565
+
+.anvil-container
+  position relative
+  z-index 1
+  transform translateY(-200px)
+
+  &.stage-0
+    transition none !important
+
+  &.stage-1
+    transition all 2500ms easeOutQuad !important
+    trans form translateY(-200px)
+
+  &.stage-2
+    transition all 800ms easeOutQuad
+    transform translateY(-10px)
+
+  &.stage-3
+    transition all 200ms easeOutQuad
+    transform translateY(0px)
+
+  &.stage-4
+    transition all 150ms easeOutQuad
+    transform translateY(10px)
+
+  &.stage-5
+    transition all 150ms easeOutQuad
+    transform translateY(20px)
+
+  &.stage-6
+    transition all 150ms easeOutQuad
+    transform translateY(30px)
+
+  &.stage-7, &.stage-final
+    transition all 400ms easeOutQuad !important
+    transform translateY(700px)
+
+  .anvil
+    position absolute
+    top -90px
+    right 45px
+    height 230px
+    transform-origin 50% 0
+    animation-name anvil-hover
+    animation-duration 5000ms
+    animation-iteration-count infinite
+    animation-timing-function all 500ms easeInOutQuad
+
+.podium
+  position absolute
+  z-index 2
+  bottom -20px
+  left 468px
+  width 295px
+  height 400px
+  background url('_assets/img/podium.png')
+  background-repeat no-repeat
+  background-size 363px 418px
+
+.keyboard-bg
+  position absolute
+  z-index 3
+  bottom 0
+  left 50%
+  width 730px
+  height 170px
+  margin 0 0 0 -365px
+  background url('_assets/img/keyboard-bg.png')
+  background-repeat no-repeat
+
+.keyboard
+  position absolute
+  z-index 4
+  bottom 0
+  width 100%
+  margin 0 0 8px 0
+  font-size 25px
+  transition all 500ms customEase
+  transform translateY(0)
+
+  &.ng-hide
+    transform translateY(300px)
+
+.row
+  .key
+    padding 0 8px
+    margin 10px 2px
+    line-height 5px
+    transition all 200ms
+
+    &:hover, &.ng-click-active
+      background-color rgba(170, 162, 75, 0.5)
+
+    &.faded
+      opacity 0.3
+
+      &:hover
+        background none !important 
+
+.descript
+  font-size 11px
+  margin 5px 0 0 0
+
+.next, .finished, .start
+  position absolute
+  z-index 200
+  left 50%
+  bottom 30px
+  transition all 500ms customEase
+  transform translateY(0)
+
+  &.ng-hide
+    transform translateY(300px)
+
+.next, .start
+  width 180px
+  height 120px
+  margin 0 0 0 -90px
+  line-height 128px
+  font-size 43px
+  padding 0 0 0 37px
+  background url('_assets/img/next.png')
+  background-repeat no-repeat
+
+.start
+  position absolute
+  bottom -200px
+  left -160px
+
+.finished
+  width 254px
+  height 80px
+  margin 0 0 0 -128px
+  text-align center
+  background url('_assets/img/finish.png')
+  background-repeat no-repeat
+
+  p
+    &:nth-child(1)
+      color white
+      margin -23px 0 8px 0
+      font-size 20px
+
+    &:nth-child(2)
+      margin 0
+      font-size 43px
+
+// High pixel density displays
+@media only screen and (min-device-pixel-ratio:2)
+  body
+    background url('_assets/img/background.png')
+    background-size 800px 620px
+
+// Animations
+@keyframes fade-transition
+  0%
+    opacity 1
+  35%
+    opacity 0
+  65%
+    opacity 0
+  100%
+    opacity 1
+
+@keyframes shrink-transition
+  0%
+    transform scale(1)
+  35%
+    transform scale(0)
+  65%
+    transform scale(0)
+  100%
+    transform scale(1)
+
+@keyframes falldown-getup
+  0%
+    transform none
+  15%
+    transform rotate(35deg) translate(110px, 100px)
+  60%
+    transform rotate(35deg) translate(0px, 100px)
+  80%
+    transform rotate(-10deg) translate(-70px, 80px)
+  100%
+    transform none
+
+@keyframes anvil-hover
+  0%
+    transform rotate(-15deg)
+  50%
+    transform rotate(15deg)
+  100%
+    transform rotate(-15deg)
+

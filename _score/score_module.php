@@ -1,32 +1,26 @@
 <?php
 /**
- * Materia
- * It's a thing
+ * {ADD YOUR DOCUMENTATION HERE}
+ *
+ * 
+ *
+ * The widget score module
  *
  * @package	    Materia
- * @version    1.0
- * @author     UCF New Media
- * @copyright  2011 New Media
- * @link       http://kogneato.com
- */
-
-
-/**
- * NEEDS DOCUMENTATION
- *
- * The widget managers for the Materia package.
- *
- * @package	    Main
  * @subpackage  scoring
  * @category    Modules
-  * @author      ADD NAME HERE
+ * @author      ADD NAME HERE
+ *
+ * @group App
+ * @group Materia
+ * @group Score
+ * @group Hangman
  */
 
 namespace Materia;
 
 class Score_Modules_Hangman extends Score_Module
 {
-
 	public function check_answer($log)
 	{
 		// get qset once for options
@@ -67,4 +61,5 @@ class Score_Modules_Hangman extends Score_Module
 		$str = array_unique($str);	// should not affect user submissions
 		return $str;
 	}
+
 }

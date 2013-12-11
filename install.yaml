@@ -1,35 +1,93 @@
+# /develop/widget-developer-guide.html#the_structure_of_a_widget
 ---
 general:
+  # The displayed name of the widget
   name: Hangman
-  group: Materia
+
+  # The group name for the widget.
+  group: Development
+
+  # The height of the widget in pixels. Use 0 if the 
+  # widget should expand to the full height available.
   height: 620
+
+  # The width of the widget in pixels. Use 0 if the 
+  # widget should expand to the full width available.
   width: 800
+
+  # ‘Yes’ if the widget should be publicly displayed 
+  # on the widget catalog for creation and use. Generally, 
+  # widgets not displayed in the catalog are specialized and 
+  # lack a creator, and are only available for creation through command line.
   in_catalog: Yes
+
+  # Reserved for future
   is_editable: Yes
+
+  # ‘Yes’ if widget instances can be played. ‘No’ to 
+  # disable playing of instances. This is typically 
+  # only used when developing a widget to prevent users
+  #  from seeing an unfinished widget.
   is_playable: Yes
+
+  # Reserved for future use.
   is_qset_encrypted: Yes
+
+  # Reserved for future use.
   is_answer_encrypted: Yes
+
+  # ‘Yes’ if this widget uses the storage API features. ‘No’ otherwise.
   is_storage_enabled: No
+
+  # Corresponds to which version of the widget instance 
+  # object this widget expects. Unless you have any reason 
+  # to you should specify version 2 here. Only legacy widgets 
+  # should specify version 1.
   api_version: 2
+
 files:
-  creator: swf/hangman-creator.swf
-  player: swf/hangman-engine.swf
-  flash_version: 10
+  # Location of the creator swf or html file. Not required if 
+  # is_creatable is set to ‘No’.
+  creator: creator.html
+
+  # Location of the player swf or html file.
+  player: player.html
+
+  # Minimum flash version required to view the player (and creator).
+  flash_version: 0
+
 score:
+  # Whether the widget is scorable or not
   is_scorable: Yes
+
+  # Name of the score module class (in score_module.php). 
+  # Should be omitted if score_type is CLIENT
   score_module: Hangman
+
+  # Specifies how a widget is graded. Accepted values are:
+  #
+  #  SERVER - means grading will be handled by a Score Module on the server. Preferred
+  #  CLIENT - means your widget will tell Materia what the widget score should be.
+  #  SERVER-CLIENT - utilizes both methods.
+  score_type: SERVER
+
 meta_data:
+  # A list of features which will be presented in the widget catalog.
   features:
     - Customizable
     - Scorable
+  # A list of the types of data which this widget supports. This will be presented in the widget catalog.
   supported_data:
     - Question/Answer
+  # The text displayed on the widget detail page.
   about: >
     Hangman is a guessing game played by
     guessing letters in a word using the
     provided clues. Each wrong guess builds
     another part of a hanged man. Five wrong
     guesses and the player loses.
+
+  # The text displayed on the widget catalog page.
   excerpt: >
     Students are provided with a clue and
     must guess the word or phrase within a
