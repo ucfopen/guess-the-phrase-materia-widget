@@ -19,13 +19,11 @@ HangmanCreator.controller 'HangmanCreatorCtrl', ['$scope', ($scope) ->
 	$scope.partial = false
 	$scope.attempts = 5
 
-	$scope.addItem    = (ques = "", ans = "") -> $scope.items.push {ques:ques, ans:ans, foc:false}
-	$scope.removeItem = (index) ->               $scope.items.splice index, 1
+	$scope.addItem = (ques = "", ans = "") ->
+		$scope.items.push {ques:ques, ans:ans, foc:false}
 
-	$scope.mousedown = false
-	$scope.moveSlider = ($event) ->
-		if $scope.mousedown
-			console.log $event
+	$scope.removeItem = (index) ->
+		$scope.items.splice index, 1
 ]
 
 Namespace('Hangman').Creator = do () ->
@@ -40,7 +38,10 @@ Namespace('Hangman').Creator = do () ->
 	initExistingWidget = (title, widget, qset, version, baseUrl) ->
 		_items = qset.items[0].items
 		_scope = angular.element($('body')).scope()
-		_scope.$apply -> _scope.title = title
+		_scope.$apply ->
+			_scope.title = title
+			_scope.attempts = qset.options.attempts
+			_scope.partial = qset.options.partial
 		onQuestionImportComplete _items
 
 		if not Modernizr.input.placeholder then _polyfill()
@@ -83,7 +84,7 @@ Namespace('Hangman').Creator = do () ->
 	# Get each card's data from the controller and organize it into Qset form.
 	_processQsetItem = (item) ->
 		item.ques = _escapeHTML item.ques
-		item.ans  = _escapeHTML item.ans
+		item.ans  = item.ans
 
 		qsetItem        = {}
 		qsetItem.assets = []
@@ -96,9 +97,14 @@ Namespace('Hangman').Creator = do () ->
 
 		qsetItem
 
-	# Escapes >, <, "", '',\ since they are "unsafe".
+	# Escapes >, <, "", '',\ since they are UNSAFE!
 	_escapeHTML = (string) -> 
-		string.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot').replace(/'/g,'&#x27').replace(/\//g,'&#x2F')
+		string
+			.replace(/</g,'&lt;')
+			.replace(/>/g,'&gt;')
+			.replace(/"/g,'&quot')
+			.replace(/'/g,'&#x27')
+			.replace(/\//g,'&#x2F')
 
 	# Adds input placeholder functionality in browsers that are more aged like fine wines.
 	_polyfill = () ->
