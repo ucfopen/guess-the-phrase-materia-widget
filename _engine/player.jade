@@ -34,18 +34,18 @@ html(lang='en', ng-app='HangmanEngine')
 
       div.portal 
         h1 Hangman
-        p(ng-show='curItem < 1') Press or type letters to guess words and phrases.
-        p(ng-show='curItem > 1') Game completed!
+        p(ng-show='curItem != -2') Press or type letters to guess words and phrases.
+        p(ng-show='curItem == -2') Game completed!
 
         div.loader(ng-show='loading')
           center
             div.bar
             div Loading...
 
-        div#start.start(ng-show='!loading && curItem < 2', ng-click='startGame()') Start
-      div.finished(ng-show='!loading && curItem == total-1', ng-click='endGame()')
-        p View your score.
-        p FINISH
+        div#start.start(ng-show='!loading && curItem != -2', ng-click='startGame()') Start
+        div.finished(ng-show='!loading && curItem == -2', ng-click='endGame()')
+          p View your score.
+          p FINISH
 
     div.game
       canvas#stage(aria-hidden='true', height='620', width='800')

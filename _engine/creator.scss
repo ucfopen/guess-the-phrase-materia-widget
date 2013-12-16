@@ -1,3 +1,6 @@
+// Easing curves
+$easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
+
 @font-face {
   font-family: 'icomoon';
   src: url("assets/fonts/icomoon.eot");
@@ -35,8 +38,8 @@
 .icon-rdio-u:before {content: "\e002";}
 .icon-rdio-c:before {content: "\e003";}
 
-input:focus, select:focus, textarea:focus, button:focus {
-  outline: none;
+button, input, textarea, div {
+  &:focus {outline: none;}
 }
 
 textarea {
@@ -50,10 +53,14 @@ html, body {
   font-family: "Purple Purse","Arial",sans-serif;
   margin: 0;
   padding: 0;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 ul {
@@ -71,7 +78,7 @@ button {
   padding: 8px;
   width: 130px;
   border: none;
-  &:hover .descript {
+  &:hover .descript, &:focus .descript {
     opacity: 1;
   }
   .descript {
@@ -97,178 +104,164 @@ header {
     text-align: center;
     font-size: 30px;
     width: 100%;
-    &::-webkit-input-placeholder {
-      color: rgba(255, 255, 255, 0.8);
-    }
-    &:-moz-placeholder {
-      color: rgba(255, 255, 255, 0.8);
-    }
-    &::-moz-placeholder {
-      color: rgba(255, 255, 255, 0.8);
-    }
-    &:-ms-input-placeholder {
-      color: rgba(255, 255, 255, 0.8);
-    }
+    &::-webkit-input-placeholder {color: rgba(255, 255, 255, 0.8);}
+              &:-moz-placeholder {color: rgba(255, 255, 255, 0.8);}
+             &::-moz-placeholder {color: rgba(255, 255, 255, 0.8);}
+         &:-ms-input-placeholder {color: rgba(255, 255, 255, 0.8);}
   }
 }
 
-body {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  overflow-x: hidden;
-  -webkit-backface-visibility: hidden;
-  ul {
-    position: relative;
-    width: 825px;
-    margin: auto;
-    padding: 0;
-    perspective: 800px;
-    perspective-origin: 50% 100%;
-    li {
-      margin: 0 0 30px 0;
-      height: 160px;
-      transform-style: preserve-3d;
-      &.titles {
-        height: 60px;
-        margin: 0;
+ul {
+  position: relative;
+  width: 825px;
+  margin: auto;
+  padding: 0;
+  perspective: 800px;
+  perspective-origin: 50% 100%;
+  li {
+    margin: 0 0 30px 0;
+    height: 160px;
+    transform-style: preserve-3d;
+    &.titles {
+      height: 60px;
+      margin: 0;
+    }
+    &.item {
+      &.ng-enter {
+        transition: 1025ms all $easeOutExpo;
       }
-      &.item {
-        &.ng-enter {
-          transition: 1025ms cubic-bezier(0.19, 1, 0.22, 1) all;
-        }
-        &.ng-leave {
-          transition: 1025ms cubic-bezier(0.19, 1, 0.22, 1) all;
-          &.ng-leave-active {
-            transform: rotateX(-180deg) translatez(30px);
-            opacity: 0;
-            height: 0;
-            margin: 0 0;
-          }
-        }
-        &.ng-enter {
+      &.ng-leave {
+        transition: 1025ms all $easeOutExpo;
+        &.ng-leave-active {
           transform: rotateX(-180deg) translatez(30px);
           opacity: 0;
           height: 0;
           margin: 0 0;
-          &.ng-enter-active {
-            transform: rotateX(0) translatez(0);
-            opacity: 1;
-            height: 160px;
-            margin: 0 0 30px 0;
-          }
         }
-        &.ng-leave {
+      }
+      &.ng-enter {
+        transform: rotateX(-180deg) translatez(30px);
+        opacity: 0;
+        height: 0;
+        margin: 0 0;
+        &.ng-enter-active {
           transform: rotateX(0) translatez(0);
           opacity: 1;
           height: 160px;
           margin: 0 0 30px 0;
         }
       }
-      h3 {
-        display: inline-block;
-        position: absolute;
-        text-align: center;
-        width: 50%;
-        &:nth-child(2) {
-          left: 50%;
-        }
+      &.ng-leave {
+        transform: rotateX(0) translatez(0);
+        opacity: 1;
+        height: 160px;
+        margin: 0 0 30px 0;
       }
-      img {
-        height: 80px;
+    }
+    h3 {
+      display: inline-block;
+      position: absolute;
+      text-align: center;
+      width: 50%;
+      &:nth-child(2) {
+        left: 50%;
+      }
+    }
+    img {
+      height: 80px;
+      position: absolute;
+      bottom: 20px;
+      left: -95px;
+      transform: scale(0);
+      transition: 500ms all $easeOutExpo;
+      &.shown {
+        transform: none;
+      }
+    }
+    .num {
+      position: absolute;
+      padding: 20px;
+      margin-left: -83px;
+      line-height: 10px;
+      font-size: 26px;
+    }
+    .word {
+      right: 0;
+    }
+    .hint {
+      .arrow-left {
         position: absolute;
-        bottom: 20px;
-        left: -95px;
+        left: -30px;
+        top: 95px;
+        width: 0;
+        height: 0;
+        border-top: 20px solid transparent;
+        border-bottom: 20px solid transparent;
+        border-right: 30px solid #fff;
+        transform-origin: 100% 50%;
         transform: scale(0);
-        transition: 500ms cubic-bezier(0.19, 1, 0.22, 1) all;
+        transition: 500ms all $easeOutExpo;
         &.shown {
           transform: none;
         }
       }
-      .num {
-        position: absolute;
-        padding: 20px;
-        margin-left: -83px;
-        line-height: 10px;
-        font-size: 26px;
-      }
-      .word {
-        right: 0;
-      }
-      .hint {
-        .arrow-left {
-          position: absolute;
-          left: -30px;
-          top: 95px;
-          width: 0;
-          height: 0;
-          border-top: 20px solid transparent;
-          border-bottom: 20px solid transparent;
-          border-right: 30px solid #fff;
-          transform-origin: 100% 50%;
-          transform: scale(0);
-          transition: 500ms cubic-bezier(0.19, 1, 0.22, 1) all;
-          &.shown {
-            transform: none;
-          }
-        }
-        position: absolute;
-        width: 400px;
-        height: inherit;
-        background: #fff;
-        border-radius: 20px;
-      }
-      .word {
-        position: absolute;
-        width: 400px;
-        height: inherit;
-        background: #fff;
-        border-radius: 20px;
-      }
-      .hint textarea, .word textarea {
-        font-family: "Purple Purse";
-        border: none;
-        font-size: 20px;
-        width: 90%;
-        height: 120px;
-        margin: 15px 0 0 0;
-        text-align: center;
-      }
-      .hint .alert, .word .alert {
-        position: absolute;
-        color: rgba(0, 0, 0, 0.7);
-        font-family: 'Lucida Grande',arial,serif;
-        font-size: 13px;
-        bottom: 17px;
-        left: 17px;
-        opacity: 1;
-        transition: all 200ms;
-      }
-      .hint .alert.hide, .word .alert.hide {
-        opacity: 0;
-      }
-      .hint .alert span, .word .alert span {
-        padding: 0 2px 0 0;
-        font-size: 15px;
-        color: #7f2626;
-      }
-      button.delete {
-        right: -58px;
-        width: 35px;
-        margin-top: 13px;
-      }
-      .descript {
-        top: 7px;
-        left: 25px;
-        color: rgba(255, 255, 255, 0.6);
-      }
-      button.add {
-        left: 50%;
-        margin: 0 0 0 -68px;
-        transition: 200ms all;
-      }
+      position: absolute;
+      width: 400px;
+      height: inherit;
+      background: #fff;
+      border-radius: 20px;
+    }
+    .word {
+      position: absolute;
+      width: 400px;
+      height: inherit;
+      background: #fff;
+      border-radius: 20px;
+    }
+    .hint textarea, .word textarea {
+      box-sizing: border-box;
+      font-family: "Purple Purse";
+      border: none;
+      font-size: 20px;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 15px;
+      text-align: center;
+      border-radius: 10px;
+    }
+    .hint .alert, .word .alert {
+      position: absolute;
+      color: rgba(0, 0, 0, 0.7);
+      font-family: 'Lucida Grande', arial, serif;
+      font-size: 13px;
+      bottom: 17px;
+      left: 17px;
+      opacity: 1;
+      transition: all 200ms;
+    }
+    .hint .alert.hide, .word .alert.hide {
+      opacity: 0;
+    }
+    .hint .alert span, .word .alert span {
+      padding: 0 2px 0 0;
+      font-size: 15px;
+      color: #7f2626;
+    }
+    button.delete {
+      right: -58px;
+      width: 35px;
+      margin-top: 13px;
+    }
+    .descript {
+      top: 7px;
+      left: 25px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    button.add {
+      left: 50%;
+      margin: 0 0 0 -68px;
+      transition: 200ms all;
     }
   }
 }
@@ -308,43 +301,31 @@ body {
         width: 210px;
         background: #CCC;
         border-radius: 5px;
-        &.pos-3 {
-          .circle { transform: translate(0); }
-        }
-        &.pos-4 {
-          .circle { transform: translate(50px); }
-        }
-        &.pos-5 {
-          .circle { transform: translate(100px); }
-        }
-        &.pos-6 {
-          .circle { transform: translate(150px); }
-        }
-        &.pos-7 {
-          .circle { transform: translate(200px); }
-        }
+        &.pos-3 { .circle { transform: translate(0); }}
+        &.pos-4 { .circle { transform: translate(50px); }}
+        &.pos-5 { .circle { transform: translate(100px); }}
+        &.pos-6 { .circle { transform: translate(150px); }}
+        &.pos-7 { .circle { transform: translate(200px); }}
         .circle {
           position: absolute;
           z-index: 2;
-          margin: -5px;
-          height: 20px;
-          width: 20px;
+          margin: -6px;
+          height: 22px;
+          width: 22px;
           background: #2980B9;
           border-radius: 100%;
           text-align: center;
           font-size: 13px;
-          line-height: 20px;
-          transition: 300ms;
-        }
-        .circle-tail {
-          background: #3498DB;
+          line-height: 22px;
+          transition: 300ms all $easeOutExpo;
         }
       }
       .container {
         position: absolute;
         margin: -16px -6px;
-        height: 10px;
+        height: 25px;
         text-align: center;
+        line-height: 20px;
         font-size: 13px;
         &.thr  {left:0}
         &.four {left:25px}
@@ -373,6 +354,27 @@ body {
     }
   }
   .partial {
-    right: 0;
+    right: 1%;
+    div {
+      position: absolute;
+      top: 10px;
+      background: #CCC;
+      color: #666;
+      height: 35px;
+      width: 35px;
+      border-radius: 100%;
+      text-align: center;
+      line-height: 32px;
+      &.on {
+        right: 175px;
+      }
+      &.off {
+        right: 130px;
+      }
+      &.selected {
+        background: #2980B9;
+        color: white;
+      }
+    }
   }
 }

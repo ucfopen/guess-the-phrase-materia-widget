@@ -53,7 +53,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', ($scope, $t
 
 	_resetAttempts = () ->
 		attempts = []
-		for i in [0.._qset.options.attempts]
+		for i in [0.._qset.options.attempts-1]
 			attempts.push { fail: false }
 		attempts
 
@@ -91,7 +91,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', ($scope, $t
 			$scope.added.push []
 			$scope.curAns.push []
 			for j in [0..str[i].length-1]
-				if str[i][j] is ' ' or str[i][j].match /[\.,-\/#!?$%\^&\*;:{}=\-_`~()]/g
+				if str[i][j] is ' ' or str[i][j].match /[\.,-\/#!?$%\^&\*;:{}=\-_`~()']/g
 					$scope.added[i].push str[i][j]
 				else
 					$scope.added[i].push ''
@@ -166,9 +166,13 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', ($scope, $t
 		$scope.anvilStage = i+1
 
 		# If the anvil fell, return it for the next question
-		if $scope.anvilStage is 7
+		if $scope.anvilStage is $scope.max.length+1
+			$scope.anvilStage = 7
 			$timeout ->
 				$scope.anvilStage = 0
+				$timeout ->
+					$scope.anvilStage = 1
+				, 50
 			, 500
 
 	$scope.init = (qset) ->
@@ -176,6 +180,26 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', ($scope, $t
 		$scope.total = _qset.items[0].items.length
 		$scope.keyboard = _resetKeyboard()
 		$scope.max = _resetAttempts()
+
+	$scope.getUserInput = (value) ->
+		# Don't process keys that have been entered
+		if $scope.keyboard[value].hit is 1 then return
+
+		Hangman.Draw.breakBoredom true
+
+		$scope.keyboard[value].hit = 1
+		matches = _isMatch value
+
+		queStat = false
+		# No matches were returned, the user guessed incorrectly
+		if matches.length is 0
+			# _wrongGuess returns if all attempts have been exhausted
+			queStat = _wrongGuess value
+		else
+			# _rightGuess returns if all letters have been guessed
+			queStat = _rightGuess matches, value
+
+		if queStat then $scope.endQuestion()
 
 	$scope.startQuestion = () ->
 		$scope.inQues = true
@@ -189,45 +213,29 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', ($scope, $t
 
 		Hangman.Draw.playAnimation 'torso', 'pull-card'
 
-	$scope.getUserInput = (value) ->
-		# Don't process keys that have been entered
-		if $scope.keyboard[value].hit is 1 then return
-
-		Hangman.Draw.breakBoredom true
-
-		$scope.keyboard[value].hit = 1
-		matches = _isMatch value
-
-		# No matches were returned, the user guessed incorrectly
-		if matches.length is 0
-			# _wrongGuess returns if all attempts have been exhausted
-			if _wrongGuess value
-				$scope.endQuestion()
-		else
-			# _rightGuess returns if all letters have been guessed
-			if _rightGuess matches, value
-				$scope.endQuestion()
-
 	$scope.endQuestion = () ->
 		Hangman.Draw.breakBoredom false
 
+		# Submit the user's answer to Materia
+		ans = _parseAnsForScoring $scope.added
+		Hangman.Engine.submitQuestion _qset.items[0].items[$scope.curItem].id, ans
+
+		# Hide DOM elements relevant to a question
+		$scope.inQues = false
+
 		if $scope.curItem is $scope.total-1
 			$scope.inGame = false
+			# Assigning this triggers the finish button's visibility
+			$scope.curItem = -2
 
 		else
-			# Hide DOM elements relevant to a question
-			$scope.inQues = false
-
 			# Prepare elements for the next question
 			$scope.max = _resetAttempts()
 			$scope.keyboard = _resetKeyboard()
 
-			# Submit the user's answer to Materia
-			ans = _parseAnsForScoring $scope.added
-			Hangman.Engine.submitQuestion _qset.items[0].items[$scope.curItem].id, ans
-
 	$scope.startGame = () ->
 		$scope.curItem++
+		$scope.anvilStage = 1
 		$scope.inGame = true
 		$scope.inQues = true
 		$scope.ques = _qset.items[0].items[$scope.curItem].questions[0].text
