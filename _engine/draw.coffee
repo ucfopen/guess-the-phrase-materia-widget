@@ -149,12 +149,9 @@ Namespace('Hangman').Draw = do () ->
 
 	incorrectGuess = (num, max) ->
 		breakBoredom false
-		if num is 2
-			_host.torso.gotoAndPlay 'breathe-heavily'
-		if num is 3
-			_host.heads[_headState].gotoAndPlay 'scared'
-		if num is 4
-			_host.heads[_headState].gotoAndPlay 'scared-up'
+		if num is 2 then _host.torso.gotoAndPlay 'breathe-heavily'
+		if num is 3 then _host.heads[_headState].gotoAndPlay 'scared'
+		if num is 4 then _host.heads[_headState].gotoAndPlay 'scared-up'
 		if num is max
 			_host.heads[_headState].gotoAndPlay 'ouch'
 			_host.torso.gotoAndPlay 'fall'
@@ -172,6 +169,22 @@ Namespace('Hangman').Draw = do () ->
 				, 1000
 			, 1000
 
+	updateAnvil = (max, stage) ->
+		for i in [0..max.length-1]
+			if max[i].fail then continue
+			else break
+
+			if stage is max
+				stage = 7
+				return setTimeout ->
+					return 0
+					setTimeout ->
+						return 1
+					, 50
+				, 500
+			else
+				return stage+1
+
 	# Extends ability to play animations to other modules
 	playAnimation = (section, animation) ->
 		# Ticker starts with animation
@@ -183,7 +196,8 @@ Namespace('Hangman').Draw = do () ->
 		else
 			_host.heads[_headState].gotoAndPlay animation
 
-	initCanvas : initCanvas
-	breakBoredom : breakBoredom
-	incorrectGuess : incorrectGuess
-	playAnimation : playAnimation
+	initCanvas: initCanvas
+	breakBoredom: breakBoredom
+	incorrectGuess: incorrectGuess
+	updateAnvil: updateAnvil
+	playAnimation: playAnimation
