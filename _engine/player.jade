@@ -1,6 +1,6 @@
 doctype 5
 
-html(lang='en', ng-app='HangmanEngine')
+html(lang='en', ng-app='HangmanEngine', ng-keydown='getKeyInput($event)', ng-controller='HangmanEngineCtrl')
   head
     title Hangman Engine
     meta(charset='utf-8')
@@ -12,24 +12,23 @@ html(lang='en', ng-app='HangmanEngine')
 
     //- Development scripts
     script(src='//localhost:35729/livereload.js', defer)
-    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular.js')
-    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-animate.js')
-    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-touch.js')
+    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.js')
+    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-animate.js')
 
     //- Production scripts
-    //- script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular.min.js')
-    //- script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-animate.min.js')
-    //- script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-touch.min.js')
+    //- script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js')
+    //- script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-animate.min.js')
 
     script(src='/js/materia.require.js', data-embed='false')
-    script(src='http://code.createjs.com/createjs-2013.09.25.min.js')
+    script(src='http://code.createjs.com/createjs-2013.12.12.min.js')
     script(src='assets/lib/modernizr.js', data-embed='false')
     script(src='assets/lib/hammer.min.js', data-embed='false')
+    script(src='angular-hammer.js')
     script(src='angular-player.js')
     script(src='draw.js')
     script(src='player.js')
 
-  body(ng-cloak, on-keyup, ng-controller='HangmanEngineCtrl')
+  body(ng-cloak)
     div.overlay(ng-hide='inGame')
 
       div.portal 
@@ -42,8 +41,8 @@ html(lang='en', ng-app='HangmanEngine')
             div.bar
             div Loading...
 
-        div#start.start(ng-show='!loading && curItem != -2', ng-click='startGame()') Start
-        div.finished(ng-show='!loading && curItem == -2', ng-click='endGame()')
+        div#start.start(ng-show='!loading && curItem != -2', hammer-tap='startGame()') Start
+        div.finished(ng-show='!loading && curItem == -2', hammer-tap='endGame()')
           p View your score.
           p FINISH
 
@@ -58,15 +57,14 @@ html(lang='en', ng-app='HangmanEngine')
       div.total-questions
 
       div.answer(ng-class='{transition: inQues}')
-        div.row(ng-repeat='word in curAns')
+        div.row(ng-repeat='word in answer.string')
           span.box(ng-repeat='letter in word', ng-class='{quirks: cssQuirks}')
             span.letter(
-              ng-class='{spin: added[$parent.$index][$index] != "", space: $index != 11 && added[$parent.$index][$index] == " "}'
-            ) {{ added[$parent.$index][$index] }}
-          span.box(ng-show='dash[$index]')
+              ng-class='{spin: answer.guessed[$parent.$index][$index] != "", space: $index != 11 && answer.guessed[$parent.$index][$index] == " "}'
+            ) {{ answer.guessed[$parent.$index][$index] }}
+          span.box(ng-show='answer.dashes[$index]')
             span.letter.dash -
-      div.question(ng-class='{transition: inQues}', ng-show='inGame')
-        | {{ ques }}
+      div.question(ng-class='{transition: inQues}', ng-show='inGame') {{ ques }}
         div.tail
 
       div.attempts(ng-show='inQues')
@@ -86,9 +84,9 @@ html(lang='en', ng-app='HangmanEngine')
             span.key(
               ng-repeat='key in keys[$index]',
               ng-class='{faded:keyboard[key].hit == 1}',
-              ng-click='getUserInput(key)'
+              hammer-tap='getUserInput(key)'
             ) {{ key }}
           div.descript PRESS OR TYPE
 
-      div.next(ng-show='!inQues && inGame', ng-click='startQuestion()') Next
+      div.next(ng-show='!inQues && inGame', hammer-tap='startQuestion()') Next
 
