@@ -36,12 +36,14 @@ HangmanEngine.factory 'Parse', () ->
 			guessed.push []
 			answer.push []
 			for j in [0..ans[i].length-1]
+				# Pre-fill punctuation or spaces so that the DOM shows them
 				if ans[i][j] is ' ' or ans[i][j].match /[\.,-\/#!?$%\^&\*;:{}=\-_`~()']/g
 					guessed[i].push ans[i][j]
 				else
 					guessed[i].push ''
 				answer[i].push {letter: ans[i][j]}
 
+		# Return the parsed answer's relevant data
 		{dashes:dashes, guessed:guessed, string:answer}
 
 	forScoring: (ans) ->
@@ -64,6 +66,7 @@ HangmanEngine.factory 'Reset', () ->
 		'z':{hit:0},'x':{hit:0},'c':{hit:0},'v':{hit:0},'b':{hit:0},'n':{hit:0},'m':{hit:0}
 
 	attempts: (numAttempts) ->
+		# This array of anon objects is bound to the attempt boxes on the DOM
 		attempts = []
 		attempts.push {fail: false} for i in [0..numAttempts-1]
 		attempts
@@ -80,6 +83,7 @@ HangmanEngine.factory 'Input', () ->
 		matches
 
 	incorrect: (max) ->
+		# Find the current attempt the user is on
 		for i in [0..max.length-1]
 			if max[i].fail is true
 				continue
@@ -103,11 +107,13 @@ HangmanEngine.factory 'Input', () ->
 		guessed
 
 	cannotContinue: (max, guessed) ->
+		# Check to see if attempts are exhausted
 		for i in [0..max.length-1]
 			if max[i].fail is true then continue
 			else break
 		if i is max.length
-			return 1 # Represents failed attempt
+			# Represents exhausted attempts
+			return 1
 
 		# Return false if the entire word hasn't been guessed
 		for i in [0..guessed.length-1]
@@ -115,7 +121,8 @@ HangmanEngine.factory 'Input', () ->
 			if empty isnt -1
 				return false
 
-		return 2 # Represents success
+		# Represents all letters correctly guessed
+		return 2
 
 HangmanEngine.controller 'HangmanEngineCtrl', 
 ['$scope', '$timeout', 'Parse', 'Reset', 'Input',
@@ -135,7 +142,7 @@ HangmanEngine.controller 'HangmanEngineCtrl',
 	$scope.answer = null
 
 	$scope.max = [] # Maximum amount of failed attempts
-	$scope.anvilStage = 0
+	$scope.anvilStage = 0 
 	$scope.keyboard = null # Bound to onscreen keyboard, hit prop fades out key when 1
 
 	_updateAnvil =  ->
@@ -151,10 +158,13 @@ HangmanEngine.controller 'HangmanEngineCtrl',
 
 		# If the anvil fell, return it for the next question
 		if $scope.anvilStage is $scope.max.length+1
+			# The anvil drops
 			$scope.anvilStage = 7
 			$timeout ->
+				# The anvil loses all css transitions and is moved to top
 				$scope.anvilStage = 0
 				$timeout ->
+					# The anvil regains transitions
 					$scope.anvilStage = 1
 				, 50
 			, 500
@@ -171,17 +181,16 @@ HangmanEngine.controller 'HangmanEngineCtrl',
 		, 800
 
 	$scope.endGame = () ->
-		window.localStorage.clear()
 		Materia.Engine.end()
 
 	$scope.getKeyInput = (event) ->
 		if $scope.inQues
-			# Parse the letter
+			# Parse the incoming keycode
 			letter = String.fromCharCode(event.keyCode).toLowerCase()
 
 			# Search the keyboard's keys for the input
 			if $scope.keyboard.hasOwnProperty letter
-				# Start a digest cycle for user input
+				# send the input to be processed
 				$scope.getUserInput letter
 		else
 			if event.keyCode is 13
@@ -193,23 +202,28 @@ HangmanEngine.controller 'HangmanEngineCtrl',
 		# Don't process keys that have been entered
 		if $scope.keyboard[input].hit is 1 then return
 
+		# If the hangman was bored, he'll now snap out of it
 		Hangman.Draw.breakBoredom true
 
 		$scope.keyboard[input].hit = 1
 		matches = Input.isMatch input, $scope.answer.string
 
+		# User entered an incorrect guess
 		if matches.length is 0
 			$scope.max = Input.incorrect $scope.max
 			_updateAnvil()
+
+		# User entered a correct guess
 		else
 			$scope.answer.guessed = Input.correct matches, input, $scope.answer.guessed
 
+		# Find out if the user can continue to submit guesses
 		result = Input.cannotContinue $scope.max, $scope.answer.guessed
 		if result
 			$scope.endQuestion()
 
+			# The user can't continue because they won and are awesomesauce
 			if result is 2
-				# If the user guessed the entire answer then applaud
 				Hangman.Draw.playAnimation 'torso', 'pander'
 				$scope.anvilStage = 1
 
