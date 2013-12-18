@@ -9,19 +9,21 @@ html(lang='en', ng-app='HangmanCreator')
     link(href='http://fonts.googleapis.com/css?family=Purple+Purse', rel='stylesheet', type='text/css')
     link(href='creator.css', rel='stylesheet', type='text/css')
 
-    //- Development scripts
+    //- DEVELOPMENT
     script(src='//localhost:35729/livereload.js', defer)
     script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.js')
     script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-animate.js')
     script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-sanitize.js')
 
-    //- Production scripts
+    //- DEPLOYMENT
     //- script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js')
     //- script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-animate.min.js')
     //- script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-sanitize.min.js')
 
-    script(src='assets/lib/modernizr.js', data-embed='false')
     script(src='/js/materia.require.js', data-embed='false')
+    script(src='assets/lib/modernizr.js', data-embed='false')
+    script(src='assets/lib/hammer.min.js', data-embed='false')
+    script(src='assets/lib/angular-hammer.min.js', data-embed='false')
     script(src='creator.js')
 
   body(ng-cloak, ng-controller='HangmanCreatorCtrl')
@@ -60,12 +62,12 @@ html(lang='en', ng-app='HangmanCreator')
           div.alert(ng-class='{hide:item.ans.length==0}')
             span.icon-alert(ng-class='{shown:item.ans.length > 34}')
             | {{34 - item.ans.length}} characters remaining.
-        button.delete(aria-label='delete', ng-click='removeItem($index)')
+        button.delete(aria-label='delete', hammer-tap='removeItem($index)')
           span.icon-close
           span.descript remove
 
       li
-        button.add(aria-label='add item', ng-click='addItem()')
+        button.add(aria-label='add item', hammer-tap='addItem()')
           span.icon-plus 
           span &nbsp;add question
 
@@ -74,21 +76,21 @@ html(lang='en', ng-app='HangmanCreator')
         div.slide-btn
           div.bar(class="pos-{{attempts}}")
             div.circle(ng-bind='attempts')
-          div.container.thr(ng-click='attempts=3')
+          div.container.thr(hammer-tap='setAttempts(3)')
             div.point.thr 3
-          div.container.four(ng-click='attempts=4')
+          div.container.four(hammer-tap='setAttempts(4)')
             div.point.four 4
-          div.container.five(ng-click='attempts=5')
+          div.container.five(hammer-tap='setAttempts(5)')
             div.point.five 5
-          div.container.six(ng-click='attempts=6')
+          div.container.six(hammer-tap='setAttempts(6)')
             div.point.six 6
-          div.container.svn(ng-click='attempts=7')
+          div.container.svn(hammer-tap='setAttempts(7)')
             div.point.svn 7
         p Attempts per word
 
-      span.partial
-        p Partial scoring
-        div.on(ng-click='partial=true', ng-class='{selected:partial}') on
-        div.off(ng-click='partial=false', ng-class='{selected:!partial}') off
+    span.partial
+      p Partial scoring
+      div.on(hammer-tap='setPartial(true)', ng-class='{selected:partial}') on
+      div.off(hammer-tap='setPartial(false)', ng-class='{selected:!partial}') off
 
 

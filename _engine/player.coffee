@@ -1,5 +1,8 @@
 HangmanEngine = angular.module 'HangmanEngine', ['ngAnimate', 'hammer']
 
+HangmanEngine.factory 'Host', () ->
+
+
 HangmanEngine.factory 'Parse', () ->
 	forBoard: (ans) ->
 		# Question-specific data
@@ -180,11 +183,11 @@ HangmanEngine.controller 'HangmanEngineCtrl',
 			if $scope.keyboard.hasOwnProperty letter
 				# Start a digest cycle for user input
 				$scope.getUserInput letter
-			else
-				if event.keyCode is 13
-					# The user hit enter to move on to another question
-					if $scope.inGame and !$scope.inQues
-						$scope.startQuestion()
+		else
+			if event.keyCode is 13
+				# The user hit enter to move on to another question
+				if $scope.inGame and !$scope.inQues
+					$scope.startQuestion()
 
 	$scope.getUserInput = (input) ->
 		# Don't process keys that have been entered
@@ -257,7 +260,7 @@ HangmanEngine.controller 'HangmanEngineCtrl',
 ]
 
 # Load Materia Dependencies and start.
-do () -> require ['enginecore', 'score'], (util) ->
+require ['enginecore', 'score'], (util) ->
 	# Pass to Materia Hangman's scope, which containes a start method
 	Materia.Engine.start angular.element($('body')).scope()
 

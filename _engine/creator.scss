@@ -353,28 +353,35 @@ ul {
       }
     }
   }
-  .partial {
-    right: 1%;
-    div {
-      position: absolute;
-      top: 10px;
-      background: #CCC;
-      color: #666;
-      height: 35px;
-      width: 35px;
-      border-radius: 100%;
-      text-align: center;
-      line-height: 32px;
-      &.on {
-        right: 175px;
-      }
-      &.off {
-        right: 130px;
-      }
-      &.selected {
-        background: #2980B9;
-        color: white;
-      }
+}
+.partial {
+  font-family: "Lato";
+  position: fixed;
+  bottom: 4px;
+  right: 1%;
+  div {
+    position: absolute;
+    top: 10px;
+    background: #CCC;
+    color: #666;
+    height: 35px;
+    width: 35px;
+    border-radius: 100%;
+    text-align: center;
+    line-height: 32px;
+    &.on {
+      right: 160px;
+    }
+    &.off {
+      right: 115px;
+    }
+    &.selected {
+      background: #2980B9;
+      color: white;
     }
   }
 }
+
+
+
+

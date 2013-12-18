@@ -4,15 +4,15 @@ Materia
 It's a thing
 
 Widget  : Hangman, Creator
-Authors : Brandon Stull, Micheal Parks
+Authors : Micheal Parks, Brandon Stull
 Updated : 11/13
 
 ###
 
 # Create an angular module to import the animation module and house our controller.
-HangmanCreator = angular.module 'HangmanCreator', ['ngAnimate', 'ngSanitize']
+Hangman = angular.module 'HangmanCreator', ['ngAnimate', 'ngSanitize', 'hammer']
 
-HangmanCreator.factory 'Resource', ['$sanitize', ($sanitize) ->
+Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
 	buildQset: (title, items, partial, attempts) ->
 		qsetItems = []
 		qset = {}
@@ -66,25 +66,17 @@ HangmanCreator.factory 'Resource', ['$sanitize', ($sanitize) ->
 		$('form').submit ->
 			$(this).find('[placeholder]').each ->
 				if this.value is this.placeholder then this.value = ''
-
 ]
 
 # Set the controller for the scope of the document body.
-HangmanCreator.controller 'HangmanCreatorCtrl', ['$scope', ($scope) ->
+Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
+($scope, $sanitize, Resource) ->
 	$scope.title = ""
 	$scope.items = []
 	$scope.partial = false
 	$scope.attempts = 5
 
-	$scope.addItem = (ques = "", ans = "") ->
-		$scope.items.push {ques:ques, ans:ans, foc:false}
-
-	$scope.removeItem = (index) ->
-		$scope.items.splice index, 1
-
 	$scope.initNewWidget = (widget, baseUrl) ->
-		$scope.addItem()
-
 		if not Modernizr.input.placeholder then Resource.placeholderPolyfill()
 
 	$scope.initExistingWidget = (title, widget, qset, version, baseUrl) ->
@@ -96,8 +88,8 @@ HangmanCreator.controller 'HangmanCreatorCtrl', ['$scope', ($scope) ->
 		if not Modernizr.input.placeholder then Resource.placeholderPolyfill()
 
 	$scope.onSaveClicked = (mode = 'save') ->
-		qset = Resource.buildQset $sanitize $scope.title, $scope.items, $scope.partial, $scope.attempts
-		if qset then Materia.CreatorCore.save _title, _qset 
+		qset = Resource.buildQset $sanitize($scope.title), $scope.items, $scope.partial, $scope.attempts
+		if qset then Materia.CreatorCore.save $sanitize($scope.title), qset 
 
 	$scope.onSaveComplete = (title, widget, qset, version) -> true
 
@@ -105,8 +97,21 @@ HangmanCreator.controller 'HangmanCreatorCtrl', ['$scope', ($scope) ->
 		$scope.addItem items[i].questions[0].text, items[i].answers[0].text for i in [0..items.length-1]
 
 	$scope.onMediaImportComplete = (media) -> true
+
+	$scope.addItem = (ques = "", ans = "") ->
+		$scope.items.push {ques:ques, ans:ans, foc:false}
+
+	$scope.removeItem = (index) ->
+		$scope.items.splice index, 1
+
+	$scope.setAttempts = (num) ->
+		$scope.attempts = num
+
+	$scope.setPartial = (bool) ->
+		$scope.partial = bool
 ]
 
-# Load Materia Dependencies and start.
+# Load Materia Dependencies
 do () -> require ['creatorcore'], (util) ->
+	# Pass Materia the scope of our start method
 	Materia.CreatorCore.start angular.element($('body')).scope()
