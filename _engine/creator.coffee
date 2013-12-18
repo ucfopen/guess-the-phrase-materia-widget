@@ -39,6 +39,7 @@ Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
 
 	processQsetItem: (item) ->
 		item.ques = $sanitize item.ques
+		# Engine already takes care of sanitizing
 		item.ans = item.ans
 
 		qsetItem = {}
@@ -52,6 +53,7 @@ Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
 
 		qsetItem
 
+	# IE8/IE9 are super special and need this
 	placeholderPolyfill: () ->
 		$('[placeholder]')
 		.focus ->
@@ -112,6 +114,6 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 ]
 
 # Load Materia Dependencies
-do () -> require ['creatorcore'], (util) ->
+require ['creatorcore'], (util) ->
 	# Pass Materia the scope of our start method
 	Materia.CreatorCore.start angular.element($('body')).scope()
