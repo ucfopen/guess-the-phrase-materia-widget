@@ -22,9 +22,9 @@ html(lang='en', ng-app='HangmanEngine', ng-keydown='getKeyInput($event)', ng-con
     script(src='player.js')
 
   body(ng-cloak)
-    div.overlay(ng-hide='inGame')
+    div.overlay(ng-hide='inGame', hammer-tap='toggleGame()')
 
-      div.portal 
+      div.portal
         h1 Hangman
         p(ng-show='!gameDone') Press or type letters to guess words and phrases.
         p(ng-show='gameDone') Game completed!
@@ -34,8 +34,8 @@ html(lang='en', ng-app='HangmanEngine', ng-keydown='getKeyInput($event)', ng-con
             div.bar
             div Loading...
 
-        div#start.start(ng-show='!loading && !gameDone', hammer-tap='startGame()') Start
-        div.finished(ng-show='!loading && gameDone', hammer-tap='endGame()')
+        div#start.start(ng-show='!loading && !gameDone') Start
+        div.finished(ng-show='!loading && gameDone')
           p View your score.
           p FINISH
 

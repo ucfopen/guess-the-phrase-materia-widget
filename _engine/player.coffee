@@ -170,6 +170,12 @@ HangmanEngine.controller 'HangmanEngineCtrl',
 				, 50
 			, 500
 
+	$scope.toggleGame = () ->
+		if $scope.gameDone
+			$scope.endGame()
+		else
+			$scope.startGame()
+
 	$scope.startGame = () ->
 		$scope.curItem++
 		$scope.anvilStage = 1
