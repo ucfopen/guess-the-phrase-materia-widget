@@ -138,6 +138,7 @@ HangmanEngine.controller 'HangmanEngineCtrl',
 	$scope.inGame = false
 	$scope.inQues = false # Handles what appears on DOM
 	$scope.curItem = -1 # The current qset item index
+	$scope.gameDone = false # Whether or not to show the game completed text
 	$scope.ques = null # current question.
 	$scope.answer = null
 
@@ -252,7 +253,7 @@ HangmanEngine.controller 'HangmanEngineCtrl',
 		if $scope.curItem is $scope.total-1
 			$scope.inGame = false
 			# Assigning this triggers the finish button's visibility
-			$scope.curItem = -2
+			$scope.gameDone = true
 
 		else
 			# Prepare elements for the next question
