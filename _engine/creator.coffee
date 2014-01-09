@@ -85,8 +85,9 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 		$scope.title = title
 		$scope.attempts = qset.options.attempts
 		$scope.partial = qset.options.partial
-		onQuestionImportComplete qset.items[0].items
+		$scope.onQuestionImportComplete qset.items[0].items
 
+		$scope.$apply()
 		if not Modernizr.input.placeholder then Resource.placeholderPolyfill()
 
 	$scope.onSaveClicked = (mode = 'save') ->
@@ -97,6 +98,7 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 
 	$scope.onQuestionImportComplete = (items) ->
 		$scope.addItem items[i].questions[0].text, items[i].answers[0].text for i in [0..items.length-1]
+		$scope.$apply()
 
 	$scope.onMediaImportComplete = (media) -> true
 

@@ -26,16 +26,16 @@ html(lang='en', ng-app='HangmanEngine', ng-keydown='getKeyInput($event)', ng-con
 
       div.portal 
         h1 Hangman
-        p(ng-show='curItem != -2') Press or type letters to guess words and phrases.
-        p(ng-show='curItem == -2') Game completed!
+        p(ng-show='!gameDone') Press or type letters to guess words and phrases.
+        p(ng-show='gameDone') Game completed!
 
         div.loader(ng-show='loading')
           center
             div.bar
             div Loading...
 
-        div#start.start(ng-show='!loading && curItem != -2', hammer-tap='startGame()') Start
-        div.finished(ng-show='!loading && curItem == -2', hammer-tap='endGame()')
+        div#start.start(ng-show='!loading && !gameDone', hammer-tap='startGame()') Start
+        div.finished(ng-show='!loading && gameDone', hammer-tap='endGame()')
           p View your score.
           p FINISH
 
