@@ -26,20 +26,28 @@ Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
 				if items[i].ans.length > 34
 					Materia.CreatorCore.cancelSave 'Please reduce the number of characters in word #'+(i+1)+'.'
 					return false
+				# letters, numbers, spaces, periods, commas, dashes and underscores only
+				# prevent characters from being used that cannot be input by the user
+				if not /^[\w\s\.\,\-\_]*$/.test(items[i].ans)
+					Materia.CreatorCore.cancelSave 'Word #'+(i+1)+' should contain only letters or numbers.'
+					return false
 
 		qset.options = {partial: partial, attempts: attempts}
 		qset.assets = []
 		qset.rand = false
 		qset.name = title
 
-		qsetItems.push @processQsetItem items[i] for i in [0..items.length-1]
+		for i in [0..items.length-1]
+			item = @processQsetItem items[i]
+			qsetItems.push item if item
 		qset.items = [{items: qsetItems}]
 
 		qset
 
 	processQsetItem: (item) ->
-		item.ques = $sanitize item.ques
-		# Engine already takes care of sanitizing
+		return false if item.ans == ''
+
+		item.ques = item.ques
 		item.ans = item.ans
 
 		qsetItem = {}
