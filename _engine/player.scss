@@ -107,6 +107,8 @@ canvas {
   width: 497px;
   font-size: 34px;
   text-align: center;
+  overflow: hidden;
+  height: 48px;
 }
 
 .question-num {
@@ -184,7 +186,7 @@ canvas {
     animation-name: fade-transition;
     animation-duration: 1000ms;
     animation-timing-function: linear;
-  }
+}
   .row {
     margin: 7px 0 16px 7px;
     transition: all 400ms $easeOutQuad;
