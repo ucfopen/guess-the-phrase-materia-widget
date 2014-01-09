@@ -261,7 +261,7 @@ canvas {
   }
   span {
     background: rgba(0, 0, 0, 0.8);
-    padding: 0 6px;
+    padding: 0 4px;
     margin: 0 2px;
     color: rgba(0, 0, 0, 0);
     transition: 200ms;
@@ -303,7 +303,11 @@ canvas {
     transition: all 150ms $easeOutQuad;
     transform: translateY(30px);
   }
-  &.stage-7, &.stage-final {
+  &.stage-7 {
+    transition: all 150ms $easeOutQuad;
+    transform: translateY(40px);
+  }
+  &.stage-final {
     transition: all 400ms $easeOutQuad !important;
     transform: translateY(700px);
   }

@@ -159,7 +159,7 @@ HangmanEngine.controller 'HangmanEngineCtrl',
 		# If the anvil fell, return it for the next question
 		if $scope.anvilStage is $scope.max.length+1
 			# The anvil drops
-			$scope.anvilStage = 7
+			$scope.anvilStage = 'final'
 			$timeout ->
 				# The anvil loses all css transitions and is moved to top
 				$scope.anvilStage = 0

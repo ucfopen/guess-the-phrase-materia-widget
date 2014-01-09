@@ -169,22 +169,6 @@ Namespace('Hangman').Draw = do () ->
 				, 1000
 			, 1000
 
-	updateAnvil = (max, stage) ->
-		for i in [0..max.length-1]
-			if max[i].fail then continue
-			else break
-
-			if stage is max
-				stage = 7
-				return setTimeout ->
-					return 0
-					setTimeout ->
-						return 1
-					, 50
-				, 500
-			else
-				return stage+1
-
 	# Extends ability to play animations to other modules
 	playAnimation = (section, animation) ->
 		# Ticker starts with animation
@@ -199,5 +183,4 @@ Namespace('Hangman').Draw = do () ->
 	initCanvas: initCanvas
 	breakBoredom: breakBoredom
 	incorrectGuess: incorrectGuess
-	updateAnvil: updateAnvil
 	playAnimation: playAnimation
