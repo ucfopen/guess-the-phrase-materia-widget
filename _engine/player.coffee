@@ -24,7 +24,7 @@ HangmanEngine.factory 'Parse', () ->
 				# Check to see if a word is too long for a row
 				if ans[i]? and ans[i].length > 12
 					temp = ans[i].slice 11, ans[i].length
-					ans[i] = ans[i].subans 0, 11
+					ans[i] = ans[i].substr 0, 11
 					dashes[i] = true
 					ans[i+1] = temp+' '+ if ans[i+1]? then ans[i+1] else ''
 		else
