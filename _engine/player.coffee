@@ -29,6 +29,25 @@ HangmanEngine.factory 'Parse', () ->
 					ans.push()
 					ans[i+1] = temp+' '+ if ans[i+1]? then ans[i+1] else ''
 				i++
+
+			if ans.length > 3
+				# we're out of bounds on the board and should cram things in there
+				i = 0
+				while i < ans.length
+					# Add as many words as we can to a row
+					j = i
+					temp = ans.slice i+1, i+2
+					ans.splice i+1, 1
+					ans[i] += ' '+temp
+					# Check to see if a word is too long for a row
+					if ans[i]? and ans[i].length > 12
+						temp = ans[i].slice 11, ans[i].length
+						ans[i] = ans[i].substr 0, 11
+						dashes[i] = true
+						ans.push()
+						ans[i+1] = temp+' '+ if ans[i+1]? then ans[i+1] else ''
+					i++
+
 		else
 			# If the answer wasn't split then insert it into a row
 			ans = [ans]
@@ -126,7 +145,7 @@ HangmanEngine.factory 'Input', () ->
 		# Represents all letters correctly guessed
 		return 2
 
-HangmanEngine.controller 'HangmanEngineCtrl', 
+HangmanEngine.controller 'HangmanEngineCtrl',
 ['$scope', '$timeout', 'Parse', 'Reset', 'Input',
 ($scope, $timeout, Parse, Reset, Input) ->
 	_qset = null
