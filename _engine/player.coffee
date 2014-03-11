@@ -13,8 +13,8 @@ HangmanEngine.factory 'Parse', () ->
 		# This parsing is only necessary for multi-row answers
 		if ans.length >= 13
 			ans = ans.split ' '
-			i = null
-			for i in [0..ans.length-1]
+			i = 0
+			while i < ans.length
 				# Add as many words as we can to a row
 				j = i
 				while ans[i+1]? and ans[i].length + ans[i+1].length < 12
@@ -26,7 +26,9 @@ HangmanEngine.factory 'Parse', () ->
 					temp = ans[i].slice 11, ans[i].length
 					ans[i] = ans[i].substr 0, 11
 					dashes[i] = true
+					ans.push()
 					ans[i+1] = temp+' '+ if ans[i+1]? then ans[i+1] else ''
+				i++
 		else
 			# If the answer wasn't split then insert it into a row
 			ans = [ans]
