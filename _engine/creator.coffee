@@ -81,12 +81,28 @@ Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
 # Set the controller for the scope of the document body.
 Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 ($scope, $sanitize, Resource) ->
-	$scope.title = ""
+	$scope.title = "My Hangman widget"
 	$scope.items = []
 	$scope.partial = false
 	$scope.attempts = 5
 
+	$scope.changeTitle = ->
+		$('#backgroundcover, .title').addClass 'show'
+		$('.title input[type=text]').focus()
+		$('.title input[type=button]').click ->
+			$('#backgroundcover, .title').removeClass 'show'
+
 	$scope.initNewWidget = (widget, baseUrl) ->
+		return
+
+		$('#backgroundcover, .intro').addClass 'show'
+
+		$('.intro input[type=button]').click ->
+			$('#backgroundcover, .intro').removeClass 'show'
+			$scope.$apply ->
+				$scope.title = $('.intro input[type=text]').val() or $scope.title
+				$scope.step = 1
+
 		if not Modernizr.input.placeholder then Resource.placeholderPolyfill()
 
 	$scope.initExistingWidget = (title, widget, qset, version, baseUrl) ->
@@ -100,7 +116,7 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 
 	$scope.onSaveClicked = (mode = 'save') ->
 		qset = Resource.buildQset $sanitize($scope.title), $scope.items, $scope.partial, $scope.attempts
-		if qset then Materia.CreatorCore.save $sanitize($scope.title), qset 
+		if qset then Materia.CreatorCore.save $sanitize($scope.title), qset
 
 	$scope.onSaveComplete = (title, widget, qset, version) -> true
 
