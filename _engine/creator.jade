@@ -1,90 +1,108 @@
 doctype 5
 
 html(lang='en', ng-app='HangmanCreator')
-  head
-    title Hangman Creator
-    meta(charset='utf-8')
+	head
+		title Hangman Creator
+		meta(charset='utf-8')
 
-    link(href='http://fonts.googleapis.com/css?family=Lato', rel='stylesheet', type='text/css')
-    link(href='http://fonts.googleapis.com/css?family=Purple+Purse', rel='stylesheet', type='text/css')
-    link(href='creator.css', rel='stylesheet', type='text/css')
+		link(href='http://fonts.googleapis.com/css?family=Lato:100,300,400|Montserrat:700|Purple+Purse', rel='stylesheet', type='text/css')
+		link(href='creator.css', rel='stylesheet', type='text/css')
 
-    //- DEPLOYMENT
-    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js')
-    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-animate.min.js')
-    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-sanitize.min.js')
+		//- DEPLOYMENT
+		script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js')
+		script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-animate.min.js')
+		script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-sanitize.min.js')
 
-    script(src='/js/materia.require.js', data-embed='false')
-    script(src='assets/lib/modernizr.js', data-embed='false')
-    script(src='assets/lib/hammer.min.js', data-embed='false')
-    script(src='assets/lib/angular-hammer.min.js', data-embed='false')
-    script(src='creator.js')
+		script(src='/js/materia.require.js', data-embed='false')
+		script(src='assets/lib/modernizr.js', data-embed='false')
+		script(src='assets/lib/hammer.min.js', data-embed='false')
+		script(src='assets/lib/angular-hammer.min.js', data-embed='false')
+		script(src='creator.js')
 
-  body(ng-cloak, ng-controller='HangmanCreatorCtrl')
-    div#modal
-    header
-      input(
-        type='text',
-        role='title',
-        placeholder='Enter a title here.',
-        ng-model='title',
-        value='{{title}}'
-      )
-    ul(aria-label='questions')
-      li.titles(aria-hidden='true')
-        h3 Hint
-        h3 Words
+	body(ng-cloak, ng-controller='HangmanCreatorCtrl')
+		div#modal
+		#header
+			.logo
+			h1#title(ng-bind='title')
+			.link(ng-click='changeTitle()') Edit...
+			.right
+				span.attempts
+					div.slide-btn
+						div.bar(class="pos-{{attempts}}")
+							div.circle(ng-bind='attempts')
+						div.container.thr(hammer-tap='setAttempts(3)')
+							div.point.thr 3
+						div.container.four(hammer-tap='setAttempts(4)')
+							div.point.four 4
+						div.container.five(hammer-tap='setAttempts(5)')
+							div.point.five 5
+						div.container.six(hammer-tap='setAttempts(6)')
+							div.point.six 6
+						div.container.svn(hammer-tap='setAttempts(7)')
+							div.point.svn 7
+					p Incorrect guesses per phrases
 
-      li.item(ng-repeat='item in items')
-        span.num {{$index+1}}
-        img(ng-class='{shown:item.foc}', src='assets/img/head-bubble.png')
-        span.hint(aria-label='hint')
-          div.arrow-left(ng-class='{shown:item.foc}')
-          textarea(
-            placeholder='Enter a hint here.',
-            value='{{item.ques}}',
-            ng-focus='item.foc=true',
-            ng-blur='item.foc=false',
-            ng-model='item.ques'
-          )
-        span.word(aria-label='word')
-          textarea(
-            placeholder='Enter a word here.',
-            value='{{item.ans}}',
-            ng-model='item.ans'
-          )
-          div.alert(ng-class='{hide:item.ans.length==0}')
-            span.icon-alert(ng-class='{shown:item.ans.length > 34}')
-            | {{34 - item.ans.length}} characters remaining.
-        button.delete(aria-label='delete', hammer-tap='removeItem($index)')
-          span.icon-close
-          span.descript remove
+				span.partial
+					p Partial scoring
+					div.on(hammer-tap='setPartial(true)', ng-class='{selected:partial}') on
+					div.off(hammer-tap='setPartial(false)', ng-class='{selected:!partial}') off
 
-      li
-        button.add(aria-label='add item', hammer-tap='addItem()')
-          span.icon-plus 
-          span &nbsp;add question
+			.bottom
+		ul(aria-label='questions')
+			li.titles(aria-hidden='true')
+				h3 Hint
+				h3 Words
 
-    section.footer
-      span.attempts
-        div.slide-btn
-          div.bar(class="pos-{{attempts}}")
-            div.circle(ng-bind='attempts')
-          div.container.thr(hammer-tap='setAttempts(3)')
-            div.point.thr 3
-          div.container.four(hammer-tap='setAttempts(4)')
-            div.point.four 4
-          div.container.five(hammer-tap='setAttempts(5)')
-            div.point.five 5
-          div.container.six(hammer-tap='setAttempts(6)')
-            div.point.six 6
-          div.container.svn(hammer-tap='setAttempts(7)')
-            div.point.svn 7
-        p Attempts per word
+			li.item(ng-repeat='item in items')
+				span.num {{$index+1}}
+				img(ng-class='{shown:item.foc}', src='assets/img/head-bubble.png')
+				span.hint(aria-label='hint')
+					div.arrow-left(ng-class='{shown:item.foc}')
+					textarea(
+						placeholder='Enter a hint here.',
+						value='{{item.ques}}',
+						ng-focus='item.foc=true',
+						ng-blur='item.foc=false',
+						ng-model='item.ques'
+					)
+				span.word(aria-label='word')
+					textarea(
+						placeholder='Enter a word here.',
+						value='{{item.ans}}',
+						ng-model='item.ans'
+					)
+					div.alert(ng-class='{hide:item.ans.length==0}')
+						span.icon-alert(ng-class='{shown:item.ans.length > 34}')
+						| {{34 - item.ans.length}} characters remaining.
+				button.delete(aria-label='delete', hammer-tap='removeItem($index)')
+					span.icon-close
+					span.descript remove
 
-    span.partial
-      p Partial scoring
-      div.on(hammer-tap='setPartial(true)', ng-class='{selected:partial}') on
-      div.off(hammer-tap='setPartial(false)', ng-class='{selected:!partial}') off
+			li
+				button.add(aria-label='add item', hammer-tap='addItem()')
+					span.icon-plus
+					span &nbsp;add question
 
+		#backgroundcover
+
+		.box.intro
+			img(src='assets/creator_example.png')
+			h1 Hangman
+			p.
+				Create quiz show questions and answers
+			p.
+				Define how many incorrect guesses students get per phrase
+			p.
+				Enable partial credit to give students credit for guessing some of the characters correctly
+			hr.
+			b.
+				Start by giving your Hangman widget a title
+			input(type='text', placeholder='My Hangman widget', autofocus='1')
+			input(type='button', value='Get Started')
+
+		.box.title
+			b.
+				Give your Hangman widget a title
+			input(type='text', placeholder='My Hangman widget', ng-model='title')
+			input(type='button', value='Done')
 
