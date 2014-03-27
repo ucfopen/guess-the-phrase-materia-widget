@@ -404,6 +404,7 @@ ul {
 	z-index: 100;
 
 	font-family: 'Lato';
+	font-weight: 300;
 
 	border-bottom: solid 4px #fcf868;
 
@@ -530,31 +531,62 @@ ul {
 		}
 	}
 	.partial {
-		position:absolute;
+		position: absolute;
 		top: 4px;
-		right: 40px;
+		right: 100px;
 		font-family: "Lato";
+		label.checktoggle {
+			display: inline-block;
+			width: 62px;
+			height: 15px;
+			background: #5a5a5a;
+			padding: 5px;
+			color: #fff;
+			
+			position:relative;
+			margin-left: 25px;
+			margin-right: 10px;
 
+			transition: all ease 0.25s;
 
-		div {
-			position: absolute;
-			top: 10px;
-			background: #CCC;
-			color: #666;
-			height: 35px;
-			width: 35px;
-			border-radius: 100%;
-			text-align: center;
-			line-height: 32px;
-			&.on {
-				right: 160px;
+			top: -37px;
+			left: 90px;
+
+			&:before {
+				position: absolute;
+				transition: all ease 0.15s;
+				background: #fff;
+				padding: 1px;
+				margin-top: -2px;
+				margin-left: -2px;
+				width: 18px;
+				display: inline-block;
+				height: 17px;
+				content: ' ';
 			}
-			&.off {
-				right: 115px;
+			&:after {
+				transition: all ease 0.15s;
+				position: absolute;
+				right: 15px;
+				font-size: 11px;
+				font-weight: 400;
+				margin-top: 1px;
+				content: 'OFF';
 			}
-			&.selected {
-				background: #2980B9;
-				color: white;
+		}
+
+		input[type=checkbox] {
+			display: none;
+		}
+
+		input[type=checkbox]:checked + label.checktoggle {
+			&:before {
+				margin-left: 44px;
+				content: ' ';
+			}
+			&:after {
+				content: 'ON';
+				right: 41px;
 			}
 		}
 	}
