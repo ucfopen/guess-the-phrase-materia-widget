@@ -25,27 +25,26 @@ html(lang='en', ng-app='HangmanCreator')
 			.logo
 			h1#title(ng-bind='title')
 			.link(ng-click='changeTitle()') Edit...
-			.right
-				span.attempts
-					div.slide-btn
-						div.bar(class="pos-{{attempts}}")
-							div.circle(ng-bind='attempts')
-						div.container.thr(hammer-tap='setAttempts(3)')
-							div.point.thr 3
-						div.container.four(hammer-tap='setAttempts(4)')
-							div.point.four 4
-						div.container.five(hammer-tap='setAttempts(5)')
-							div.point.five 5
-						div.container.six(hammer-tap='setAttempts(6)')
-							div.point.six 6
-						div.container.svn(hammer-tap='setAttempts(7)')
-							div.point.svn 7
-					p Incorrect guesses per phrases
-
-				span.partial
-					p Partial scoring
-					div.on(hammer-tap='setPartial(true)', ng-class='{selected:partial}') on
-					div.off(hammer-tap='setPartial(false)', ng-class='{selected:!partial}') off
+			span.attempts
+				p
+					| Incorrect guesses per phrase
+				div.slide-btn
+					div.bar(class="pos-{{attempts}}")
+						div.circle(ng-bind='attempts')
+					div.container.thr(hammer-tap='setAttempts(3)')
+						div.point.thr 3
+					div.container.four(hammer-tap='setAttempts(4)')
+						div.point.four 4
+					div.container.five(hammer-tap='setAttempts(5)')
+						div.point.five 5
+					div.container.six(hammer-tap='setAttempts(6)')
+						div.point.six 6
+					div.container.svn(hammer-tap='setAttempts(7)')
+						div.point.svn 7
+			span.partial
+				p Partial scoring
+				div.on(hammer-tap='setPartial(true)', ng-class='{selected:partial}') on
+				div.off(hammer-tap='setPartial(false)', ng-class='{selected:!partial}') off
 
 			.bottom
 		ul(aria-label='questions')
