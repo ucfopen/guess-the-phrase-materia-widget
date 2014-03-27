@@ -455,14 +455,24 @@ ul {
 		color: #ccc;
 		text-decoration: underline;
 	}
+	.sep {
+		display: block;
+		border-radius: 10px;
+		width: 4px;
+		height: 4px;
+		position: absolute;
+		right: 221px;
+		top: 28px;
+		background: #fff;
+	}
 	.attempts {
 		position: absolute;
-		right: 290px;
+		right: 240px;
 
 		p {
 			position: absolute;
 			display: inline-block;
-			margin-left: -230px;
+			margin-left: -220px;
 			top: -10px;
 		}
 
@@ -481,14 +491,14 @@ ul {
 			margin-top: 12px;
 			.bar {
 				height: 10px;
-				width: 165px;
+				width: 135px;
 				background: #CCC;
 				border-radius: 5px;
 				&.pos-3 { .circle { transform: translate(0); }}
-				&.pos-4 { .circle { transform: translate(35px); }}
-				&.pos-5 { .circle { transform: translate(75px); }}
-				&.pos-6 { .circle { transform: translate(115px); }}
-				&.pos-7 { .circle { transform: translate(155px); }}
+				&.pos-4 { .circle { transform: translate(30px); }}
+				&.pos-5 { .circle { transform: translate(60px); }}
+				&.pos-6 { .circle { transform: translate(90px); }}
+				&.pos-7 { .circle { transform: translate(120px); }}
 				.circle {
 					position: absolute;
 					z-index: 2;
@@ -511,10 +521,10 @@ ul {
 				line-height: 20px;
 				font-size: 13px;
 				&.thr	{left:0}
-				&.four {left:10px}
-				&.five {left:50px}
-				&.six	{left:90px}
-				&.svn	{left:130px}
+				&.four {left:5px}
+				&.five {left:35px}
+				&.six	{left:65px}
+				&.svn	{left:95px}
 				.point {
 					position: absolute;
 					top: 0;
