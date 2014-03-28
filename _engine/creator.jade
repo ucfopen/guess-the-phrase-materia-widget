@@ -62,9 +62,9 @@ html(lang='en', ng-app='HangmanCreator')
 				label(for='randomize', class='checktoggle')
 			.bottom
 		ul(aria-label='questions')
-			li.titles(aria-hidden='true')
-				h3 Hint
-				h3 Words
+			li.titles(aria-hidden='true', ng-show='items.length')
+				h3 Question
+				h3 Phrase
 
 			li.item(ng-repeat='item in items')
 				span.num {{$index+1}}
@@ -94,7 +94,7 @@ html(lang='en', ng-app='HangmanCreator')
 			li
 				button.add(aria-label='add item', hammer-tap='addItem()')
 					span.icon-plus
-					span &nbsp;add question
+					span &nbsp;Add Question
 
 		#backgroundcover
 
