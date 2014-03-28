@@ -21,6 +21,20 @@ html(lang='en', ng-app='HangmanCreator')
 
 	body(ng-cloak, ng-controller='HangmanCreatorCtrl')
 		div#modal
+		.question_tip
+			| ?
+			.qtip_box
+				p
+					| If <b>partial scoring</b>
+					| is on then students will
+					| receive credit equal to the percentage of
+					| the phrase they reveal. When off
+					| students will receive a 100% if they guess the
+					| phrase correctly and a 0% otherwise.
+				p
+					| If the student doesn't reveal the phrase
+					| after the number of allowed <b>incorrect guesses</b>
+					| they move on to the next phrase.
 		#header
 			.logo
 			h1#title(ng-bind='title')
@@ -46,7 +60,6 @@ html(lang='en', ng-app='HangmanCreator')
 				p Partial scoring
 				input(type='checkbox', id='randomize', ng-model='partial')
 				label(for='randomize', class='checktoggle')
-
 			.bottom
 		ul(aria-label='questions')
 			li.titles(aria-hidden='true')
