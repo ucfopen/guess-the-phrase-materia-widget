@@ -461,13 +461,13 @@ ul {
 		width: 4px;
 		height: 4px;
 		position: absolute;
-		right: 221px;
+		right: 270px;
 		top: 28px;
 		background: #fff;
 	}
 	.attempts {
 		position: absolute;
-		right: 240px;
+		right: 290px;
 
 		p {
 			position: absolute;
@@ -543,7 +543,7 @@ ul {
 	.partial {
 		position: absolute;
 		top: 4px;
-		right: 100px;
+		right: 145px;
 		font-family: "Lato";
 		label.checktoggle {
 			display: inline-block;
@@ -602,3 +602,84 @@ ul {
 	}
 }
 
+.question_tip {
+	position: absolute;
+	right: 17px;
+	top: 16px;
+	padding: 2px;
+	border: 2px solid #fff;
+	border-radius: 50px;
+	width: 18px;
+	text-align: center;
+	opacity: 0.5;
+	z-index: 500;
+
+	font-family: 'Lato';
+
+	transition: all 0.15s ease;
+
+	&:hover {
+		opacity: 1;
+		background: #53a1d1;
+		border: 2px solid #53a1d1;
+
+		.qtip_box {
+			z-index: 9999;
+			opacity: 1;
+			overflow: inherit;
+			height: auto;
+			width: 255px;
+		}
+	}
+
+	.qtip_box {
+		position: absolute;
+		background: #53a1d1;
+		border: 2px solid #53a1d1;
+		z-index: -5;
+		opacity: 0;
+		font-size: 14px;
+		color: #fff;
+		text-align: left;
+		height: 0px;
+		width: 0px;
+		overflow: hidden;
+		top: 40px;
+		right: -8px;
+		padding: 0px 8px;
+		font-weight: 300;
+
+		border-radius: 5px;
+
+		b {
+			font-weight: 400;
+		}
+
+	}
+
+	.qtip_box:after, .qtip_box:before {
+		bottom: 100%;
+		left: 93.5%;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+	}
+
+	.qtip_box:after {
+		border-color: rgba(83, 161, 209, 0);
+		border-bottom-color: #53a1d1;
+		border-width: 10px;
+		margin-left: -10px;
+	}
+
+	.qtip_box:before {
+		border-color: rgba(58, 29, 1, 0);
+		border-bottom-color: #53a1d1;
+		border-width: 13px;
+		margin-left: -13px;
+	}
+
+}
