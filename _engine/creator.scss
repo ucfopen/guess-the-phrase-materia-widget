@@ -49,9 +49,9 @@ textarea {
 
 html, body {
 	cursor: default;
-	background: #2f3944;
+	background: #232b2c;
 	color: #fff;
-	font-family: "Purple Purse","Arial",sans-serif;
+	font-family: "Lato","Arial",sans-serif;
 	margin: 0;
 	padding: 0;
 	user-select: none;
@@ -106,7 +106,7 @@ ul {
 		transform-style: preserve-3d;
 		&.titles {
 			height: 60px;
-			margin: 0;
+			margin: 8px 0px;
 		}
 		&.item {
 			&.ng-enter {
@@ -144,6 +144,9 @@ ul {
 			display: inline-block;
 			position: absolute;
 			text-align: center;
+			font-family: 'Lato';
+			font-weight: 100;
+			font-size: 22px;
 			width: 50%;
 			&:nth-child(2) {
 				left: 50%;
@@ -165,7 +168,7 @@ ul {
 			padding: 20px;
 			margin-left: -83px;
 			line-height: 10px;
-			font-size: 26px;
+			font-size: 20px;
 		}
 		.word {
 			right: 0;
@@ -212,6 +215,11 @@ ul {
 			text-align: center;
 			border-radius: 10px;
 		}
+		.word textarea {
+			font-family: 'Montserrat';
+			font-weight: 700;
+			font-size: 24px;
+		}
 		.hint .alert, .word .alert {
 			position: absolute;
 			color: rgba(0, 0, 0, 0.7);
@@ -244,6 +252,21 @@ ul {
 			left: 50%;
 			margin: 0 0 0 -68px;
 			transition: 200ms all;
+			background: $green;
+			color: #fff;
+			border-radius: 0px;
+			padding: 2px;
+			height: 50px;
+			width: 170px;
+			font-family: 'Lato';
+			font-weight: 300;
+			font-size: 18px;
+
+			margin-top: 40px;
+
+			span {
+				margin: 0px 3px;
+			}
 		}
 	}
 }
