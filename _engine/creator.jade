@@ -87,17 +87,12 @@ html(lang='en', ng-app='HangmanCreator')
 						ng-show='item.editing',
 						ng-blur='item.editing=false'
 					)
-					div.toolong(ng-show='item.answer.string.length > 3')
-						| Too long.
-					div.answer(ng-show='!item.editing', ng-click='item.editing=true')
+					div.answer(ng-class='{ toolong: item.answer.string.length > 3 }', ng-show='!item.editing', ng-click='item.editing=true')
 						div.row(ng-repeat='word in item.answer.string')
 							.lbox(ng-repeat='letter in word')
 								.letter {{ letter.letter }}
 							.lbox(ng-show='item.answer.dashes[$index]')
 								.letter -
-					div.alert(ng-class='{hide:item.ans.length==0}')
-						span.icon-alert(ng-class='{shown:item.ans.length > 34}')
-						| {{34 - item.ans.length}} characters remaining.
 
 				button.delete(aria-label='delete', hammer-tap='removeItem($index)')
 					span.icon-close
