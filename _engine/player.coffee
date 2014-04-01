@@ -164,7 +164,7 @@ HangmanEngine.controller 'HangmanEngineCtrl',
 	$scope.answer = null
 
 	$scope.max = [] # Maximum amount of failed attempts
-	$scope.anvilStage = 0 
+	$scope.anvilStage = 0
 	$scope.keyboard = null # Bound to onscreen keyboard, hit prop fades out key when 1
 
 	_updateAnvil =  ->

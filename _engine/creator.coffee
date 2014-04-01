@@ -4,8 +4,8 @@ Materia
 It's a thing
 
 Widget  : Hangman, Creator
-Authors : Micheal Parks, Brandon Stull
-Updated : 11/13
+Authors : Jonathan Warner, Micheal Parks, Brandon Stull
+Updated : 4/14
 
 ###
 
@@ -85,6 +85,72 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 	$scope.items = []
 	$scope.partial = false
 	$scope.attempts = 5
+
+	$scope.updateForBoard = (item) ->
+		item.answer = $scope.forBoard(item.ans.toString())
+
+	$scope.forBoard = (ans) ->
+		# Question-specific data
+		dashes = []
+		guessed = []
+		answer = []
+
+		# This parsing is only necessary for multi-row answers
+		if ans.length >= 13
+			ans = ans.split ' '
+			i = 0
+			while i < ans.length
+				# Add as many words as we can to a row
+				j = i
+				while ans[i+1]? and ans[i].length + ans[i+1].length < 12
+					temp = ans.slice i+1, i+2
+					ans.splice i+1, 1
+					ans[i] += ' '+temp
+				# Check to see if a word is too long for a row
+				if ans[i]? and ans[i].length > 12
+					temp = ans[i].slice 11, ans[i].length
+					ans[i] = ans[i].substr 0, 11
+					dashes[i] = true
+					ans.push()
+					ans[i+1] = temp+' '+ if ans[i+1]? then ans[i+1] else ''
+				i++
+
+			if ans.length > 3
+				# we're out of bounds on the board and should cram things in there
+				i = 0
+				while i < ans.length
+					# Add as many words as we can to a row
+					j = i
+					temp = ans.slice i+1, i+2
+					ans.splice i+1, 1
+					ans[i] += ' '+temp
+					# Check to see if a word is too long for a row
+					if ans[i]? and ans[i].length > 12
+						temp = ans[i].slice 11, ans[i].length
+						ans[i] = ans[i].substr 0, 11
+						dashes[i] = true
+						ans.push()
+						ans[i+1] = temp+' '+ if ans[i+1]? then ans[i+1] else ''
+					i++
+
+		else
+			# If the answer wasn't split then insert it into a row
+			ans = [ans]
+
+		# Now that the answer string is ready, data-bind it to the DOM
+		for i in [0..ans.length-1]
+			guessed.push []
+			answer.push []
+			for j in [0..ans[i].length-1]
+				# Pre-fill punctuation or spaces so that the DOM shows them
+				if ans[i][j] is ' ' or ans[i][j].match /[\.,-\/#!?$%\^&\*;:{}=\-_`~()']/g
+					guessed[i].push ans[i][j]
+				else
+					guessed[i].push ''
+				answer[i].push {letter: ans[i][j]}
+
+		# Return the parsed answer's relevant data
+		{dashes:dashes, guessed:guessed, string:answer}
 
 	$scope.changeTitle = ->
 		$('#backgroundcover, .title').addClass 'show'

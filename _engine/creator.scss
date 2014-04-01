@@ -706,3 +706,50 @@ ul {
 	}
 
 }
+
+.answer {
+	font-size: 30px;
+
+	display: block;
+	width: 380px;
+	height: 150px;
+	background: #5b633e;
+
+	padding: 5px;
+
+	overflow: hidden;
+
+	.row {
+		margin-bottom: 8px;
+
+		.lbox {
+			position: relative;
+			width: 30px;
+			height: 45px;
+			display: inline-block;
+			vertical-align: top;
+
+			.letter {
+				height: 35px;
+				width: 32px;
+				margin: 0px 60px 20px 0;
+				color: #2d3e49;
+				font-family: 'Montserrat';
+				font-weight: bold;
+				font-size: 24px;
+
+				background: #eeeac0;
+				border: 1px solid #cac395;
+				text-align: center;
+				
+				vertical-align: top;
+				line-height: 41px;
+
+				&.space, &.punc {
+					background: url("");
+				}
+			}
+		}
+	}
+}
+
