@@ -278,9 +278,10 @@ canvas {
 		opacity: 0;
 	}
 	span {
+		display: inline-block;
 		background: rgba(0, 0, 0, 0.8);
-		padding: 0 6px;
-		margin: 0 2px;
+		padding: 0 5px;
+		margin: 0 1px 5px;
 		color: rgba(0, 0, 0, 0);
 		transition: 200ms;
 		&.shown {
