@@ -579,6 +579,8 @@ ul {
 			margin-left: 25px;
 			margin-right: 10px;
 
+			overflow: hidden;
+
 			transition: all ease 0.25s;
 
 			top: -37px;
@@ -595,15 +597,17 @@ ul {
 				display: inline-block;
 				height: 17px;
 				content: ' ';
+				overflow: hidden;
 			}
 			&:after {
 				transition: all ease 0.15s;
 				position: absolute;
-				right: 15px;
+				left: -20px;
 				font-size: 11px;
 				font-weight: 400;
 				margin-top: 1px;
-				content: 'OFF';
+				content: 'ON\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0OFF';
+				overflow: hidden;
 			}
 		}
 
@@ -617,8 +621,7 @@ ul {
 				content: ' ';
 			}
 			&:after {
-				content: 'ON';
-				right: 41px;
+				left: 15px;
 			}
 		}
 	}
