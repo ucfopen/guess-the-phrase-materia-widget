@@ -203,6 +203,12 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 
 	$scope.setPartial = (bool) ->
 		$scope.partial = bool
+	
+	$scope.editItem = (item,index) ->
+		item.editing = true
+		setTimeout ->
+			$('#tarea_'+index).focus()
+		,10
 ]
 
 # Load Materia Dependencies
