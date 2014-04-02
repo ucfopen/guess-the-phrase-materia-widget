@@ -108,6 +108,9 @@ html(lang='en', ng-app='HangmanCreator')
 					span.icon-plus
 					span &nbsp;Add Question
 
+		.arrow_box(ng-show='!items.length && step')
+			span Click here to add your first question
+
 		#backgroundcover
 
 		.box.intro
@@ -122,8 +125,9 @@ html(lang='en', ng-app='HangmanCreator')
 			hr.
 			b.
 				Start by giving your Hangman widget a title
-			input(type='text', placeholder='My Hangman widget', autofocus='1')
-			input(type='button', value='Get Started')
+			form(ng-submit='introComplete()')
+				input(type='text', placeholder='My Hangman widget', autofocus='1')
+				input(type='button', value='Get Started')
 
 		.box.title
 			b.

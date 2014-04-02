@@ -157,17 +157,17 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 		$('.title input[type=text]').focus()
 		$('.title input[type=button]').click ->
 			$('#backgroundcover, .title').removeClass 'show'
+	
+	$scope.introComplete = ->
+		$('#backgroundcover, .intro').removeClass 'show'
+		$scope.title = $('.intro input[type=text]').val() or $scope.title
+		$scope.step = 1
 
 	$scope.initNewWidget = (widget, baseUrl) ->
-		return
-
 		$('#backgroundcover, .intro').addClass 'show'
 
 		$('.intro input[type=button]').click ->
-			$('#backgroundcover, .intro').removeClass 'show'
-			$scope.$apply ->
-				$scope.title = $('.intro input[type=text]').val() or $scope.title
-				$scope.step = 1
+			$scope.$apply $scope.introComplete
 
 		if not Modernizr.input.placeholder then Resource.placeholderPolyfill()
 
