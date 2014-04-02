@@ -80,6 +80,7 @@ html(lang='en', ng-app='HangmanCreator')
 					)
 				span.word(aria-label='word')
 					textarea(
+						id='tarea_{{$index}}',
 						placeholder='Enter a word here.',
 						value='{{item.ans}}',
 						ng-model='item.ans',
@@ -87,7 +88,11 @@ html(lang='en', ng-app='HangmanCreator')
 						ng-show='item.editing',
 						ng-blur='item.editing=false'
 					)
-					div.answer(ng-class='{ toolong: item.answer.string.length > 3 }', ng-show='!item.editing', ng-click='item.editing=true')
+					div.answer(
+						ng-class='{ toolong: item.answer.string.length > 3 }',
+						ng-show='!item.editing',
+						ng-click='editItem(item, $index)'
+					)
 						div.row(ng-repeat='word in item.answer.string')
 							.lbox(ng-repeat='letter in word')
 								.letter {{ letter.letter }}
