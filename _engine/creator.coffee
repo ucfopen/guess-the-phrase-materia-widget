@@ -23,8 +23,8 @@ Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
 			return false
 		else
 			for i in [0..items.length-1]
-				if items[i].ans.length > 34
-					Materia.CreatorCore.cancelSave 'Please reduce the number of characters in word #'+(i+1)+'.'
+				if items[i].answer.string.length > 3
+					Materia.CreatorCore.cancelSave '#'+(i+1)+' will not fit on the gameboard.'
 					return false
 				# letters, numbers, spaces, periods, commas, dashes and underscores only
 				# prevent characters from being used that cannot be input by the user
