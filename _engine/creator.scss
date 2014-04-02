@@ -261,7 +261,7 @@ ul {
 			font-weight: 300;
 			font-size: 18px;
 
-			margin-top: 40px;
+			margin-top: 60px;
 
 			span {
 				margin: 0px 3px;
@@ -378,7 +378,6 @@ ul {
 	padding: 5px;
 	height: 50px;
 	width: 150px;
-	margin-left: 140px;
 
 	animation: pounce 1s infinite;
 
@@ -413,6 +412,18 @@ ul {
 	border-right-color: #fbf767;
 	border-width: 63px;
 	margin-top: -63px;
+}
+
+@keyframes pounce {
+	0% {
+		margin-left: 160px;
+	}
+	50% {
+		margin-left: 170px;
+	}
+	100% {
+		margin-left: 160px;
+	}
 }
 
 #header {
