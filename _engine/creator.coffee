@@ -133,6 +133,11 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 						ans[i+1] = temp+' '+ if ans[i+1]? then ans[i+1] else ''
 					i++
 
+			# trim ending spaces
+			for j in [0...ans.length]
+				while ans[j].substr(ans[j].length-1) == ' '
+					ans[j] = ans[j].substr(0, ans[j].length - 1)
+
 		else
 			# If the answer wasn't split then insert it into a row
 			ans = [ans]
@@ -143,7 +148,7 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 			answer.push []
 			for j in [0..ans[i].length-1]
 				# Pre-fill punctuation or spaces so that the DOM shows them
-				if ans[i][j] is ' ' or ans[i][j].match /[\.,-\/#!?$%\^&\*;:{}=\-_`~()']/g
+				if ans[i][j] is ' ' or ans[i][j]? and ans[i][j].match /[\.,-\/#!?$%\^&\*;:{}=\-_`~()']/g
 					guessed[i].push ans[i][j]
 				else
 					guessed[i].push ''

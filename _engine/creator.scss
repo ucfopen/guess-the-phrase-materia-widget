@@ -265,6 +265,10 @@ ul {
 
 			margin-top: 60px;
 
+			&:hover {
+				background: #7AD038;
+			}
+
 			span {
 				margin: 0px 3px;
 			}
@@ -633,6 +637,7 @@ ul {
 		}
 
 		input[type=checkbox]:checked + label.checktoggle {
+
 			&:before {
 				margin-left: 44px;
 				content: ' ';
