@@ -68,9 +68,9 @@ html(lang='en', ng-app='HangmanCreator')
 
 			li.item(ng-repeat='item in items')
 				span.num {{$index+1}}
-				img(ng-class='{shown:item.foc}', src='assets/img/head-bubble.png')
+				img(ng-class='{shown:item.foc || item.editing}', src='assets/img/head-bubble.png')
 				span.hint(aria-label='hint')
-					div.arrow-left(ng-class='{shown:item.foc}')
+					div.arrow-left(ng-class='{shown:item.foc || item.editing}')
 					textarea(
 						placeholder='Enter a hint here.',
 						value='{{item.ques}}',
