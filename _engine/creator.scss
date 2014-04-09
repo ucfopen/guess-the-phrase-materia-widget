@@ -744,6 +744,12 @@ ul {
 	overflow: hidden;
 	cursor: pointer;
 
+	.protip {
+		margin-top: 20px;
+		font-size: 20px;
+		text-align: center;
+	}
+
 	&.toolong {
 		outline: 3px solid #f00;
 

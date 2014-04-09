@@ -81,7 +81,6 @@ html(lang='en', ng-app='HangmanCreator')
 				span.word(aria-label='word')
 					textarea(
 						id='tarea_{{$index}}',
-						placeholder='Enter a word here.',
 						value='{{item.ans}}',
 						ng-model='item.ans',
 						ng-change='updateForBoard(item)',
@@ -93,6 +92,7 @@ html(lang='en', ng-app='HangmanCreator')
 						ng-show='!item.editing',
 						ng-click='editItem(item, $index)'
 					)
+						.protip(ng-show='!item.answer.string') Click here to enter your phrase
 						div.row(ng-repeat='word in item.answer.string')
 							.lbox(ng-repeat='letter in word')
 								.letter {{ letter.letter }}
