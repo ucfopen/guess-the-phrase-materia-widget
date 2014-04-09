@@ -76,7 +76,8 @@ html(lang='en', ng-app='HangmanCreator')
 						value='{{item.ques}}',
 						ng-focus='item.foc=true',
 						ng-blur='item.foc=false',
-						ng-model='item.ques'
+						ng-model='item.ques',
+						tabindex='{{$index + 1}}'
 					)
 				span.word(aria-label='word')
 					textarea(
@@ -84,9 +85,11 @@ html(lang='en', ng-app='HangmanCreator')
 						value='{{item.ans}}',
 						ng-model='item.ans',
 						ng-change='updateForBoard(item)',
-						ng-show='item.editing',
 						ng-blur='item.editing=false',
-						ng-enter='item.editing=false'
+						ng-focus='item.editing=true',
+						ng-enter='item.editing=false',
+						ng-class='{ show: item.editing }',
+						tabindex='{{$index + 2}}'
 					)
 					div.answer(
 						ng-class='{ toolong: item.answer.string.length > 3 }',
