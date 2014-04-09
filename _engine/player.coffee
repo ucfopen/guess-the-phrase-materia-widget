@@ -48,6 +48,11 @@ HangmanEngine.factory 'Parse', () ->
 						ans[i+1] = temp+' '+ if ans[i+1]? then ans[i+1] else ''
 					i++
 
+			# trim ending spaces
+			for j in [0...ans.length]
+				while ans[j].substr(ans[j].length-1) == ' '
+					ans[j] = ans[j].substr(0, ans[j].length - 1)
+
 		else
 			# If the answer wasn't split then insert it into a row
 			ans = [ans]
