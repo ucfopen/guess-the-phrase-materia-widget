@@ -250,7 +250,7 @@ canvas {
 					color: #d35b5b;
 				}
 				&.space, &.punc {
-					background: url("");
+					background: url(assets/img/blank.jpg);
 				}
 				&.spin {
 					transform: rotateY(360deg);

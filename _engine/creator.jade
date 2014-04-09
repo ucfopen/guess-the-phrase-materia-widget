@@ -99,7 +99,7 @@ html(lang='en', ng-app='HangmanCreator')
 						.protip(ng-show='!item.answer.string') Click here to enter your phrase
 						div.row(ng-repeat='word in item.answer.string')
 							.lbox(ng-repeat='letter in word')
-								.letter {{ letter.letter }}
+								.letter(ng-class='{ space: letter.letter == " " }') {{ letter.letter }}
 							.lbox(ng-show='item.answer.dashes[$index]')
 								.letter -
 
