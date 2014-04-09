@@ -143,7 +143,7 @@ ul {
 			position: absolute;
 			text-align: center;
 			font-family: 'Lato';
-			font-weight: 100;
+			font-weight: 300;
 			font-size: 22px;
 			width: 50%;
 			&:nth-child(2) {
@@ -241,6 +241,7 @@ ul {
 			right: -58px;
 			width: 35px;
 			margin-top: 13px;
+			cursor: pointer;
 		}
 		.descript {
 			top: 7px;
@@ -260,6 +261,7 @@ ul {
 			font-family: 'Lato';
 			font-weight: 300;
 			font-size: 18px;
+			cursor: pointer;
 
 			margin-top: 60px;
 
@@ -469,7 +471,7 @@ ul {
 	h1 {
 		margin-left: 8px;
 		font-family: 'Lato', serif;
-		font-weight: 100;
+		font-weight: 300;
 		font-size: 24px !important;
 		vertical-align: middle;
 		margin-top: 3px;
@@ -501,6 +503,7 @@ ul {
 	.attempts {
 		position: absolute;
 		right: 290px;
+		cursor: pointer;
 
 		p {
 			position: absolute;
@@ -578,6 +581,7 @@ ul {
 		top: 4px;
 		right: 145px;
 		font-family: "Lato";
+
 		label.checktoggle {
 			display: inline-block;
 			width: 62px;
@@ -596,6 +600,8 @@ ul {
 
 			top: -37px;
 			left: 90px;
+
+			cursor: pointer;
 
 			&:before {
 				position: absolute;
