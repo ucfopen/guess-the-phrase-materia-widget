@@ -218,6 +218,12 @@ ul {
 			font-family: 'Montserrat';
 			font-weight: 700;
 			font-size: 24px;
+			opacity: 0;
+
+
+			&.show {
+				opacity: 1;
+			}
 		}
 		.hint .alert, .word .alert {
 			position: absolute;
@@ -732,6 +738,8 @@ ul {
 }
 
 .answer {
+	margin-top: -160px;
+
 	font-size: 30px;
 
 	display: block;
