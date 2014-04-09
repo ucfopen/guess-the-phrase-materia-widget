@@ -85,7 +85,8 @@ html(lang='en', ng-app='HangmanCreator')
 						ng-model='item.ans',
 						ng-change='updateForBoard(item)',
 						ng-show='item.editing',
-						ng-blur='item.editing=false'
+						ng-blur='item.editing=false',
+						ng-enter='item.editing=false'
 					)
 					div.answer(
 						ng-class='{ toolong: item.answer.string.length > 3 }',

@@ -12,6 +12,16 @@ Updated : 4/14
 # Create an angular module to import the animation module and house our controller.
 Hangman = angular.module 'HangmanCreator', ['ngAnimate', 'ngSanitize', 'hammer']
 
+Hangman.directive('ngEnter', ->
+    return (scope, element, attrs) ->
+        element.bind("keydown keypress", (event) ->
+            if(event.which == 13)
+                scope.$apply ->
+                    scope.$eval(attrs.ngEnter)
+                event.preventDefault()
+        )
+)
+
 Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
 	buildQset: (title, items, partial, attempts) ->
 		qsetItems = []
