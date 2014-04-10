@@ -219,10 +219,12 @@ ul {
 			font-weight: 700;
 			font-size: 24px;
 			opacity: 0;
+			z-index: -5;
 
 
 			&.show {
 				opacity: 1;
+				z-index: 1;
 			}
 		}
 		.hint .alert, .word .alert {
@@ -738,6 +740,8 @@ ul {
 }
 
 .answer {
+	position:absolute;
+
 	margin-top: -160px;
 
 	font-size: 30px;
@@ -752,6 +756,8 @@ ul {
 	overflow: hidden;
 	cursor: pointer;
 
+	z-index: 9999;
+
 	.protip {
 		margin-top: 20px;
 		font-size: 20px;
@@ -765,7 +771,7 @@ ul {
 			display: block;
 			position: absolute;
 			left: 0px;
-			right: 8px;
+			right: -18px;
 			top: 0px;
 			bottom: -2px;
 			background: #f00;
@@ -781,7 +787,7 @@ ul {
 			padding: 8px;
 			color: #fff;
 			background: #f00;
-			top: 36%;
+			top: 35%;
 			left: 30%;
 			font-size: 14px;
 			z-index: 100;
@@ -797,7 +803,7 @@ ul {
 			display: block;
 			position: absolute;
 			left: 0px;
-			right: 8px;
+			right: -18px;
 			top: 0px;
 			bottom: 0px;
 			background: $green;
