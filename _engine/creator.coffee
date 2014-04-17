@@ -233,6 +233,9 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 		setTimeout ->
 			$('#tarea_'+index).focus()
 		,10
+	
+	$scope.isLetter = (letter) ->
+		letter.match(/[a-zA-Z0-9]/)
 ]
 
 # Load Materia Dependencies
