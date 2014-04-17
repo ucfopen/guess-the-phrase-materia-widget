@@ -53,7 +53,7 @@ html(lang='en', ng-app='HangmanEngine', ng-keydown='getKeyInput($event)', ng-con
         div.row(ng-repeat='word in answer.string')
           span.box(ng-repeat='letter in word', ng-class='{quirks: cssQuirks}')
             span.letter(
-              ng-class='{spin: answer.guessed[$parent.$index][$index] != "", space: $index != 11 && answer.guessed[$parent.$index][$index] == " "}'
+              ng-class='{spin: answer.guessed[$parent.$index][$index] != "", space: $index != 11 && !isLetter(answer.guessed[$parent.$index][$index])}'
             ) {{ answer.guessed[$parent.$index][$index] }}
           span.box(ng-show='answer.dashes[$index]')
             span.letter.dash -

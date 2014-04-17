@@ -304,6 +304,10 @@ HangmanEngine.controller 'HangmanEngineCtrl',
 		document.getElementById('start').focus()
 
 		Hangman.Draw.initCanvas()
+	
+	$scope.isLetter = (letter) ->
+		!letter or letter.match(/[a-zA-Z0-9]/)
+
 ]
 
 # Load Materia Dependencies and start.
