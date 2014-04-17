@@ -33,7 +33,7 @@ Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
 			return false
 		else
 			for i in [0..items.length-1]
-				if items[i].answer.string.length > 3
+				if items[i].answer and items[i].answer.string.length > 3
 					Materia.CreatorCore.cancelSave '#'+(i+1)+' will not fit on the gameboard.'
 					return false
 				# letters, numbers, spaces, periods, commas, dashes and underscores only
