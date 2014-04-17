@@ -101,7 +101,7 @@ html(lang='en', ng-app='HangmanCreator')
 							.lbox(ng-repeat='letter in word')
 								.letter(ng-class='{ space: letter.letter == " " }') {{ letter.letter }}
 							.lbox(ng-show='item.answer.dashes[$index]')
-								.letter -
+								.letter.space 
 
 				button.delete(aria-label='delete', hammer-tap='removeItem($index)')
 					span.icon-close

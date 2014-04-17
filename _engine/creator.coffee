@@ -146,7 +146,14 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 			# trim ending spaces
 			for j in [0...ans.length]
 				while ans[j].substr(ans[j].length-1) == ' '
+					dashes[j] = false
 					ans[j] = ans[j].substr(0, ans[j].length - 1)
+				if ans[j] == ''
+					dashes.splice(j,1)
+					ans.splice(j,1)
+			if dashes[dashes.length-1]
+				dashes[dashes.length-1] = false
+			console.log dashes
 
 		else
 			# If the answer wasn't split then insert it into a row
