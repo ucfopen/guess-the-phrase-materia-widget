@@ -94,7 +94,7 @@ html(lang='en', ng-app='HangmanCreator')
 					div.answer(
 						ng-class='{ toolong: item.answer.string.length > 3 }',
 						ng-show='!item.editing',
-						ng-click='editItem(item, $index)'
+						ng-mousedown='editItem(item, $index)'
 					)
 						.protip(ng-show='!item.answer.string') Click here to enter your phrase
 						div.row(ng-repeat='word in item.answer.string')
