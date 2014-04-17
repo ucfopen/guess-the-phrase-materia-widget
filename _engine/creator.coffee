@@ -168,10 +168,12 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 		{dashes:dashes, guessed:guessed, string:answer}
 
 	$scope.changeTitle = ->
-		$('#backgroundcover, .title').addClass 'show'
-		$('.title input[type=text]').focus()
-		$('.title input[type=button]').click ->
-			$('#backgroundcover, .title').removeClass 'show'
+		setTimeout ->
+			$('#backgroundcover, .title').addClass 'show'
+			$('.title input[type=text]').focus()
+			$('.title input[type=button]').click ->
+				$('#backgroundcover, .title').removeClass 'show'
+		,0
 	
 	$scope.introComplete = ->
 		$('#backgroundcover, .intro').removeClass 'show'
