@@ -645,6 +645,7 @@ ul {
 		}
 
 		input[type=checkbox]:checked + label.checktoggle {
+			background: $green;
 
 			&:before {
 				margin-left: 44px;
