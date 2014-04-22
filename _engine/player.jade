@@ -61,10 +61,10 @@ html(lang='en', ng-app='HangmanEngine', ng-keydown='getKeyInput($event)', ng-con
         div.tail
 
       div.attempts(ng-show='inQues')
-        span(
+        span.icon-close(
           ng-repeat='attempt in max',
           ng-class='{shown:attempt.fail}'
-        ) x
+        )
 
       div.keyboard-bg(aria-hidden='true')
       div.keyboard(
