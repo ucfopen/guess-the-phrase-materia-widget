@@ -218,8 +218,13 @@ HangmanEngine.controller 'HangmanEngineCtrl',
 
 	$scope.getKeyInput = (event) ->
 		if $scope.inQues
+			key = event.keyCode
+
+			# Correct for numpad
+			if key >= 97
+				key -= 48
 			# Parse the incoming keycode
-			letter = String.fromCharCode(event.keyCode).toLowerCase()
+			letter = String.fromCharCode(key).toLowerCase()
 
 			# Search the keyboard's keys for the input
 			if $scope.keyboard.hasOwnProperty letter
