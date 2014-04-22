@@ -469,20 +469,18 @@ canvas {
 .finished {
 	width: 254px;
 	height: 80px;
-	margin: 0 0 0 -128px;
+	margin: 0 0 0 0px;
+	left: -385px;
+	top: 200px;
 	text-align: center;
 	background: url("assets/img/finish.png");
 	background-repeat: no-repeat;
-	p {
-		&:nth-child(1) {
-			color: #fff;
-			margin: -23px 0 8px 0;
-			font-size: 20px;
-		}
-		&:nth-child(2) {
-			margin: 0;
-			font-size: 43px;
-		}
+	span {
+		color: #fff;
+		margin: 0;
+		font-size: 43px;
+		position:relative;
+		top: 10px;
 	}
 }
 

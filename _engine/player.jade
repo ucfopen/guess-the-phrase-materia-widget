@@ -36,8 +36,7 @@ html(lang='en', ng-app='HangmanEngine', ng-keydown='getKeyInput($event)', ng-con
 
         div#start.start(ng-show='!loading && !gameDone') Start
         div.finished(ng-show='!loading && gameDone')
-          p View your score.
-          p FINISH
+          span FINISH
 
     div.game
       canvas#stage(aria-hidden='true', height='620', width='800')
