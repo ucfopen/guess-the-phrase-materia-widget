@@ -22,6 +22,11 @@ html(lang='en', ng-app='HangmanEngine', ng-keydown='getKeyInput($event)', ng-con
     script(src='player.js')
 
   body(ng-cloak)
+    div.browserwarning We recommend you upgrade your browser for a better experience
+    #browserfailure
+      p We're sorry
+      p But this widget requires features that your browser does not support.
+      p Please upgrade to a newer version to play Hangman.
     div.overlay(ng-hide='inGame', hammer-tap='toggleGame()')
 
       div.portal
@@ -81,4 +86,6 @@ html(lang='en', ng-app='HangmanEngine', ng-keydown='getKeyInput($event)', ng-con
           div.descript PRESS OR TYPE
 
       div.next(ng-show='!inQues && inGame', hammer-tap='startQuestion()') Next
-
+      script
+        if (!document.getElementById('stage').getContext)
+          document.getElementById('browserfailure').style.display = 'block'
