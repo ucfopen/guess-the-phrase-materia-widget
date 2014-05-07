@@ -37,7 +37,7 @@ html(lang='en', ng-app='HangmanCreator')
 					| they move on to the next phrase.
 		#header
 			.logo
-			h1#title(ng-bind='title')
+			h1#title(ng-bind='title', ng-click='changeTitle()')
 			.link(ng-click='changeTitle()') Edit...
 			span.attempts
 				p
@@ -115,7 +115,7 @@ html(lang='en', ng-app='HangmanCreator')
 		.arrow_box(ng-show='!items.length && step')
 			span Click here to add your first question
 
-		#backgroundcover
+		#backgroundcover(ng-click='hideCover()')
 
 		.box.intro
 			img(src='assets/creator_example.png')

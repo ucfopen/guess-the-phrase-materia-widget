@@ -173,6 +173,9 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 
 		# Return the parsed answer's relevant data
 		{dashes:dashes, guessed:guessed, string:answer}
+	
+	$scope.hideCover = ->
+		$('#backgroundcover, .intro, .title').removeClass 'show'
 
 	$scope.changeTitle = ->
 		setTimeout ->
