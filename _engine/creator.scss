@@ -378,15 +378,20 @@ ul {
 			padding: 11px;
 			margin-left: 0px;
 		}
+		&[type=button]:hover, &[type=submit]:hover{
+			background: #78DD5E;
+			color: #000;
+			cursor: pointer;
+		}
 	}
 }
 
-.arrow_box {
+.arrow-box {
 	position: absolute;
 	background: #fbf767;
 	border: 2px solid #fbf767;
 	left: 50%;
-	top: 123px;
+	top: 154px;
 	color: #151515;
 	font-weight: 400;
 	padding: 5px;
@@ -405,29 +410,31 @@ ul {
 		margin-right: 12px;
 		text-align: right;
 	}
-}
-.arrow_box:after, .arrow_box:before {
-	right: 100%;
-	top: 50%;
-	border: solid transparent;
-	content: " ";
-	height: 0;
-	width: 0;
-	position: absolute;
-	pointer-events: none;
-}
 
-.arrow_box:after {
-	border-color: rgba(251, 247, 103, 0);
-	border-right-color: #fbf767;
-	border-width: 60px;
-	margin-top: -60px;
-}
-.arrow_box:before {
-	border-color: rgba(251, 247, 103, 0);
-	border-right-color: #fbf767;
-	border-width: 63px;
-	margin-top: -63px;
+	&:after, &:before {
+		right: 100%;
+		top: 50%;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+	}
+
+	&:after {
+		border-color: rgba(251, 247, 103, 0);
+		border-right-color: #fbf767;
+		border-width: 60px;
+		margin-top: -60px;
+	}
+
+	&:before {
+		border-color: rgba(251, 247, 103, 0);
+		border-right-color: #fbf767;
+		border-width: 63px;
+		margin-top: -63px;
+	}
 }
 
 @keyframes pounce {
@@ -447,15 +454,14 @@ ul {
 	top: 0px;
 	left: 0px;
 	right: 0px;
-	height: 40px;
+	height: 100px;
 	background: #333;
-	padding: 13px 8px;
+	padding: 26px 8px;
 	z-index: 100;
-
 	font-family: 'Lato';
 	font-weight: 300;
-
 	border-bottom: solid 4px #fcf868;
+	box-sizing: border-box;
 
 	.bottom {
 		position:absolute;
@@ -491,6 +497,9 @@ ul {
 		margin-top: 3px;
 		float: left;
 		cursor: pointer;
+		max-width: 400px;
+		white-space: nowrap;
+		overflow: hidden;
 	}
 	div.link {
 		float: left;
@@ -517,14 +526,16 @@ ul {
 	}
 	.attempts {
 		position: absolute;
-		right: 290px;
+		right: 229px;
 		cursor: pointer;
+		top:0px;
 
 		p {
 			position: absolute;
 			display: inline-block;
-			margin-left: -220px;
-			top: -10px;
+			margin-left: -34px;
+			top: 0;
+			white-space: nowrap;
 		}
 
 		.numbers {
@@ -539,7 +550,7 @@ ul {
 			}
 		}
 		.slide-btn {
-			margin-top: 12px;
+			margin-top: 54px;
 			.bar {
 				height: 10px;
 				width: 135px;
@@ -593,8 +604,8 @@ ul {
 	}
 	.partial {
 		position: absolute;
-		top: 4px;
-		right: 145px;
+		top: 0px;
+		right: 70px;
 		font-family: "Lato";
 
 		label.checktoggle {
@@ -606,15 +617,11 @@ ul {
 			color: #fff;
 			
 			position:relative;
-			margin-left: 25px;
-			margin-right: 10px;
-
 			overflow: hidden;
-
 			transition: all ease 0.25s;
 
-			top: -37px;
-			left: 90px;
+			top: -4px;
+			left: 12px;
 
 			cursor: pointer;
 
@@ -661,10 +668,10 @@ ul {
 	}
 }
 
-.question_tip {
+.question-tip {
 	position: absolute;
-	right: 17px;
-	top: 16px;
+	right: 28px;
+	top: 15px;
 	padding: 2px;
 	border: 2px solid #fff;
 	border-radius: 50px;
@@ -682,7 +689,7 @@ ul {
 		background: #53a1d1;
 		border: 2px solid #53a1d1;
 
-		.qtip_box {
+		.qtip-box {
 			z-index: 9999;
 			opacity: 1;
 			overflow: inherit;
@@ -691,7 +698,7 @@ ul {
 		}
 	}
 
-	.qtip_box {
+	.qtip-box {
 		position: absolute;
 		background: #53a1d1;
 		border: 2px solid #53a1d1;
@@ -710,35 +717,34 @@ ul {
 
 		border-radius: 5px;
 
+		&:after, &:before {
+			bottom: 100%;
+			left: 93.5%;
+			border: solid transparent;
+			content: " ";
+			height: 0;
+			width: 0;
+			position: absolute;
+			pointer-events: none;
+		}
+
+		&:after {
+			border-color: rgba(83, 161, 209, 0);
+			border-bottom-color: #53a1d1;
+			border-width: 10px;
+			margin-left: -10px;
+		}
+
+		&:before {
+			border-color: rgba(58, 29, 1, 0);
+			border-bottom-color: #53a1d1;
+			border-width: 13px;
+			margin-left: -13px;
+		}
+
 		b {
 			font-weight: 400;
 		}
-
-	}
-
-	.qtip_box:after, .qtip_box:before {
-		bottom: 100%;
-		left: 93.5%;
-		border: solid transparent;
-		content: " ";
-		height: 0;
-		width: 0;
-		position: absolute;
-		pointer-events: none;
-	}
-
-	.qtip_box:after {
-		border-color: rgba(83, 161, 209, 0);
-		border-bottom-color: #53a1d1;
-		border-width: 10px;
-		margin-left: -10px;
-	}
-
-	.qtip_box:before {
-		border-color: rgba(58, 29, 1, 0);
-		border-bottom-color: #53a1d1;
-		border-width: 13px;
-		margin-left: -13px;
 	}
 
 }
