@@ -21,9 +21,9 @@ html(lang='en', ng-app='HangmanCreator')
 
 	body(ng-cloak, ng-controller='HangmanCreatorCtrl')
 		div#modal
-		.question_tip
+		.question-tip
 			| ?
-			.qtip_box
+			.qtip-box
 				p
 					| If <b>partial scoring</b>
 					| is on then students will
@@ -55,7 +55,6 @@ html(lang='en', ng-app='HangmanCreator')
 						div.point.six 6
 					div.container.svn(hammer-tap='setAttempts(7)')
 						div.point.svn 7
-			.sep
 			div.partial
 				p Partial scoring
 				input(type='checkbox', id='randomize', ng-model='partial')
@@ -112,7 +111,7 @@ html(lang='en', ng-app='HangmanCreator')
 					span.icon-plus
 					span &nbsp;Add Question
 
-		.arrow_box(ng-show='!items.length && step')
+		.arrow-box(ng-show='!items.length && step')
 			span Click here to add your first question
 
 		#backgroundcover(ng-click='hideCover()')
