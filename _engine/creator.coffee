@@ -153,7 +153,6 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 					ans.splice(j,1)
 			if dashes[dashes.length-1]
 				dashes[dashes.length-1] = false
-			console.log dashes
 
 		else
 			# If the answer wasn't split then insert it into a row
