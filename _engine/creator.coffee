@@ -5,7 +5,7 @@ It's a thing
 
 Widget  : Hangman, Creator
 Authors : Jonathan Warner, Micheal Parks, Brandon Stull
-Updated : 4/14
+Updated : 5/14
 
 ###
 
@@ -13,14 +13,24 @@ Updated : 4/14
 Hangman = angular.module 'HangmanCreator', ['ngAnimate', 'ngSanitize', 'hammer']
 
 Hangman.directive('ngEnter', ->
-    return (scope, element, attrs) ->
-        element.bind("keydown keypress", (event) ->
-            if(event.which == 13)
-                scope.$apply ->
-                    scope.$eval(attrs.ngEnter)
-                event.preventDefault()
-        )
+	return (scope, element, attrs) ->
+		element.bind("keydown keypress", (event) ->
+			if(event.which == 13)
+				scope.$apply ->
+					scope.$eval(attrs.ngEnter)
+				event.preventDefault()
+		)
 )
+
+Hangman.directive('focusMe', ['$timeout', '$parse', ($timeout, $parse) ->
+	link: (scope, element, attrs) ->
+		model = $parse(attrs.focusMe)
+		scope.$watch model, (value) ->
+			if value
+				$timeout ->
+					element[0].focus()
+			value
+])
 
 Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
 	buildQset: (title, items, partial, attempts) ->
@@ -60,17 +70,13 @@ Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
 		item.ques = item.ques
 		item.ans = item.ans
 
-		qsetItem = {}
-		qsetItem.assets = []
-
-		qsetItem.materiaType = "question"
-		qsetItem.id = ""
-		qsetItem.type = 'QA'
-		qsetItem.questions = [{text : item.ques}]
-		qsetItem.answers = [{value : '100', text : item.ans}]
-
-		qsetItem
-
+		assets: []
+		materiaType: "question"
+		id: ""
+		type: 'QA'
+		questions: [{text : item.ques}]
+		answers: [{value : '100', text : item.ans}]
+		
 	# IE8/IE9 are super special and need this
 	placeholderPolyfill: () ->
 		$('[placeholder]')
@@ -97,7 +103,8 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 	$scope.attempts = 5
 
 	$scope.updateForBoard = (item) ->
-		item.answer = $scope.forBoard(item.ans.toString())
+		if item.ans
+			item.answer = $scope.forBoard(item.ans.toString())
 
 	$scope.forBoard = (ans) ->
 		# Question-specific data
@@ -174,29 +181,18 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 		# Return the parsed answer's relevant data
 		{dashes:dashes, guessed:guessed, string:answer}
 	
-	$scope.hideCover = ->
-		$('#backgroundcover, .intro, .title').removeClass 'show'
-
-	$scope.changeTitle = ->
-		setTimeout ->
-			$('#backgroundcover, .title').addClass 'show'
-			$('.title input[type=text]').focus()
-			$('.title input[type=button]').click ->
-				$('#backgroundcover, .title').removeClass 'show'
-		,0
-	
-	$scope.introComplete = ->
-		$('#backgroundcover, .intro').removeClass 'show'
-		$scope.title = $('.intro input[type=text]').val() or $scope.title
+	# View actions
+	$scope.setTitle = ->
+		$scope.title = $scope.introTitle or $scope.title
 		$scope.step = 1
+		$scope.hideCover()
+
+	$scope.hideCover = ->
+		$scope.showTitleDialog = $scope.showIntroDialog = false
 
 	$scope.initNewWidget = (widget, baseUrl) ->
-		$('#backgroundcover, .intro').addClass 'show'
-
-		$('.intro input[type=button]').click ->
-			$scope.$apply $scope.introComplete
-
-		if not Modernizr.input.placeholder then Resource.placeholderPolyfill()
+		$scope.$apply ->
+			$scope.showIntroDialog = true
 
 	$scope.initExistingWidget = (title, widget, qset, version, baseUrl) ->
 		$scope.title = title
@@ -205,7 +201,6 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 		$scope.onQuestionImportComplete qset.items[0].items
 
 		$scope.$apply()
-		if not Modernizr.input.placeholder then Resource.placeholderPolyfill()
 
 	$scope.onSaveClicked = (mode = 'save') ->
 		qset = Resource.buildQset $sanitize($scope.title), $scope.items, $scope.partial, $scope.attempts
@@ -233,15 +228,10 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 	
 	$scope.editItem = (item,index) ->
 		item.editing = true
-		setTimeout ->
-			$('#tarea_'+index).focus()
-		,10
 	
 	$scope.isLetter = (letter) ->
 		letter.match(/[a-zA-Z0-9]/)
+	
+	Materia.CreatorCore.start $scope
 ]
 
-# Load Materia Dependencies
-require ['creatorcore'], (util) ->
-	# Pass Materia the scope of our start method
-	Materia.CreatorCore.start angular.element($('body')).scope()
