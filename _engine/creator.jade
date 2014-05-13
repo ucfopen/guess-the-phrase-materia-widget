@@ -13,8 +13,7 @@ html(lang='en', ng-app='HangmanCreator')
 		script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-animate.min.js')
 		script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-sanitize.min.js')
 
-		script(src='/js/materia.require.js', data-embed='false')
-		script(src='assets/lib/modernizr.js', data-embed='false')
+		script(src='/js/materia.creatorcore.js', data-embed='false')
 		script(src='assets/lib/hammer.min.js', data-embed='false')
 		script(src='assets/lib/angular-hammer.min.js', data-embed='false')
 		script(src='creator.js')
@@ -37,8 +36,8 @@ html(lang='en', ng-app='HangmanCreator')
 					| they move on to the next phrase.
 		#header
 			.logo
-			h1#title(ng-bind='title', ng-click='changeTitle()')
-			.link(ng-click='changeTitle()') Edit...
+			h1#title(ng-bind='title', ng-click='showTitleDialog = true')
+			.link(ng-click='showTitleDialog = true') Edit...
 			span.attempts
 				p
 					| Incorrect guesses per phrase
@@ -77,7 +76,8 @@ html(lang='en', ng-app='HangmanCreator')
 						ng-focus='item.foc=true',
 						ng-blur='item.foc=false',
 						ng-model='item.ques',
-						tabindex='{{$index + 1}}'
+						tabindex='{{$index + 1}}',
+						focus-me='true'
 					)
 				span.word(aria-label='word')
 					textarea(
@@ -85,11 +85,13 @@ html(lang='en', ng-app='HangmanCreator')
 						value='{{item.ans}}',
 						ng-model='item.ans',
 						ng-change='updateForBoard(item)',
+						ng-init='updateForBoard(item)',
 						ng-blur='item.editing=false',
 						ng-focus='item.editing=true',
 						ng-enter='item.editing=false',
 						ng-class='{ show: item.editing }',
-						tabindex='{{$index + 2}}'
+						tabindex='{{$index + 2}}',
+						focus-me='item.editing'
 					)
 					div.answer(
 						ng-class='{ toolong: item.answer.string.length > 3 }',
@@ -115,9 +117,9 @@ html(lang='en', ng-app='HangmanCreator')
 		.arrow_box(ng-show='!items.length && step')
 			span Click here to add your first question
 
-		#backgroundcover(ng-click='hideCover()')
+		#backgroundcover(ng-click='hideCover()', ng-class='{ show: showTitleDialog || showIntroDialog }')
 
-		.box.intro
+		.box.intro(ng-class='{ show: showIntroDialog }')
 			img(src='assets/creator_example.png')
 			h1 Hangman
 			p.
@@ -129,13 +131,12 @@ html(lang='en', ng-app='HangmanCreator')
 			hr.
 			b.
 				Start by giving your Hangman widget a title
-			form(ng-submit='introComplete()')
-				input(type='text', placeholder='My Hangman widget', autofocus='1')
-				input(type='button', value='Get Started')
+			input(type='text', placeholder='My Hangman widget', autofocus='1', ng-enter='setTitle()', focus-me='showIntroDialog', ng-model='introTitle')
+			input(type='button', value='Get Started', ng-click='setTitle()')
 
-		.box.title
+		.box.title(ng-class='{ show: showTitleDialog }')
 			b.
 				Give your Hangman widget a title
-			input(type='text', placeholder='My Hangman widget', ng-model='title')
-			input(type='button', value='Done')
+			input(type='text', placeholder='My Hangman widget', ng-model='title', focus-me='showTitleDialog', ng-enter='hideCover()')
+			input(type='button', value='Done', ng-click='hideCover()')
 
