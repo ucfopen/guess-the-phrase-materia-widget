@@ -76,6 +76,7 @@ meta_data:
   features:
     - Customizable
     - Scorable
+    - Mobile Friendly
   # A list of the types of data which this widget supports. This will be presented in the widget catalog.
   supported_data:
     - Question/Answer
