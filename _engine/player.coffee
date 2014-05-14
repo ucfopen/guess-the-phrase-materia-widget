@@ -291,6 +291,8 @@ HangmanEngine.controller 'HangmanEngineCtrl',
 			$scope.inGame = false
 			# Assigning this triggers the finish button's visibility
 			$scope.gameDone = true
+			# Push the score but don't redirect yet
+			Materia.Engine.end no
 
 		else
 			# Prepare elements for the next question
