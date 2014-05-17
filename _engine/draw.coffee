@@ -12,7 +12,7 @@ Namespace('Hangman').Draw = do () ->
 	_scope = null
 
 	initCanvas = () ->
-		_scope = angular.element($('body')).scope()
+		_scope = angular.element(document.body).scope()
 		_loadBar = document.getElementsByClassName('bar')[0]
 		_canvas = document.getElementById 'stage'
 		_stage = new createjs.Stage _canvas

@@ -7,14 +7,15 @@ html(lang='en', ng-app='HangmanEngine', ng-keydown='getKeyInput($event)', ng-con
     meta(name='viewport', content='width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0')
     meta(name='apple-mobile-web-app-capable', content='yes')
 
-    link(href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Purple+Purse', rel='stylesheet', type='text/css')
+    link(href='//fonts.googleapis.com/css?family=Montserrat:400,700|Purple+Purse', rel='stylesheet', type='text/css')
     link(href='player.css', rel='stylesheet', type='text/css')
 
-    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js')
-    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-animate.min.js')
+    script(src='materia.enginecore.js')
+    script(src='materia.score.js')
 
-    script(src='../../../js/materia.require.js', data-embed='false')
-    script(src='http://code.createjs.com/createjs-2013.12.12.min.js')
+    script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js', data-embed='false')
+    script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-animate.min.js', data-embed='false')
+    script(src='//code.createjs.com/createjs-2013.12.12.min.js')
     script(src='assets/lib/modernizr.js', data-embed='false')
     script(src='assets/lib/hammer.min.js', data-embed='false')
     script(src='assets/lib/angular-hammer.min.js', data-embed='false')
