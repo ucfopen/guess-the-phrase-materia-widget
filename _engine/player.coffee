@@ -1,9 +1,8 @@
 HangmanEngine = angular.module 'HangmanEngine', ['ngAnimate', 'hammer']
 
-HangmanEngine.factory 'Host', () ->
+HangmanEngine.factory 'Host', ->
 
-
-HangmanEngine.factory 'Parse', () ->
+HangmanEngine.factory 'Parse', ->
 	forBoard: (ans) ->
 		# Question-specific data
 		dashes = []
@@ -58,10 +57,10 @@ HangmanEngine.factory 'Parse', () ->
 			ans = [ans]
 
 		# Now that the answer string is ready, data-bind it to the DOM
-		for i in [0..ans.length-1]
+		for i in [0...ans.length]
 			guessed.push []
 			answer.push []
-			for j in [0..ans[i].length-1]
+			for j in [0...ans[i].length]
 				# Pre-fill punctuation or spaces so that the DOM shows them
 				if ans[i][j] is ' ' or ans[i][j].match /[\.,-\/#!?$%\^&\*;:{}=\-_`~()']/g
 					guessed[i].push ans[i][j]
@@ -83,8 +82,8 @@ HangmanEngine.factory 'Parse', () ->
 		ans = ans.join ''
 		ans
 
-HangmanEngine.factory 'Reset', () ->
-	keyboard: () ->
+HangmanEngine.factory 'Reset', ->
+	keyboard: ->
 		# Return a new keyboard object literal
 		'0':{hit:0},'1':{hit:0},'2':{hit:0},'3':{hit:0},'4':{hit:0},'5':{hit:0},'6':{hit:0},'7':{hit:0},'8':{hit:0},'9':{hit:0},
 		'q':{hit:0},'w':{hit:0},'e':{hit:0},'r':{hit:0},'t':{hit:0},'y':{hit:0},'u':{hit:0},'i':{hit:0},'o':{hit:0},'p':{hit:0},
@@ -94,15 +93,15 @@ HangmanEngine.factory 'Reset', () ->
 	attempts: (numAttempts) ->
 		# This array of anon objects is bound to the attempt boxes on the DOM
 		attempts = []
-		attempts.push {fail: false} for i in [0..numAttempts-1]
+		attempts.push {fail: false} for i in [0...numAttempts]
 		attempts
 
-HangmanEngine.factory 'Input', () ->
+HangmanEngine.factory 'Input', ->
 	isMatch: (key, answer) ->
 		# Store matching column, row indices in array
 		matches = []
-		for i in [0..answer.length-1]
-			for j in [0..answer[i].length-1]
+		for i in [0...answer.length]
+			for j in [0...answer[i].length]
 				# Push matching coordinates
 				match = (answer[i][j].letter.toLowerCase() is key.toLowerCase())
 				if match then matches.push [i, j]
@@ -110,7 +109,7 @@ HangmanEngine.factory 'Input', () ->
 
 	incorrect: (max) ->
 		# Find the current attempt the user is on
-		for i in [0..max.length-1]
+		for i in [0...max.length]
 			if max[i].fail is true
 				continue
 			else
@@ -127,14 +126,14 @@ HangmanEngine.factory 'Input', () ->
 		Hangman.Draw.playAnimation 'heads', 'nod'
 
 		# Bind the user's input to the answer board
-		for i in [0..matches.length-1]
+		for i in [0...matches.length]
 			guessed[matches[i][0]][matches[i][1]] = input
 
 		guessed
 
 	cannotContinue: (max, guessed) ->
 		# Check to see if attempts are exhausted
-		for i in [0..max.length-1]
+		for i in [0...max.length]
 			if max[i].fail is true then continue
 			else break
 		if i is max.length
@@ -142,7 +141,7 @@ HangmanEngine.factory 'Input', () ->
 			return 1
 
 		# Return false if the entire word hasn't been guessed
-		for i in [0..guessed.length-1]
+		for i in [0...guessed.length]
 			empty = guessed[i].indexOf ''
 			if empty isnt -1
 				return false
@@ -150,9 +149,7 @@ HangmanEngine.factory 'Input', () ->
 		# Represents all letters correctly guessed
 		return 2
 
-HangmanEngine.controller 'HangmanEngineCtrl',
-['$scope', '$timeout', 'Parse', 'Reset', 'Input',
-($scope, $timeout, Parse, Reset, Input) ->
+HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'Reset', 'Input', ($scope, $timeout, Parse, Reset, Input) ->
 	_qset = null
 
 	isFirefox = /firefox/i.test navigator.userAgent
@@ -174,7 +171,7 @@ HangmanEngine.controller 'HangmanEngineCtrl',
 
 	_updateAnvil =  ->
 		# Get number of entered attempts
-		for i in [0..$scope.max.length-1]
+		for i in [0...$scope.max.length]
 			if $scope.max[i].fail is true
 				continue
 			else
@@ -196,13 +193,13 @@ HangmanEngine.controller 'HangmanEngineCtrl',
 				, 50
 			, 500
 
-	$scope.toggleGame = () ->
+	$scope.toggleGame = ->
 		if $scope.gameDone
 			$scope.endGame()
 		else
 			$scope.startGame()
 
-	$scope.startGame = () ->
+	$scope.startGame =  ->
 		$scope.curItem++
 		$scope.anvilStage = 1
 		$scope.inGame = true
@@ -213,7 +210,7 @@ HangmanEngine.controller 'HangmanEngineCtrl',
 			Hangman.Draw.playAnimation 'torso', 'pull-card'
 		, 800
 
-	$scope.endGame = () ->
+	$scope.endGame = ->
 		Materia.Engine.end()
 
 	$scope.getKeyInput = (event) ->
@@ -265,7 +262,7 @@ HangmanEngine.controller 'HangmanEngineCtrl',
 				Hangman.Draw.playAnimation 'torso', 'pander'
 				$scope.anvilStage = 1
 
-	$scope.startQuestion = () ->
+	$scope.startQuestion = ->
 		$scope.inQues = true
 		$scope.curItem++
 		$timeout ->
@@ -277,7 +274,7 @@ HangmanEngine.controller 'HangmanEngineCtrl',
 
 		Hangman.Draw.playAnimation 'torso', 'pull-card'
 
-	$scope.endQuestion = () ->
+	$scope.endQuestion = ->
 		Hangman.Draw.breakBoredom false
 
 		# Submit the user's answer to Materia
@@ -315,11 +312,6 @@ HangmanEngine.controller 'HangmanEngineCtrl',
 	$scope.isLetter = (letter) ->
 		!letter or letter.match(/[a-zA-Z0-9]/)
 
+	Materia.Engine.start($scope)
+
 ]
-
-# Load Materia Dependencies and start.
-require ['enginecore', 'score'], (util) ->
-	# Pass to Materia Hangman's scope, which containes a start method
-	Materia.Engine.start angular.element($('body')).scope()
-
-
