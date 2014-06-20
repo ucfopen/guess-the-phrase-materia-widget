@@ -5,7 +5,7 @@ It's a thing
 
 Widget  : Hangman, Creator
 Authors : Jonathan Warner, Micheal Parks, Brandon Stull
-Updated : 5/14
+Updated : 6/14
 
 ###
 
@@ -72,7 +72,7 @@ Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
 
 		assets: []
 		materiaType: "question"
-		id: ""
+		id: item.id
 		type: 'QA'
 		questions: [{text : item.ques}]
 		answers: [{value : '100', text : item.ans}]
@@ -208,13 +208,13 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 	$scope.onSaveComplete = (title, widget, qset, version) -> true
 
 	$scope.onQuestionImportComplete = (items) ->
-		$scope.addItem items[i].questions[0].text, items[i].answers[0].text for i in [0..items.length-1]
+		$scope.addItem items[i].questions[0].text, items[i].answers[0].text, items[i].id for i in [0..items.length-1]
 		$scope.$apply()
 
 	$scope.onMediaImportComplete = (media) -> true
 
-	$scope.addItem = (ques = "", ans = "") ->
-		$scope.items.push {ques:ques, ans:ans, foc:false}
+	$scope.addItem = (ques = "", ans = "", id = "") ->
+		$scope.items.push {ques:ques, ans:ans, foc:false, id: id }
 
 	$scope.removeItem = (index) ->
 		$scope.items.splice index, 1
