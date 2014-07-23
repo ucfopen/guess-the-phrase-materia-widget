@@ -200,6 +200,8 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 			$scope.startGame()
 
 	$scope.startGame =  ->
+		return if $scope.inGame
+
 		$scope.curItem++
 		$scope.anvilStage = 1
 		$scope.inGame = true
