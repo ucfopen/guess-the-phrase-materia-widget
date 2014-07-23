@@ -210,55 +210,14 @@ canvas {
 	}
 	.row {
 		margin: 7px 0 16px 7px;
-		transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-		transform-origin: 50% 100%;
-		perspective: 500px;
+		//transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+		//transform-origin: 50% 100%;
+		//perspective: 500px;
 		.box {
 			position: relative;
 			height: 40px;
 			width: 35px;
-			margin: 0 39px 0 0;
-			&.quirks {
-				&:nth-child(1) .letter {
-					left: 0;
-				}
-				&:nth-child(2) .letter {
-					left: 40px;
-				}
-				&:nth-child(3) .letter {
-					left: 80px;
-				}
-				&:nth-child(4) .letter {
-					left: 120px;
-				}
-				&:nth-child(5) .letter {
-					left: 160px;
-				}
-				&:nth-child(6) .letter {
-					left: 200px;
-				}
-				&:nth-child(7) .letter {
-					left: 240px;
-				}
-				&:nth-child(8) .letter {
-					left: 280px;
-				}
-				&:nth-child(9) .letter {
-					left: 320px;
-				}
-				&:nth-child(10) .letter {
-					left: 360px;
-				}
-				&:nth-child(11) .letter {
-					left: 400px;
-				}
-				&:nth-child(12) .letter {
-					left: 440px;
-				}
-				&:nth-child(13) .letter {
-					left: 480px;
-				}
-			}
+			margin: 30px 40px 0 0;
 			.letter {
 				position: absolute;
 				height: 40px;
@@ -266,9 +225,9 @@ canvas {
 				background: #eeeac0;
 				border: 1px solid #cac395;
 				text-align: center;
-				transform-origin: 50% 0;
-				transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-				transform: rotateY(-180deg);
+				//transform-origin: 50% 0;
+				//transition: all 400ms linear;
+				//transform: rotateY(-180deg);
 				color: rgba(45, 62, 73, 0);
 				font-family: 'Montserrat';
 				font-weight: bold;
@@ -281,7 +240,7 @@ canvas {
 					background: url(assets/img/blank.jpg);
 				}
 				&.spin {
-					transform: rotateY(360deg);
+					transform: translate(-1px, -1px) rotateY(360deg);
 					color: #2d3e49;
 				}
 			}
