@@ -196,7 +196,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 	$scope.toggleGame = ->
 		if $scope.gameDone
 			$scope.endGame()
-		else
+		else if not $scope.loading
 			$scope.startGame()
 
 	$scope.startGame =  ->
