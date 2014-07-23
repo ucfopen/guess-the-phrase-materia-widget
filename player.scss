@@ -209,7 +209,7 @@ canvas {
 		animation-timing-function: linear;
 	}
 	.row {
-		margin: 7px 0 16px 7px;
+		margin: 7px 0 0 7px;
 		//transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 		//transform-origin: 50% 100%;
 		//perspective: 500px;
@@ -217,7 +217,8 @@ canvas {
 			position: relative;
 			height: 40px;
 			width: 35px;
-			margin: 30px 40px 0 0;
+			margin: 0 5px 0 0;
+			display: inline-block;
 			.letter {
 				position: absolute;
 				height: 40px;
@@ -225,13 +226,11 @@ canvas {
 				background: #eeeac0;
 				border: 1px solid #cac395;
 				text-align: center;
-				//transform-origin: 50% 0;
-				//transition: all 400ms linear;
-				//transform: rotateY(-180deg);
+				transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+				transform: rotateY(-180deg);
 				color: rgba(45, 62, 73, 0);
 				font-family: 'Montserrat';
 				font-weight: bold;
-				margin-top: 2px;
 
 				&.incorrect {
 					color: #d35b5b;
@@ -240,7 +239,7 @@ canvas {
 					background: url(assets/img/blank.jpg);
 				}
 				&.spin {
-					transform: translate(-1px, -1px) rotateY(360deg);
+					transform: rotateY(360deg);
 					color: #2d3e49;
 				}
 			}
