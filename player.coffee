@@ -295,13 +295,15 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 
 		else
 			# Prepare elements for the next question
-			$scope.max = Reset.attempts _qset.options.attempts
+			$scope.max = Reset.attempts ~~_qset.options.attempts
 			$scope.keyboard = Reset.keyboard()
 
 	$scope.start = (instance, qset, version = '1') ->
+		qset.options.attempts = 5 if not qset.options.attempts
 		_qset = qset
+
 		$scope.total = _qset.items[0].items.length
-		$scope.max = Reset.attempts _qset.options.attempts
+		$scope.max = Reset.attempts ~~_qset.options.attempts
 		$scope.keyboard = Reset.keyboard()
 
 		# Add title and total number of questions.
