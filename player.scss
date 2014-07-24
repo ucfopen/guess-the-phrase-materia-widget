@@ -168,8 +168,8 @@ canvas {
 	transition: 500ms cubic-bezier(0.125, 0.705, 0.245, 0.93);
 	&.transition {
 		animation-name: shrink-transition;
-		animation-duration: 1400ms;
-		animation-timing-function: cubic-bezier(0.125, 0.705, 0.245, 0.93);
+		animation-duration: 1000ms;
+		animation-timing-function: cubic-bezier(0.125, 0.705, 0.245, 1);
 	}
 	&.ng-hide {
 		transform: scale(0);
@@ -462,7 +462,7 @@ canvas {
 
 @keyframes shrink-transition {
 	0% {
-		transform: scale(1);
+		transform: scale(0);
 	}
 	35% {
 		transform: scale(0);
