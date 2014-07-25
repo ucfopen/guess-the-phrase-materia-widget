@@ -299,6 +299,9 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 			$scope.keyboard = Reset.keyboard()
 
 	$scope.start = (instance, qset, version = '1') ->
+		# expose scope to test engine
+		window.scope = $scope
+
 		qset.options.attempts = 5 if not qset.options.attempts
 		_qset = qset
 

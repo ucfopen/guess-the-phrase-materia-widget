@@ -15,8 +15,6 @@ describe 'Testing framework', ->
 		require('./widgets.coffee') 'hangman', ->
 			client = this
 			client.pause 5000
-			client.execute("window.scope = angular.element('body').scope()", null, ->
-			)
 			done()
 	, 25000
 
@@ -27,8 +25,9 @@ describe 'Main page', ->
 				expect(text).toContain("Hangman")
 				done()
 	it 'should let me press start', (done) ->
+		client.waitFor '#start', 2000
 		client.click '#start'
-		client.pause 1000
+		client.pause 2000
 		done()
 	it 'should let me type the first word', (done) ->
 		setTimeout ->
