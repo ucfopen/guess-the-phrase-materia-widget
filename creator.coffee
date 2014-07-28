@@ -195,7 +195,7 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 
 	$scope.initExistingWidget = (title, widget, qset, version, baseUrl) ->
 		$scope.title = title
-		$scope.attempts = qset.options.attempts
+		$scope.attempts = ~~qset.options.attempts or 5
 		$scope.partial = qset.options.partial
 		$scope.onQuestionImportComplete qset.items[0].items
 
