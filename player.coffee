@@ -62,7 +62,7 @@ HangmanEngine.factory 'Parse', ->
 			answer.push []
 			for j in [0...ans[i].length]
 				# Pre-fill punctuation or spaces so that the DOM shows them
-				if ans[i][j] is ' ' or ans[i][j] is '-' or ans[i][j].match /[\.,-\/#!?$%\^&\*;:{}=\-_`~()']/g
+				if ans[i][j] is ' ' or ans[i][j] is '-' or not ans[i][j].match /[A-Za-z0-9]/g
 					guessed[i].push ans[i][j]
 				else
 					guessed[i].push ''

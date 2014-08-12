@@ -5,7 +5,7 @@ It's a thing
 
 Widget  : Hangman, Creator
 Authors : Jonathan Warner, Micheal Parks, Brandon Stull
-Updated : 6/14
+Updated : 8/14
 
 ###
 
@@ -48,8 +48,8 @@ Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
 					return false
 				# letters, numbers, spaces, periods, commas, dashes and underscores only
 				# prevent characters from being used that cannot be input by the user
-				if not /^[\w\s\.\,\-\_]*$/.test(items[i].ans)
-					Materia.CreatorCore.cancelSave 'Word #'+(i+1)+' should contain only letters or numbers.'
+				if not /[a-zA-Z0-9]/.test(items[i].ans)
+					Materia.CreatorCore.cancelSave 'Word #'+(i+1)+' needs to contain at least one letter or number.'
 					return false
 
 		qset.options = {partial: partial, attempts: attempts}
