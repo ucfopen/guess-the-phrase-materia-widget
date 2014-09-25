@@ -533,7 +533,7 @@ ul {
 	}
 	.attempts {
 		position: absolute;
-		right: 229px;
+		right: 355px;
 		cursor: pointer;
 		top:0px;
 
@@ -622,7 +622,6 @@ ul {
 			background: #5a5a5a;
 			padding: 5px;
 			color: #fff;
-			
 			position:relative;
 			overflow: hidden;
 			transition: all ease 0.25s;
@@ -672,6 +671,12 @@ ul {
 				left: 15px;
 			}
 		}
+	}
+	.random {
+		position: absolute;
+		top: 0px;
+		right: 185px;
+		font-family: "Lato";
 	}
 }
 

@@ -33,7 +33,7 @@ Hangman.directive('focusMe', ['$timeout', '$parse', ($timeout, $parse) ->
 ])
 
 Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
-	buildQset: (title, items, partial, attempts) ->
+	buildQset: (title, items, partial, attempts, random) ->
 		qsetItems = []
 		qset = {}
 
@@ -52,7 +52,7 @@ Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
 					Materia.CreatorCore.cancelSave 'Word #'+(i+1)+' needs to contain at least one letter or number.'
 					return false
 
-		qset.options = {partial: partial, attempts: attempts}
+		qset.options = {partial: partial, attempts: attempts, random: random}
 		qset.assets = []
 		qset.rand = false
 		qset.name = title
@@ -100,6 +100,7 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 	$scope.title = "My Hangman widget"
 	$scope.items = []
 	$scope.partial = false
+	$scope.random = false
 	$scope.attempts = 5
 
 	$scope.updateForBoard = (item) ->
@@ -197,12 +198,13 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 		$scope.title = title
 		$scope.attempts = ~~qset.options.attempts or 5
 		$scope.partial = qset.options.partial
+		$scope.random = qset.options.random
 		$scope.onQuestionImportComplete qset.items[0].items
 
 		$scope.$apply()
 
 	$scope.onSaveClicked = (mode = 'save') ->
-		qset = Resource.buildQset $sanitize($scope.title), $scope.items, $scope.partial, $scope.attempts
+		qset = Resource.buildQset $sanitize($scope.title), $scope.items, $scope.partial, $scope.attempts, $scope.random
 		if qset then Materia.CreatorCore.save $sanitize($scope.title), qset
 
 	$scope.onSaveComplete = (title, widget, qset, version) -> true

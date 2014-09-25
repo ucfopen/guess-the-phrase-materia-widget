@@ -54,10 +54,14 @@ html(lang='en', ng-app='HangmanCreator')
 						div.point.six 6
 					div.container.svn(hammer-tap='setAttempts(7)')
 						div.point.svn 7
+			div.random.partial
+				p Randomize Order
+				input(type='checkbox', id='randomize', ng-model='random')
+				label(for='randomize', class='checktoggle')
 			div.partial
 				p Partial scoring
-				input(type='checkbox', id='randomize', ng-model='partial')
-				label(for='randomize', class='checktoggle')
+				input(type='checkbox', id='partial', ng-model='partial')
+				label(for='partial', class='checktoggle')
 			.bottom
 		ul(aria-label='questions')
 			li.titles(aria-hidden='true', ng-show='items.length')
