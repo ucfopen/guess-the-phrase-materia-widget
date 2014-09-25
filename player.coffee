@@ -298,12 +298,24 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 			$scope.max = Reset.attempts ~~_qset.options.attempts
 			$scope.keyboard = Reset.keyboard()
 
+	_shuffle = (a) ->
+		for i in [a.length-1..1]
+			j = Math.floor Math.random() * (i + 1)
+			[a[i], a[j]] = [a[j], a[i]]
+		a
+
 	$scope.start = (instance, qset, version = '1') ->
 		# expose scope to test engine
 		window.scope = $scope
 
+		if (!document.getElementById('stage').getContext)
+			document.getElementById('browserfailure').style.display = 'block'
+
 		qset.options.attempts = 5 if not qset.options.attempts
 		_qset = qset
+
+		if _qset.options.random
+			_qset.items[0].items = _shuffle _qset.items[0].items
 
 		$scope.total = _qset.items[0].items.length
 		$scope.max = Reset.attempts ~~_qset.options.attempts
@@ -315,7 +327,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 		document.getElementById('start').focus()
 
 		Hangman.Draw.initCanvas()
-	
+
 	$scope.isLetter = (letter) ->
 		!letter or letter.match(/[a-zA-Z0-9]/)
 
