@@ -1,4 +1,4 @@
-doctype 5
+doctype html
 
 html(lang='en', ng-app='HangmanEngine', ng-keydown='getKeyInput($event)', ng-controller='HangmanEngineCtrl')
   head
@@ -87,6 +87,3 @@ html(lang='en', ng-app='HangmanEngine', ng-keydown='getKeyInput($event)', ng-con
           div.descript PRESS OR TYPE
 
       div.next(ng-show='!inQues && inGame', hammer-tap='startQuestion()') Next
-      script
-        if (!document.getElementById('stage').getContext)
-          document.getElementById('browserfailure').style.display = 'block'
