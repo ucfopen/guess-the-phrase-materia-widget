@@ -299,8 +299,8 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 			$scope.keyboard = Reset.keyboard()
 
 	_shuffle = (a) ->
-		for i in [a.length-1..1]
-			j = Math.floor Math.random() * (i + 1)
+		for i in [1...a.length]
+			j = Math.floor Math.random() * (a.length)
 			[a[i], a[j]] = [a[j], a[i]]
 		a
 
