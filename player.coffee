@@ -122,12 +122,12 @@ HangmanEngine.factory 'Input', ->
 		max
 
 	correct: (matches, input, guessed) ->
-		# Give that user some of dat positive affirmation
-		Hangman.Draw.playAnimation 'heads', 'nod'
-
 		# Bind the user's input to the answer board
 		for i in [0...matches.length]
 			guessed[matches[i][0]][matches[i][1]] = input
+
+		# Give that user some of dat positive affirmation
+		Hangman.Draw.playAnimation 'heads', 'nod'
 
 		guessed
 
@@ -160,6 +160,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 	$scope.total = null # Total questions
 	$scope.inGame = false
 	$scope.inQues = false # Handles what appears on DOM
+	$scope.readyForInput = false
 	$scope.curItem = -1 # The current qset item index
 	$scope.gameDone = false # Whether or not to show the game completed text
 	$scope.ques = null # current question.
@@ -206,6 +207,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 		$scope.anvilStage = 1
 		$scope.inGame = true
 		$scope.inQues = true
+		$scope.readyForInput = true
 		$scope.ques = _qset.items[0].items[$scope.curItem].questions[0].text
 		$scope.answer = Parse.forBoard _qset.items[0].items[$scope.curItem].answers[0].text
 		$timeout ->
@@ -216,7 +218,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 		Materia.Engine.end()
 
 	$scope.getKeyInput = (event) ->
-		if $scope.inQues
+		if $scope.inQues and $scope.readyForInput
 			key = event.keyCode
 
 			# Correct for numpad
@@ -272,6 +274,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 		, 500
 		$timeout ->
 			$scope.ques = _qset.items[0].items[$scope.curItem].questions[0].text
+			$scope.readyForInput = true
 		, 700
 
 		Hangman.Draw.playAnimation 'torso', 'pull-card'
@@ -285,6 +288,8 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 
 		# Hide DOM elements relevant to a question
 		$scope.inQues = false
+		# Stop the user from typing
+		$scope.readyForInput = false
 
 		if $scope.curItem is $scope.total-1
 			$scope.inGame = false
