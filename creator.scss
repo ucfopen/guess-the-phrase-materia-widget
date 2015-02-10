@@ -651,8 +651,9 @@ ul {
 				font-size: 11px;
 				font-weight: 400;
 				margin-top: 1px;
-				content: 'ON\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0OFF';
+				content: 'ON\0020\0020\0020\0020\0020\0020\0020\0020\0020\0020\0020\0020\0020\0020\0020\0020\0020\0020\0020\0020OFF';
 				overflow: hidden;
+				white-space: pre;
 			}
 		}
 
@@ -877,7 +878,7 @@ ul {
 				background: #eeeac0;
 				border: 1px solid #cac395;
 				text-align: center;
-				
+
 				vertical-align: top;
 				line-height: 41px;
 
