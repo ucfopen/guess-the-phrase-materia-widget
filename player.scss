@@ -66,23 +66,20 @@ canvas {
 	width: 100%;
 	transition: all 1500ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
 	&.ng-hide .portal {
-		transform: scale(7);
+		transform: translate(0,-1000px);
 	}
 	.portal {
 		position: absolute;
-		background: transparent;
-		top: 131px;
-		left: 541px;
-		height: 248px;
-		width: 248px;
-		box-shadow: 0 0 20em 45em #0a1127;
-		border-radius: 100%;
+		background: #0a1127;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
 		transition: 1200ms;
-		transform: scale(0.98);
 		p {
 			font-size: 30px;
-			top: 120px;
-			left: -460px;
+			top: 251px;
+			left: 191px;
 			width: 400px;
 		}
 		h1, p {
@@ -91,18 +88,19 @@ canvas {
 			text-align: center;
 		}
 		h1 {
-			left: -500px;
-			top: -60px;
+			left: 160px;
+			top: 71px;
 			font-size: 100px;
 		}
 		.loader {
 			position: absolute;
-			z-index: -1;
+			z-index: 1;
 			height: 248px;
 			width: 248px;
 			border-radius: 100%;
 			color: #fff;
-			background: #6cb8a5;
+			left: 270px;
+			top: 350px;
 			transition: all 800ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 			&.ng-hide {
 				opacity: 0;
@@ -426,8 +424,8 @@ canvas {
 	background: url("assets/img/next.png");
 	background-repeat: no-repeat;
 	position: absolute;
-	bottom: -200px;
-	left: -160px;
+	bottom: 70px;
+	left: 390px;
 }
 
 .finished {
