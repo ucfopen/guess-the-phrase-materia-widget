@@ -91,6 +91,35 @@ button {
 	}
 }
 
+#pagination {
+	text-align: center;
+	position: relative;
+	padding-top: 20px;
+
+	&:before {
+		content: "Page:";
+		position: absolute;
+		top: 0;
+		left: 50%;
+		margin-left: -20px;
+	}
+
+	button {
+		position: initial;
+		color: #fff;
+
+		&:hover:not(:disabled) {
+			background-color: rgba(0, 0, 0, 0.2);
+			cursor: pointer;
+		}
+
+		&:disabled {
+			color: #8c8c8c;
+			cursor: normal;
+		}
+	}
+}
+
 ul {
 	position: relative;
 	width: 825px;
