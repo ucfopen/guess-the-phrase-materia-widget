@@ -12,6 +12,12 @@ Updated : 8/14
 # Create an angular module to import the animation module and house our controller.
 Hangman = angular.module 'HangmanCreator', ['ngAnimate', 'ngSanitize', 'hammer']
 
+# filter for use with paginating ng-repeat lists
+Hangman.filter 'startFrom', ->
+	(input, start) ->
+		start = +start # make sure 'start' is a number
+		input.slice start # return only the items after the index given as 'start'
+
 Hangman.directive('ngEnter', ->
 	return (scope, element, attrs) ->
 		element.bind("keydown keypress", (event) ->
@@ -76,7 +82,7 @@ Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
 		type: 'QA'
 		questions: [{text : item.ques}]
 		answers: [{value : '100', text : item.ans}]
-		
+
 	# IE8/IE9 are super special and need this
 	placeholderPolyfill: () ->
 		$('[placeholder]')
@@ -102,6 +108,14 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 	$scope.partial = false
 	$scope.random = false
 	$scope.attempts = 5
+
+	# for use with paginating results
+	$scope.currentPage = 0;
+	$scope.pageSize = 10;
+
+	# determine how many pages of questions we have
+	$scope.numberOfPages = ->
+		Math.ceil $scope.items.length/$scope.pageSize
 
 	$scope.updateForBoard = (item) ->
 		if item.ans
@@ -180,7 +194,7 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 
 		# Return the parsed answer's relevant data
 		{dashes:dashes, guessed:guessed, string:answer}
-	
+
 	# View actions
 	$scope.setTitle = ->
 		$scope.title = $scope.introTitle or $scope.title
@@ -194,6 +208,8 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 		$scope.$apply ->
 			$scope.showIntroDialog = true
 
+	#TODO: make this stop breaking itself when there are hundreds of questions
+	# use http://localhost:8118/creator/hangman/#hangman_1469037617641
 	$scope.initExistingWidget = (title, widget, qset, version, baseUrl) ->
 		$scope.title = title
 		$scope.attempts = ~~qset.options.attempts or 5
@@ -216,7 +232,10 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 	$scope.onMediaImportComplete = (media) -> true
 
 	$scope.addItem = (ques = "", ans = "", id = "") ->
+		pages = $scope.numberOfPages()
 		$scope.items.push {ques:ques, ans:ans, foc:false, id: id }
+		if pages > 0 and pages < $scope.numberOfPages()
+			$scope.currentPage++
 
 	$scope.removeItem = (index) ->
 		$scope.items.splice index, 1
@@ -226,13 +245,12 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 
 	$scope.setPartial = (bool) ->
 		$scope.partial = bool
-	
+
 	$scope.editItem = (item,index) ->
 		item.editing = true
-	
+
 	$scope.isLetter = (letter) ->
 		letter.match(/[a-zA-Z0-9]/)
-	
+
 	Materia.CreatorCore.start $scope
 ]
-
