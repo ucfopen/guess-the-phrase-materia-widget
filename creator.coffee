@@ -1,14 +1,3 @@
-###
-
-Materia
-It's a thing
-
-Widget  : Hangman, Creator
-Authors : Jonathan Warner, Micheal Parks, Brandon Stull
-Updated : 8/14
-
-###
-
 # Create an angular module to import the animation module and house our controller.
 Hangman = angular.module 'HangmanCreator', ['ngAnimate', 'ngSanitize', 'hammer']
 
