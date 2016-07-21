@@ -100,7 +100,7 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 
 	# for use with paginating results
 	$scope.currentPage = 0;
-	$scope.pageSize = 10;
+	$scope.pageSize = 20;
 
 	# determine how many pages of questions we have
 	$scope.numberOfPages = ->
@@ -197,8 +197,6 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 		$scope.$apply ->
 			$scope.showIntroDialog = true
 
-	#TODO: make this stop breaking itself when there are hundreds of questions
-	# use http://localhost:8118/creator/hangman/#hangman_1469037617641
 	$scope.initExistingWidget = (title, widget, qset, version, baseUrl) ->
 		$scope.title = title
 		$scope.attempts = ~~qset.options.attempts or 5
@@ -223,6 +221,7 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 	$scope.addItem = (ques = "", ans = "", id = "") ->
 		pages = $scope.numberOfPages()
 		$scope.items.push {ques:ques, ans:ans, foc:false, id: id }
+		# if adding this item makes a new page, go to that new page
 		if pages > 0 and pages < $scope.numberOfPages()
 			$scope.currentPage++
 
