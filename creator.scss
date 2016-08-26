@@ -137,32 +137,32 @@ ul {
 		}
 		&.item {
 			&.ng-enter {
-				transition: 1025ms all $easeOutExpo;
+				transition: 250ms all $easeOutExpo;
 			}
 			&.ng-leave {
-				transition: 1025ms all $easeOutExpo;
+				transition: 250ms all $easeOutExpo;
 				&.ng-leave-active {
-					transform: rotateX(-180deg) translatez(30px);
+					transform: translatez(0);
 					opacity: 0;
 					height: 0;
 					margin: 0 0;
 				}
 			}
 			&.ng-enter {
-				transform: rotateX(-180deg) translatez(30px);
+				transform: translatez(15px);
 				opacity: 0;
 				height: 0;
 				margin: 0 0;
 				&.ng-enter-active {
-					transform: rotateX(0) translatez(0);
+					transform: translatez(0);
 					opacity: 1;
 					height: 160px;
 					margin: 0 0 30px 0;
 				}
 			}
 			&.ng-leave {
-				transform: rotateX(0) translatez(0);
-				opacity: 1;
+				transform: translatez(15px);
+				opacity: 0;
 				height: 160px;
 				margin: 0 0 30px 0;
 			}

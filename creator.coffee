@@ -226,7 +226,14 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 			$scope.currentPage++
 
 	$scope.removeItem = (index) ->
-		$scope.items.splice index, 1
+		# Note: ng-repeat's $index will not take into account pagination
+		# Offset the index based on the current page & page size
+		itemsIndex = $scope.currentPage * $scope.pageSize + index
+		$scope.items.splice itemsIndex, 1
+
+		# If removing this item empties the page, paginate backwards
+		pages = $scope.numberOfPages()
+		if $scope.currentPage > 0 and $scope.currentPage > (pages - 1) then $scope.currentPage--
 
 	$scope.setAttempts = (num) ->
 		$scope.attempts = num
