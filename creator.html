@@ -83,7 +83,7 @@
 				<h3>Question</h3>
 				<h3>Phrase</h3>
 			</li>
-			<li ng-repeat="item in items | startFrom:currentPage*pageSize | limitTo:pageSize" class="item">
+			<li ng-repeat="item in items | startFrom:currentPage*pageSize | limitTo:pageSize" class="item" ng-class="{new: item.ques == ''}">
 				<span class="num">{{$index+1 + pageSize * currentPage}}</span>
 				<img ng-class="{shown:item.foc || item.editing}" src="assets/img/head-bubble.png">
 				<span aria-label="hint" class="hint">
