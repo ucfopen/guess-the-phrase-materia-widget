@@ -10,7 +10,7 @@ Updated : 8/14
 ###
 
 # Create an angular module to import the animation module and house our controller.
-Hangman = angular.module 'HangmanCreator', ['ngAnimate', 'ngSanitize', 'hammer']
+Hangman = angular.module 'HangmanEngine'
 
 Hangman.directive('ngEnter', ->
 	return (scope, element, attrs) ->
@@ -76,7 +76,7 @@ Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
 		type: 'QA'
 		questions: [{text : item.ques}]
 		answers: [{value : '100', text : item.ans}]
-		
+
 	# IE8/IE9 are super special and need this
 	placeholderPolyfill: () ->
 		$('[placeholder]')
@@ -180,7 +180,7 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 
 		# Return the parsed answer's relevant data
 		{dashes:dashes, guessed:guessed, string:answer}
-	
+
 	# View actions
 	$scope.setTitle = ->
 		$scope.title = $scope.introTitle or $scope.title
@@ -226,13 +226,12 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 
 	$scope.setPartial = (bool) ->
 		$scope.partial = bool
-	
+
 	$scope.editItem = (item,index) ->
 		item.editing = true
-	
+
 	$scope.isLetter = (letter) ->
 		letter.match(/[a-zA-Z0-9]/)
-	
+
 	Materia.CreatorCore.start $scope
 ]
-

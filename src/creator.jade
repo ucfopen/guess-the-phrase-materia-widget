@@ -16,7 +16,9 @@ html(lang='en', ng-app='HangmanCreator')
 		script(src='materia.creatorcore.js')
 		script(src='assets/lib/hammer.min.js', data-embed='false')
 		script(src='assets/lib/angular-hammer.min.js', data-embed='false')
-		script(src='creator.js')
+
+		script(src='modules/main.js')
+		script(src='controllers/creator.js')
 
 	body(ng-cloak, ng-controller='HangmanCreatorCtrl')
 		div#modal
@@ -106,7 +108,7 @@ html(lang='en', ng-app='HangmanCreator')
 							.lbox(ng-repeat='letter in word')
 								.letter(ng-class='{ space: !isLetter(letter.letter) }') {{ letter.letter }}
 							.lbox(ng-show='item.answer.dashes[$index]')
-								.letter.space 
+								.letter.space
 
 				button.delete(aria-label='delete', hammer-tap='removeItem($index)')
 					span.icon-close
@@ -142,4 +144,3 @@ html(lang='en', ng-app='HangmanCreator')
 				Give your Hangman widget a title
 			input(type='text', placeholder='My Hangman widget', ng-model='title', focus-me='showTitleDialog', ng-enter='hideCover()')
 			input(type='button', value='Done', ng-click='hideCover()')
-
