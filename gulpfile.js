@@ -625,6 +625,88 @@ gulp.task('default', function ()
 		'clean:package'
 	);
 });
+
+gulp.task('build-readable', function()
+{
+	testFull = true;
+	buildLocation = 'build/';
+
+	Embedding = false;
+	Mangling  = false;
+	Minifying = false;
+
+	runSequence(
+		'clean:pre',
+		'copy:init-assets',
+		'copy:init-baseWidgetFiles',
+		'copy:init-export',
+		'copy:init-icons',
+		'copy:init-playdata',
+		'copy:init-screenshots',
+		'copy:init-score',
+		'copy:init-spec',
+		['coffee','coffee-assets'],
+		['sass','sass-assets'],
+		'replace:materiaJS',
+		'replace-player-scripts',
+		'replace-creator-scripts',
+		'replace-player-links',
+		'replace-creator-links',
+		'embed',
+		'replace:build',
+		'compress',
+		'rename:ext',
+		'clean:package'
+	);
+});
+
+var testFull = false;
+exports["buildReadable"] = function(widget, full, callback)
+{
+	testFull = full;
+
+	widget = sanitize(widget);
+	sourceString = 'sandbox/' + widget + '/';
+
+	buildLocation = 'build/';
+
+	Embedding = false;
+	Mangling  = false;
+	Minifying = false;
+
+	// One of the ways to make sure Gulp does it's tasks in the order specified (Otherwise race condtions can occur).
+	gulp.task('callback', function()
+	{
+		return callback(null, null, "");
+	});
+
+	runSequence(
+		'clean:pre',
+		'copy:init-assets',
+		'copy:init-baseWidgetFiles',
+		'copy:init-export',
+		'copy:init-icons',
+		'copy:init-playdata',
+		'copy:init-screenshots',
+		'copy:init-score',
+		'copy:init-spec',
+		['coffee','coffee-assets'],
+		['sass','sass-assets'],
+		'replace:materiaJS',
+		'replace-player-scripts',
+		'replace-creator-scripts',
+		'replace-player-links',
+		'replace-creator-links',
+		'embed',
+		'replace:build',
+		'compress',
+		'rename:ext',
+		'test',
+		'clean:package',
+		'callback'
+	);
+};
+
 exports["gulp"] = function(widget, minify, mangle, embed, callback)
 {
 	widget = sanitize(widget);
