@@ -22,12 +22,16 @@ html(lang='en', ng-app='HangmanEngine', ng-keydown='getKeyInput($event)', ng-con
     script(src='assets/lib/angular-hammer.min.js', data-embed='false')
     script(src='assets/lib/draw.js', data-embed='false')
 
+    //- MODULE
     script(src='modules/main.js')
+
+    //-FACTORIES
     script(src='factories/host.js')
     script(src='factories/input.js')
     script(src='factories/parse.js')
     script(src='factories/reset.js')
 
+    //- CONTROLLER
     script(src='controllers/player.js')
 
   body(ng-cloak)

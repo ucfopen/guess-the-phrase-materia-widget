@@ -17,7 +17,17 @@ html(lang='en', ng-app='HangmanCreator')
 		script(src='assets/lib/hammer.min.js', data-embed='false')
 		script(src='assets/lib/angular-hammer.min.js', data-embed='false')
 
+		//- MODULE
 		script(src='modules/main.js')
+
+		//- DIRECTIVES
+		script(src='directives/ngEnter.js')
+		script(src='directives/focusMe.js')
+
+		//- FACTORIES
+		script(src='factories/resource.js')
+
+		//- CONTROLLER
 		script(src='controllers/creator.js')
 
 	body(ng-cloak, ng-controller='HangmanCreatorCtrl')
