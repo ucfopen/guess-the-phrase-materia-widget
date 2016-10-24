@@ -177,9 +177,8 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 		$scope.keyboard = Reset.keyboard()
 
 		# Add title and total number of questions.
-		document.getElementsByClassName('title')[0].innerHTML = instance.name
-		document.getElementsByClassName('total-questions')[0].innerHTML = 'of ' + $scope.total
-		document.getElementById('start').focus()
+		$scope.title = instance.name
+		# document.getElementById('start').focus()
 
 		Hangman.Draw.initCanvas()
 

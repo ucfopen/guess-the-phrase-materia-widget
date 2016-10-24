@@ -63,9 +63,9 @@ html(lang='en', ng-app='HangmanEngine', ng-keydown='getKeyInput($event)', ng-con
         img.anvil(src='assets/img/anvil.png', aria-hidden='true')
       div.podium(aria-hidden='true')
 
-      div.title
+      div.title {{ title }}
       div.question-num {{ curItem+1 }}
-      div.total-questions
+      div.total-questions() of {{ total }}
 
       div.answer(ng-class='{transition: inQues}')
         div.row(ng-repeat='word in answer.string')
