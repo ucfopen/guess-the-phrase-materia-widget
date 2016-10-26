@@ -38,13 +38,13 @@ describe('Hangman Widget', function () {
 			stage.setAttribute("id", "stage");
 
 			browserFailure = document.createElement('div');
-			browserFailure.setAttribute("id", "browserFailure");
+			browserFailure.setAttribute("id", "browserfailure");
 
 			loadbar = document.createElement('div');
 			loadbar.setAttribute("class", "bar");
 
 			stageExists = document.getElementById("stage");
-			browserFailureExists = document.getElementById("browserFailure");
+			browserFailureExists = document.getElementById("browserfailure");
 			loadbarExists = document.getElementsByClassName("bar")[0];
 
 			if(stageExists)
@@ -61,12 +61,11 @@ describe('Hangman Widget', function () {
 			document.body.appendChild(loadbar);
 		});
 
-		// Status: In Progress
-		//TODO: Test the $scope.max and $scope.keyboard variables
-		it('starts properly', function(){
+		// Status: Finished
+		it('starts the game without randomizing questions', function(){
 			$scope.start(widgetInfo, qset.data);
 
-			expect(document.getElementById("browserFailure").style.display)
+			expect(document.getElementById("browserfailure").style.display)
 				.toEqual('');
 
 		 	expect(qset.data.options.attempts).toEqual(5);
@@ -74,15 +73,70 @@ describe('Hangman Widget', function () {
 
 			expect($scope.title).toBe("Parts of a Cell");
 
+			expect($scope.max).toEqual(reset.attempts(qset.data.options.attempts));
 			expect($scope.keyboard).toEqual(reset.keyboard());
-			fail("Test not complete.");
 		});
 
-		// Status: Not Started
-		// TODO:
-		// it('toggles a game on correctly', function(){
-		// 	$scope.gameDone = false;
-		// 	expect($scope.startGame).toHaveBeenCalled();
+		// Status: Finished
+		it('correctly initializes number of attempts when not explicitly set', function(){
+			qset.data.options.attempts = null;
+
+			$scope.start(widgetInfo, qset.data);
+
+		 	expect(qset.data.options.attempts).toEqual(5);
+		});
+
+		// Status: Finished
+		it('notifies browser failure when stage has no context', function(){
+			stage = document.getElementById('stage').getContext = false;
+
+			$scope.start(widgetInfo, qset.data);
+
+			expect(document.getElementById('browserfailure').style.display)
+				.toEqual('block');
+		});
+
+		// Status: In Progress
+		// TODO: verify that the questions obtain a new order with each shuffle
+		it('should shuffle answer order when the randomize option is on', function(){
+			// this will make the output of Math.random() predictable, for the purpose
+			//  of shuffling answers
+			spyOn(Math, 'random').and.returnValue(0);
+
+			// Set the id each question that will later be used for comparison
+			function setIds(q)
+			{
+					for(var i in q)
+					{
+						q[i].id = i;
+					}
+			}
+
+			//get a list of the answer ids for the supplied question - used to see which order the answers are in
+			function listOfIds(q) {
+				var list = [];
+				for(var i in q) {
+					list.push(q[i].id);
+				}
+
+				return list;
+			}
+
+			//check the first question - in this case it has 4 items in it
+			setIds(qset.data.items[0].items);
+
+			var list1 = listOfIds(qset.data.items[0].items);
+			qset.data.options.random = true;
+			$scope.start(widgetInfo, qset.data);
+			//make sure we're checking the same question - use the first question's id
+			var list2 = listOfIds(qset.data.items[0].items);
+			expect(list1).not.toEqual(list2);
+		});
+
+		// // Status: Not Started
+		// // TODO:
+		// it('toggles a game off correctly', function(){
+		// 	expect(Materia.Engine.end).toHaveBeenCalled();
 		// });
 
 		// Status: Finished
@@ -107,30 +161,36 @@ describe('Hangman Widget', function () {
 			expect(Hangman.Draw.playAnimation).toHaveBeenCalled();
 		}));
 
-		// Status: In progress
-		// TODO: figure out how to test a function that returns no specific value
-		// 	such as a void function
-		it('does not instantiate a game already in progress', inject(function($timeout){
-			$scope.startGame();
-			fail("Test not complete");
-		}));
-
 		// Status: Finished
-		it('should end the widget properly', function(){
-			$scope.endGame();
-			expect(Materia.Engine.end).toHaveBeenCalled();
+		it('does not instantiate a game already in progress', function(){
+			expect(function(){
+    			$scope.startGame();
+				}).toThrow(new Error('Game has already been initialized'));
 		});
 
-		// // Status: Not Started
-		// // TODO:
-		// 	fail("Test not completed");
-		// });
+		// Status: Finished
+		it('starts a question correctly', inject(function($timeout){
+			// used to ensure the curItem is incremented currectly
+			var prevItem = $scope.curItem;
 
-		// // Status: Not Started
-		// // TODO:
-		// it('start a question correctly', function(){
-		// 	fail("Test not completed");
-		// });
+			$scope.startQuestion();
+
+			expect($scope.inQues).toBe(true);
+			expect($scope.curItem).toEqual(prevItem + 1);
+
+			$timeout.flush();
+			$timeout.verifyNoPendingTasks();
+
+			expect($scope.answer).toEqual(parse.forBoard(qset.data.items[0]
+				.items[$scope.curItem].answers[0].text));
+
+			expect($scope.ques).toEqual(qset.data.items[0].items[$scope.curItem]
+				.questions[0].text);
+
+			expect($scope.readyForInput).toBe(true);
+
+			expect(Hangman.Draw.playAnimation).toHaveBeenCalled();
+		}));
 
 		// Status: In Progress
 		// TODO:
@@ -146,6 +206,7 @@ describe('Hangman Widget', function () {
 			expect($scope.inGame).toBe(true);
 			expect($scope.gameDone).toBe(false);
 
+			expect($scope.max).toEqual(reset.attempts(qset.data.options.attempts));
 			expect($scope.keyboard).toEqual(reset.keyboard());
 		});
 
@@ -164,19 +225,34 @@ describe('Hangman Widget', function () {
 			// Make sure the game is ended
 			expect($scope.inGame).toBe(false);
 			expect($scope.gameDone).toBe(true);
+			expect(Materia.Engine.end).toHaveBeenCalled();
 		});
 
-		// // Status: Not Started
-		// // TODO:
-		// it('shuffle a question correctly', function(){
-		// 	fail("Test not completed");
-		// });
+		// Status: Finished
+		it('ends the widget properly', function(){
+			$scope.endGame();
+			expect(Materia.Engine.end).toHaveBeenCalled();
+		});
 
-		// // Status: Not Started
-		// // TODO:
-		// it('knows how to identify a letter', function(){
-		//
-		// });
+		// Status: Finished
+		it('knows how to identify a valid letter', function(){
+			var validLetters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"+
+				"0123456789";
+
+			for(var i=0; i<validLetters.length; i++)
+				expect($scope.isLetter(validLetters.charAt(i))[0])
+					.toEqual(validLetters.charAt(i));
+		});
+
+		// Status: Finished
+		// TODO: Checking how the app reacts to emojis could be helpful
+		it('knows how to identify an invalid letter', function(){
+			// this is only a sample of invalid characters
+			var invalidLetters = '~`!@#$%^&*()_+=-?><,./:;}{[]}\'\"{}|\][';
+
+			for(var i=0; i<invalidLetters.length; i++)
+				expect($scope.isLetter(invalidLetters.charAt(i))).toBe(null);
+		});
 	});
 
 	// describe('Creator Controller', function(){

@@ -51,7 +51,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 			$scope.startGame()
 
 	$scope.startGame =  ->
-		return if $scope.inGame
+		throw new Error 'Game has already been initialized' if $scope.inGame
 
 		$scope.curItem++
 		$scope.anvilStage = 1
@@ -70,7 +70,6 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 	$scope.getKeyInput = (event) ->
 		if $scope.inQues and $scope.readyForInput
 			key = event.keyCode
-
 			# Correct for numpad
 			if key >= 97
 				key -= 48
