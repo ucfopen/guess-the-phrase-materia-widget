@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="HangmanCreator">
+	<head>
+		<title>Hangman Creator</title>
+		<meta charset="utf-8">
+
+		<!-- STYLESHEETS -->
+		<link href="//fonts.googleapis.com/css?family=Lato:100,300,400|Montserrat:700|Purple+Purse" rel="stylesheet" type="text/css">
+		<link href="creator.css" rel="stylesheet" type="text/css">
+
+		<!-- REQUIRED MATERIA JAVASCRIPT -->
+		<script src="materia.creatorcore.js"></script>
+
+		<!-- YOUR PREREQUISITES -->
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-animate.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-sanitize.min.js"></script>
+		<script src="assets/lib/hammer.min.js" data-embed="false"></script>
+		<script src="assets/lib/angular-hammer.min.js" data-embed="false"></script>
+
+		<!-- MAIN CREATOR SCRIPT -->
+		<script src="creator.js"></script>
+	</head>
+	<body ng-cloak ng-controller="HangmanCreatorCtrl">
+		<div id="modal"></div>
+		<div class="question-tip">?
+			<div class="qtip-box">
+				<p>
+					If <b>partial scoring</b> is on then students will receive credit equal to the percentage of the phrase they reveal.
+					When off students will receive a 100% if they guess the phrase correctly and a 0% otherwise.
+				</p>
+				<p>
+					If the student doesn't reveal the phrase after the number of allowed <b>incorrect guesses</b> they move on to the next phrase.
+				</p>
+			</div>
+		</div>
+		<div id="header">
+			<div class="logo"></div>
+			<h1 id="title" ng-bind="title" ng-click="showTitleDialog = true"></h1>
+			<div ng-click="showTitleDialog = true" class="link">Edit...</div>
+			<span class="attempts">
+				<p>Incorrect guesses per phrase</p>
+				<div class="slide-btn">
+					<div class="bar pos-{{attempts}}">
+						<div ng-bind="attempts" class="circle"></div>
+					</div>
+					<div hammer-tap="setAttempts(3)" class="container thr">
+						<div class="point thr">3</div>
+					</div>
+					<div hammer-tap="setAttempts(4)" class="container four">
+						<div class="point four">4</div>
+					</div>
+					<div hammer-tap="setAttempts(5)" class="container five">
+						<div class="point five">5</div>
+					</div>
+					<div hammer-tap="setAttempts(6)" class="container six">
+						<div class="point six">6</div>
+					</div>
+					<div hammer-tap="setAttempts(7)" class="container svn">
+						<div class="point svn">7</div>
+					</div>
+				</div>
+			</span>
+			<div class="random partial">
+				<p>Randomize Order</p>
+				<input type="checkbox" id="randomize" ng-model="random">
+				<label for="randomize" class="checktoggle"></label>
+			</div>
+			<div class="partial">
+				<p>Partial scoring</p>
+				<input type="checkbox" id="partial" ng-model="partial">
+				<label for="partial" class="checktoggle"></label>
+			</div>
+			<div class="bottom"></div>
+		</div>
+		<div id="pagination" ng-show="numberOfPages() > 1">
+			<button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">Previous</button>
+			<span>{{currentPage+1}}/{{numberOfPages()}}</span>
+			<button ng-disabled="currentPage >= numberOfPages() - 1" ng-click="currentPage=currentPage+1">Next</button>
+		</div>
+		<ul aria-label="questions">
+			<li aria-hidden="true" ng-show="items.length" class="titles">
+				<h3>Question</h3>
+				<h3>Phrase</h3>
+			</li>
+			<li ng-repeat="item in items | startFrom:currentPage*pageSize | limitTo:pageSize" class="item" ng-class="{new: item.ques == ''}">
+				<span class="num">{{$index+1 + pageSize * currentPage}}</span>
+				<img ng-class="{shown:item.foc || item.editing}" src="assets/img/head-bubble.png">
+				<span aria-label="hint" class="hint">
+					<div ng-class="{shown:item.foc || item.editing}" class="arrow-left"></div>
+					<textarea placeholder="Enter a hint here."
+						value="{{item.ques}}"
+						ng-focus="item.foc=true"
+						ng-blur="item.foc=false"
+						ng-model="item.ques"
+						tabindex="{{$index + 1}}"
+						focus-me="true">
+					</textarea>
+				</span>
+				<span aria-label="word" class="word">
+					<textarea id="tarea_{{$index}}"
+						value="{{item.ans}}"
+						ng-model="item.ans"
+						ng-change="updateForBoard(item)"
+						ng-init="updateForBoard(item)"
+						ng-blur="item.editing=false"
+						ng-focus="item.editing=true"
+						ng-enter="item.editing=false"
+						ng-class="{ show: item.editing }"
+						tabindex="{{$index + 2}}"
+						focus-me="item.editing">
+					</textarea>
+					<div ng-class="{ toolong: item.answer.string.length > 3 }"
+						ng-show="!item.editing"
+						ng-mousedown="editItem(item, $index)"
+						class="answer">
+						<div ng-show="!item.answer.string" class="protip">Click here to enter your phrase</div>
+						<div ng-repeat="word in item.answer.string" class="row">
+							<div ng-repeat="letter in word" class="lbox">
+								<div ng-class="{ space: !isLetter(letter.letter) }" class="letter">{{ letter.letter }}</div>
+							</div>
+							<div ng-show="item.answer.dashes[$index]" class="lbox">
+								<div class="letter space"></div>
+							</div>
+						</div>
+					</div>
+				</span>
+				<button aria-label="delete"
+					hammer-tap="removeItem($index)"
+					class="delete">
+					<span class="icon-close"></span>
+					<span class="descript">remove</span>
+				</button>
+			</li>
+			<li>
+				<button aria-label="add item" hammer-tap="addItem()" class="add"><span class="icon-plus"></span><span>&nbsp;Add Question</span></button>
+			</li>
+		</ul>
+		<div ng-show="!items.length &amp;&amp; step" class="arrow-box">
+			<span>Click here to add your first question</span>
+		</div>
+		<div id="backgroundcover" ng-click="hideCover()" ng-class="{ show: showTitleDialog || showIntroDialog }"></div>
+		<div ng-class="{ show: showIntroDialog }" class="box intro">
+			<img src="assets/creator_example.png">
+			<h1>Hangman</h1>
+			<p>Create quiz show questions and answers</p>
+			<p>Define how many incorrect guesses students get per phrase</p>
+			<p>Enable partial credit to give students credit for guessing some of the characters correctly</p>
+			<hr>
+			<b>Start by giving your Hangman widget a title</b>
+			<input type="text" placeholder="My Hangman widget" autofocus="1" ng-enter="setTitle()" focus-me="showIntroDialog" ng-model="introTitle">
+			<input type="button" value="Get Started" ng-click="setTitle()">
+		</div>
+		<div ng-class="{ show: showTitleDialog }" class="box title"><b>Give your Hangman widget a title</b>
+			<input type="text" placeholder="My Hangman widget" ng-model="title" focus-me="showTitleDialog" ng-enter="hideCover()">
+			<input type="button" value="Done" ng-click="hideCover()">
+		</div>
+	</body>
+</html>
