@@ -91,6 +91,35 @@ button {
 	}
 }
 
+#pagination {
+	text-align: center;
+	position: relative;
+	padding-top: 20px;
+
+	&:before {
+		content: "Page:";
+		position: absolute;
+		top: 0;
+		left: 50%;
+		margin-left: -20px;
+	}
+
+	button {
+		position: initial;
+		color: #fff;
+
+		&:hover:not(:disabled) {
+			background-color: rgba(0, 0, 0, 0.2);
+			cursor: pointer;
+		}
+
+		&:disabled {
+			color: #8c8c8c;
+			cursor: normal;
+		}
+	}
+}
+
 ul {
 	position: relative;
 	width: 825px;
@@ -107,35 +136,64 @@ ul {
 			margin: 8px 0px;
 		}
 		&.item {
-			&.ng-enter {
-				transition: 1025ms all $easeOutExpo;
+			&:not(.new) {
+				&.ng-enter {
+					transition: 250ms all $easeOutExpo;
+				}
+				&.ng-leave {
+					transition: 250ms all $easeOutExpo;
+					&.ng-leave-active {
+						transform: translatez(0);
+						opacity: 0;
+						height: 0;
+						margin: 0 0;
+					}
+				}
+				&.ng-enter {
+					transform: translatez(15px);
+					opacity: 0;
+					height: 0;
+					margin: 0 0;
+					&.ng-enter-active {
+						transform: translatez(0);
+						opacity: 1;
+						height: 160px;
+						margin: 0 0 30px 0;
+					}
+				}
 			}
-			&.ng-leave {
-				transition: 1025ms all $easeOutExpo;
-				&.ng-leave-active {
+
+			&.new {
+				&.ng-enter {
+					transition: 1025ms all $easeOutExpo;
+				}
+				&.ng-leave {
+					transition: 1025ms all $easeOutExpo;
+					&.ng-leave-active {
+						transform: rotateX(-180deg) translatez(30px);
+						opacity: 0;
+						height: 0;
+						margin: 0 0;
+					}
+				}
+				&.ng-enter {
 					transform: rotateX(-180deg) translatez(30px);
 					opacity: 0;
 					height: 0;
 					margin: 0 0;
+					&.ng-enter-active {
+						transform: rotateX(0) translatez(0);
+						opacity: 1;
+						height: 160px;
+						margin: 0 0 30px 0;
+					}
 				}
-			}
-			&.ng-enter {
-				transform: rotateX(-180deg) translatez(30px);
-				opacity: 0;
-				height: 0;
-				margin: 0 0;
-				&.ng-enter-active {
-					transform: rotateX(0) translatez(0);
+				&.ng-leave {
+					transform: rotateX(0) translatez(15px);
 					opacity: 1;
 					height: 160px;
 					margin: 0 0 30px 0;
 				}
-			}
-			&.ng-leave {
-				transform: rotateX(0) translatez(0);
-				opacity: 1;
-				height: 160px;
-				margin: 0 0 30px 0;
 			}
 		}
 		h3 {

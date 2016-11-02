@@ -10,8 +10,6 @@ var exec = require('child_process').exec;
 var fs = require('fs');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
-var jade = require('gulp-jade');
-var less = require('gulp-less');
 var ngAnnotate = require('gulp-ng-annotate');
 var print = require('gulp-print');
 var rename = require('gulp-rename');
@@ -117,10 +115,6 @@ gulp.task('compress', function()
 					'!' + sourceString + '.build/**/*.coffee',
 					'!' + sourceString + '.build/*.scss',
 					'!' + sourceString + '.build/**/*.scss',
-					'!' + sourceString + '.build/*.less',
-					'!' + sourceString + '.build/**/*.less',
-					'!' + sourceString + '.build/*.jade',
-					'!' + sourceString + '.build/**/*.jade',
 					'!' + sourceString + '.build/*.zip',
 					'!' + sourceString + '.build/*.wigt',])
 				.pipe( print() )
@@ -293,52 +287,6 @@ gulp.task('help', function()
 {
 	showDocs();
 });
-// Transpiles Jade into plain html.
-gulp.task('jade', function()
-{
-	gutil.log("Jade Running");
-	// Engine
-	return gulp.src([sourceString + 'src/*.jade'])
-				.pipe( jade({pretty:true}) )
-				.on('error', function(msg) {console.log("jade Fail Error: ", msg.toString());})
-				.pipe( print() )
-				.pipe(gulp.dest(sourceString + '.build/'));
-});
-// Transpiles Jade into plain html.
-gulp.task('jade-assets', function()
-{
-	gutil.log("Jade Assets Running");
-	// Assets
-	return gulp.src([sourceString + 'src/assets/*.jade', sourceString + 'src/assets/**/*.jade'])
-				.pipe( jade() )
-				.on('error', function(msg) {console.log("jade Fail Error: ", msg.toString());})
-				.pipe( print() )
-				.pipe(gulp.dest(sourceString + '.build/assets/'));
-});
-// Transpiles Less into plain CSS.
-gulp.task('less', function()
-{
-	gutil.log("Less Running");
-	// Engine
-	return gulp.src([sourceString + 'src/*.less'])
-				.pipe( less() )
-				.pipe( autoprefix() )
-				.on('error', function(msg) {console.log("less Fail Error: ", msg.toString());})
-				.pipe( print() )
-				.pipe(gulp.dest(sourceString + '.build/'));
-});
-// Transpiles Less into plain CSS.
-gulp.task('less-assets', function()
-{
-	gutil.log("Less Assets Running");
-	// Assets
-	return gulp.src([sourceString + 'src/assets/*.less', sourceString + 'src/assets/**/*.less'])
-				.pipe( less() )
-				.pipe( autoprefix() )
-				.on('error', function(msg) {console.log("less Fail Error: ", msg.toString());})
-				.pipe( print() )
-				.pipe(gulp.dest(sourceString + '.build/assets/'));
-});
 // Replaces all of the (internally sourced) script tags in the player/creator files with
 // a combined script tag referenceing a single player.js/creator.js source
 gulp.task('minify-player-js', function()
@@ -422,9 +370,9 @@ function minifyCss(htmlName)
 gulp.task('ngAnnotate', function()
 {
 	gutil.log("NgAnnotate Running");
-	return gulp.src([sourceString + '.build/*.js', '!' + sourceString + '.build/*.min.js', '!' + sourceString + '.build/*.pack.js'])
+	return gulp.src([sourceString + '.build/*.js', '!' + sourceString + '.build/**/*.min.js', '!' + sourceString + '.build/**/*.pack.js'])
 				.pipe(ngAnnotate())
-				.on('error', function(msg) {console.log("ngmin Fail Error: ", msg.toString());})
+				.on('error', function(msg) {console.log("NgAnnotate Fail Error: ", msg.toString());})
 				.pipe( print() )
 				.pipe(gulp.dest(sourceString + '.build/'));
 });
@@ -599,9 +547,7 @@ gulp.task('default', function ()
 		'babel',
 		'babel-assets',
 		['coffee','coffee-assets'],
-		['less','less-assets'],
 		['sass','sass-assets'],
-		['jade','jade-assets'],
 		'replace:materiaJS',
 		'ngAnnotate',
 		'cssmin',
@@ -651,9 +597,7 @@ exports["gulp"] = function(widget, minify, mangle, embed, callback)
 		'babel',
 		'babel-assets',
 		['coffee','coffee-assets'],
-		['less','less-assets'],
 		['sass','sass-assets'],
-		['jade','jade-assets'],
 		'replace:materiaJS',
 		'ngAnnotate',
 		'cssmin',
