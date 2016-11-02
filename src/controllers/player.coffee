@@ -2,9 +2,6 @@ HangmanEngine = angular.module 'HangmanEngine'
 
 HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'Reset', 'Input', ($scope, $timeout, Parse, Reset, Input) ->
 	_qset = null
-	isFirefox = /firefox/i.test navigator.userAgent
-	isIE = /MSIE (\d+\.\d+);/.test navigator.userAgent
-	if isFirefox then $scope.cssQuirks = true
 
 	$scope.loading = true
 	$scope.total = null # Total questions
@@ -95,7 +92,6 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 
 		$scope.keyboard[input].hit = 1
 		matches = Input.isMatch input, $scope.answer.string
-
 		# User entered an incorrect guess
 		if matches.length is 0
 			$scope.max = Input.incorrect $scope.max
@@ -105,10 +101,11 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 		else
 			$scope.answer.guessed = Input.correct matches, input, $scope.answer.guessed
 
+
 		# Find out if the user can continue to submit guesses
 		result = Input.cannotContinue $scope.max, $scope.answer.guessed
 		if result
-			$scope.endQuestion()
+			_endQuestion()
 
 			# The user can't continue because they won and are awesomesauce
 			if result is 2
@@ -128,7 +125,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 
 		Hangman.Draw.playAnimation 'torso', 'pull-card'
 
-	$scope.endQuestion = ->
+	_endQuestion = ->
 		Hangman.Draw.breakBoredom false
 
 		# Submit the user's answer to Materia
@@ -146,7 +143,6 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 			$scope.gameDone = true
 			# Push the score but don't redirect yet
 			Materia.Engine.end no
-
 		else
 			# Prepare elements for the next question
 			$scope.max = Reset.attempts ~~_qset.options.attempts
