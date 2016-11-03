@@ -43,11 +43,11 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 
 	$scope.toggleGame = ->
 		if $scope.gameDone
-			$scope.endGame()
+			_endGame()
 		else if not $scope.loading
-			$scope.startGame()
+			_startGame()
 
-	$scope.startGame =  ->
+	_startGame =  ->
 		throw new Error 'Game has already been initialized' if $scope.inGame
 
 		$scope.curItem++
@@ -61,7 +61,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 			Hangman.Draw.playAnimation 'torso', 'pull-card'
 		, 800
 
-	$scope.endGame = ->
+	_endGame = ->
 		Materia.Engine.end()
 
 	$scope.getKeyInput = (event) ->
@@ -82,6 +82,8 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 				# The user hit enter to move on to another question
 				if $scope.inGame and !$scope.inQues
 					$scope.startQuestion()
+				else
+					_endQuestion()
 
 	$scope.getUserInput = (input) ->
 		# Don't process keys that have been entered
@@ -92,6 +94,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 
 		$scope.keyboard[input].hit = 1
 		matches = Input.isMatch input, $scope.answer.string
+
 		# User entered an incorrect guess
 		if matches.length is 0
 			$scope.max = Input.incorrect $scope.max
@@ -104,6 +107,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 
 		# Find out if the user can continue to submit guesses
 		result = Input.cannotContinue $scope.max, $scope.answer.guessed
+
 		if result
 			_endQuestion()
 
@@ -181,5 +185,4 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 		!letter or letter.match(/[a-zA-Z0-9]/)
 
 	Materia.Engine.start($scope)
-
 ]
