@@ -1,5 +1,4 @@
 describe('Hangman Widget', function () {
-
 	// grab the demo widget for easy reference
 	var widgetInfo = window.__demo__['build/demo'];
 	var qset = widgetInfo.qset;
@@ -29,8 +28,11 @@ describe('Hangman Widget', function () {
 
 			//spy on Materia.Engine.end()
 			spyOn(Materia.Engine, 'end');
+
+			// Spy on animations
 			spyOn(Hangman.Draw, 'breakBoredom');
 			spyOn(Hangman.Draw, 'playAnimation');
+			spyOn(Hangman.Draw, 'incorrectGuess');
 
 			// Referesh the DOM elements needed in testing to avoid test
 			//  interdependency
@@ -96,9 +98,8 @@ describe('Hangman Widget', function () {
 				.toEqual('block');
 		});
 
-		// Status: In Progress
-		// TODO: verify that the questions obtain a new order with each shuffle
-		it('should shuffle answer order when the randomize option is on', function(){
+		// Status: Finished
+		it('should shuffle question order when the randomize option is on', function(){
 			// this will make the output of Math.random() predictable, for the purpose
 			//  of shuffling answers
 			spyOn(Math, 'random').and.returnValue(0);
@@ -112,7 +113,8 @@ describe('Hangman Widget', function () {
 					}
 			}
 
-			//get a list of the answer ids for the supplied question - used to see which order the answers are in
+			// get a list of the question ids for the supplied question
+			// 	- used to see which order the questions are in
 			function listOfIds(q) {
 				var list = [];
 				for(var i in q) {
@@ -122,26 +124,26 @@ describe('Hangman Widget', function () {
 				return list;
 			}
 
-			//check the first question - in this case it has 4 items in it
+			// Gives an id to each question, this is so the json file does not have to
+			// 	be directly edited
 			setIds(qset.data.items[0].items);
 
+			// Non-shuffled list
 			var list1 = listOfIds(qset.data.items[0].items);
+
 			qset.data.options.random = true;
 			$scope.start(widgetInfo, qset.data);
-			//make sure we're checking the same question - use the first question's id
+
+			// Shuffled List
 			var list2 = listOfIds(qset.data.items[0].items);
+
 			expect(list1).not.toEqual(list2);
 		});
 
-		// // Status: Not Started
-		// // TODO:
-		// it('toggles a game off correctly', function(){
-		// 	expect(Materia.Engine.end).toHaveBeenCalled();
-		// });
-
 		// Status: Finished
 		it('instantiates a game correctly', inject(function($timeout){
-			$scope.startGame();
+			$scope.loading = false;
+			$scope.toggleGame();
 
 			expect($scope.curItem).toEqual(0);
 			expect($scope.anvilStage).toEqual(1);
@@ -164,11 +166,11 @@ describe('Hangman Widget', function () {
 		// Status: Finished
 		it('does not instantiate a game already in progress', function(){
 			expect(function(){
-    			$scope.startGame();
+    			$scope.toggleGame();
 				}).toThrow(new Error('Game has already been initialized'));
 		});
 
-		// Status: Finished
+		// Status Finished
 		it('starts a question correctly', inject(function($timeout){
 			// used to ensure the curItem is incremented currectly
 			var prevItem = $scope.curItem;
@@ -192,10 +194,56 @@ describe('Hangman Widget', function () {
 			expect(Hangman.Draw.playAnimation).toHaveBeenCalled();
 		}));
 
-		// Status: In Progress
-		// TODO:
-		it('ends a question correctly', function(){
-			$scope.endQuestion();
+		/*
+		* Tests a couple of user inputs that are correct to the specific question
+		*
+		* Status: Finished
+		*/
+		it('can interpret when the user chooses a correct letter', function(){
+			// Data structure to simulate keyBoard events
+			var keyPress = new Object;
+
+			// 77 = m
+			keyPress.keyCode = 77;
+			$scope.getKeyInput(keyPress);
+
+			// Checks if the letters was correctly flagged on the keyboard
+			expect($scope.keyboard[String.fromCharCode(77).toLowerCase()]
+				.hit).toEqual(1);
+
+			// 69 = e
+			keyPress.keyCode = 69;
+			$scope.getKeyInput(keyPress);
+
+			expect($scope.keyboard[String.fromCharCode(69).toLowerCase()]
+				.hit).toEqual(1);
+		});
+
+		/*
+		* Finishes the current question by inputting the rest of the correct answer
+		*	and checks to see that the question ends properly
+		*
+		* Status: Finished
+		*/
+		it('ends a question correctly when the user is correct', function(){
+			// Data structures to simulate keyBoard events
+			var keyPress, keyCodes
+			keyPress = new Object;
+
+			// Contains the keyCodes for the characters b,r,a,n,l,c
+			keyCodes = [65, 78, 76, 67, 66, 82];
+
+			for(var i = 0; i < keyCodes.length; i++)
+			{
+					keyPress.keyCode = keyCodes[i];
+					$scope.getKeyInput(keyPress);
+
+					// The last input to a question does not get counted as hit
+					if(i < keyCodes.length - 1)
+						expect($scope.keyboard[String.fromCharCode(keyCodes[i]).toLowerCase()]
+							.hit).toEqual(1);
+			}
+
 			expect(Hangman.Draw.breakBoredom).toHaveBeenCalled();
 
 			// Stop all input from user
@@ -210,28 +258,75 @@ describe('Hangman Widget', function () {
 			expect($scope.keyboard).toEqual(reset.keyboard());
 		});
 
+		/*
+		* Tests a couple of user inputs that are incorrect to the specific question
+		*
+		* Status: In Progress
+		*/
+		it('can successfully interpret incorrect answer input', inject(function($timeout){
+			// Set to last quesiton
+			$scope.curItem = $scope.total - 2;
+			// Data structures to simulate keyBoard events
+			var keyPress, keyCodes;
+			keyPress = new Object;
+
+			// Simulates pressing enter
+			keyPress.keyCode = 13;
+			$scope.getKeyInput(keyPress);
+
+			expect($scope.curItem).toEqual($scope.total - 1);
+
+			$timeout.flush();
+			$timeout.verifyNoPendingTasks();
+
+			// 109 tests characters not found on player keyboard
+			// 97 tests numpad values
+			// 73 tests double entry
+			keyCodes = [109, 72, 73, 73, 74, 97, 75, 76];
+
+			for(var i = 0; i < keyCodes.length; i++)
+			{
+					keyPress.keyCode = keyCodes[i];
+					$scope.getKeyInput(keyPress);
+			}
+
+			// Flush timeouts from anvil stage
+			$timeout.flush();
+			$timeout.flush();
+			$timeout.verifyNoPendingTasks();
+
+			expect(Hangman.Draw.incorrectGuess).toHaveBeenCalled();
+		}));
+
 		// Status: In Progress
 		// TODO:
 		it('ends the last question correctly', function(){
-			$scope.curItem = $scope.total - 1
-			$scope.endQuestion();
+			// Data structures to simulate keyBoard events
+			var keyPress, keyCodes;
+			keyPress = new Object;
 
-			expect(Hangman.Draw.breakBoredom).toHaveBeenCalled();
+			// Simulates pressing enter
+			keyPress.keyCode = 13;
+			$scope.getKeyInput(keyPress);
 
-			// Stop all input from user
 			expect($scope.inQues).toBe(false);
 			expect($scope.readyForInput).toBe(false);
 
 			// Make sure the game is ended
 			expect($scope.inGame).toBe(false);
 			expect($scope.gameDone).toBe(true);
+		});
+
+		it('can toggle a game off', function(){
+			$scope.toggleGame();
 			expect(Materia.Engine.end).toHaveBeenCalled();
 		});
 
-		// Status: Finished
-		it('ends the widget properly', function(){
-			$scope.endGame();
-			expect(Materia.Engine.end).toHaveBeenCalled();
+		it('does not toggle a game when loading', function(){
+			$scope.gameDone = false;
+			$scope.loading = true;
+
+			$scope.toggleGame();
 		});
 
 		// Status: Finished
