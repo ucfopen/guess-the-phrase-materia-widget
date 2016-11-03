@@ -40,7 +40,7 @@ module.exports = function(config) {
 		],
 
 		preprocessors: {
-			'build/controllers/*.js': ['coverage', 'eslint'],
+			'build/controllers/player.js': ['coverage', 'eslint'],
 			'build/demo.json': ['json_fixtures']
 		},
 
