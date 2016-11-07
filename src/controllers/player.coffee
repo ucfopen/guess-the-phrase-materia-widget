@@ -158,7 +158,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 			[a[i], a[j]] = [a[j], a[i]]
 		a
 
-	$scope.start = (instance, qset, version = '1') ->
+	$scope.start = (instance, qset) ->
 		# expose scope to test engine
 		window.scope = $scope
 
