@@ -30,6 +30,7 @@ describe('Hangman Widget', function () {
 			spyOn(Materia.Engine, 'end');
 
 			// Spy on animations
+			spyOn(Hangman.Draw, 'initCanvas');
 			spyOn(Hangman.Draw, 'breakBoredom');
 			spyOn(Hangman.Draw, 'playAnimation');
 			spyOn(Hangman.Draw, 'incorrectGuess');
@@ -63,23 +64,27 @@ describe('Hangman Widget', function () {
 			document.body.appendChild(loadbar);
 		});
 
-		// Status: Finished
+		/*
+		* Makes sure an instance of Hangman is started correctly when questions are
+		* not set to be randmized and total number of attempts is set.
+		*/
 		it('starts the game without randomizing questions', function(){
 			$scope.start(widgetInfo, qset.data);
 
 			expect(document.getElementById("browserfailure").style.display)
 				.toEqual('');
 
-		 	expect(qset.data.options.attempts).toEqual(5);
+			expect(qset.data.options.attempts).toEqual(5);
+
 			expect($scope.total).toEqual(6);
+			expect($scope.max).toEqual(reset.attempts(qset.data.options.attempts));
+			expect($scope.keyboard).toEqual(reset.keyboard());
 
 			expect($scope.title).toBe("Parts of a Cell");
 
-			expect($scope.max).toEqual(reset.attempts(qset.data.options.attempts));
-			expect($scope.keyboard).toEqual(reset.keyboard());
+			expect(Hangman.Draw.initCanvas).toHaveBeenCalled();
 		});
 
-		// Status: Finished
 		it('correctly initializes number of attempts when not explicitly set', function(){
 			qset.data.options.attempts = null;
 
@@ -88,7 +93,6 @@ describe('Hangman Widget', function () {
 		 	expect(qset.data.options.attempts).toEqual(5);
 		});
 
-		// Status: Finished
 		it('notifies browser failure when stage has no context', function(){
 			stage = document.getElementById('stage').getContext = false;
 
@@ -98,13 +102,16 @@ describe('Hangman Widget', function () {
 				.toEqual('block');
 		});
 
-		// Status: Finished
+		/*
+		* Tests that the _shuffle method correctly shuffles the questions in qset
+		*/
 		it('should shuffle question order when the randomize option is on', function(){
-			// this will make the output of Math.random() predictable, for the purpose
-			//  of shuffling answers
+			// this will make the output of Math.random() predictable
 			spyOn(Math, 'random').and.returnValue(0);
 
-			// Set the id each question that will later be used for comparison
+			// Set the id each question that will later be used for comparison. This
+			// 	is necessary because the ids of the loaded qset are set to null per
+			// 	demo.json
 			function setIds(q)
 			{
 					for(var i in q)
@@ -140,7 +147,6 @@ describe('Hangman Widget', function () {
 			expect(list1).not.toEqual(list2);
 		});
 
-		// Status: Finished
 		it('instantiates a game correctly', inject(function($timeout){
 			$scope.loading = false;
 			$scope.toggleGame();
@@ -196,8 +202,6 @@ describe('Hangman Widget', function () {
 
 		/*
 		* Tests a couple of user inputs that are correct to the specific question
-		*
-		* Status: Finished
 		*/
 		it('can interpret when the user chooses a correct letter', function(){
 			// Data structure to simulate keyBoard events
@@ -222,8 +226,6 @@ describe('Hangman Widget', function () {
 		/*
 		* Finishes the current question by inputting the rest of the correct answer
 		*	and checks to see that the question ends properly
-		*
-		* Status: Finished
 		*/
 		it('ends a question correctly when the user is correct', function(){
 			// Data structures to simulate keyBoard events
@@ -259,13 +261,14 @@ describe('Hangman Widget', function () {
 		});
 
 		/*
-		* Tests a couple of user inputs that are incorrect to the specific question
-		*
-		* Status: In Progress
+		* Verifies that hitting enter proceeds to the next question when not in the
+		* middle of a question.
 		*/
-		it('can successfully interpret incorrect answer input', inject(function($timeout){
-			// Set to last quesiton
+		it('moves to next question when enter is hit', inject(function($timeout){
+			// Proceeds to the second to last question to set up testing for the
+			// 	final question
 			$scope.curItem = $scope.total - 2;
+
 			// Data structures to simulate keyBoard events
 			var keyPress, keyCodes;
 			keyPress = new Object;
@@ -276,13 +279,24 @@ describe('Hangman Widget', function () {
 
 			expect($scope.curItem).toEqual($scope.total - 1);
 
+			// Flushed the timeout statements in startQuestion is called
+			//	no need to retest the variables again
 			$timeout.flush();
 			$timeout.verifyNoPendingTasks();
+		}));
+
+		/*
+		* Tests a couple of user inputs that are incorrect to the specific question
+		*/
+		it('can successfully interpret incorrect answer input', inject(function($timeout){
+			// Data structures to simulate keyBoard events
+			var keyPress, keyCodes;
+			keyPress = new Object;
 
 			// 109 tests characters not found on player keyboard
 			// 97 tests numpad values
 			// 73 tests double entry
-			keyCodes = [109, 72, 73, 73, 74, 97, 75, 76];
+			keyCodes = [109, 97, 72, 73, 73, 74, 75, 76];
 
 			for(var i = 0; i < keyCodes.length; i++)
 			{
@@ -290,7 +304,12 @@ describe('Hangman Widget', function () {
 					$scope.getKeyInput(keyPress);
 			}
 
-			// Flush timeouts from anvil stage
+			// Makes sure the keypad is also being registered
+			expect($scope.keyboard['1'].hit)
+				.toEqual(1);
+
+			// _updateAnvil has nested timeouts, one must be flushed before the next
+			// 	can be.
 			$timeout.flush();
 			$timeout.flush();
 			$timeout.verifyNoPendingTasks();
@@ -298,8 +317,10 @@ describe('Hangman Widget', function () {
 			expect(Hangman.Draw.incorrectGuess).toHaveBeenCalled();
 		}));
 
-		// Status: In Progress
-		// TODO:
+		/*
+		*	Simulates the user ending the last question, and makes sure the instance
+		* is ended
+		*/
 		it('ends the last question correctly', function(){
 			// Data structures to simulate keyBoard events
 			var keyPress, keyCodes;
@@ -329,7 +350,6 @@ describe('Hangman Widget', function () {
 			$scope.toggleGame();
 		});
 
-		// Status: Finished
 		it('knows how to identify a valid letter', function(){
 			var validLetters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"+
 				"0123456789";
@@ -353,7 +373,7 @@ describe('Hangman Widget', function () {
 	// describe('Creator Controller', function(){
 	// 	//grab the 'helloWidgetCreator' module for use in upcoming tests
 	// 	module.sharedInjector();
-	// 	beforeAll(module('helloWidget'));
+	// 	beforeAll(module('HangmanEngine'));
 	// 	//set up the controller/scope prior to these tests
 	// 	beforeAll(inject(function($rootScope, $controller){
 	// 		//instantiate $scope with all of the generic $scope methods/properties
@@ -361,18 +381,18 @@ describe('Hangman Widget', function () {
 	// 		//pass $scope through the 'helloWidgetCreatorCtrl' controller
 	// 		ctrl = $controller('helloWidgetCreatorCtrl', { $scope: $scope });
 	// 	}));
-
-		// beforeEach(function(){
-		// 	//lets us check which arguments are passed to this function when it's called
-		// 	spyOn(Materia.CreatorCore, 'alert').and.callThrough();
-		// 	spyOn(Materia.CreatorCore, 'save').and.callFake(function(title, qset){
-		// 		//the creator core calls this on the creator when saving is successful
-		// 		$scope.onSaveComplete();
-		// 		return {title: title, qset: qset};
-		// 	});
-		// 	spyOn(Materia.CreatorCore, 'cancelSave').and.callFake(function(msg){
-		// 		throw new Error(msg);
-		// 	});
-		// });
+	//
+	// 	beforeEach(function(){
+	// 		//lets us check which arguments are passed to this function when it's called
+	// 		spyOn(Materia.CreatorCore, 'alert').and.callThrough();
+	// 		spyOn(Materia.CreatorCore, 'save').and.callFake(function(title, qset){
+	// 			//the creator core calls this on the creator when saving is successful
+	// 			$scope.onSaveComplete();
+	// 			return {title: title, qset: qset};
+	// 		});
+	// 		spyOn(Materia.CreatorCore, 'cancelSave').and.callFake(function(msg){
+	// 			throw new Error(msg);
+	// 		});
+	// 	});
 	// });
 });
