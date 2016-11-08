@@ -41,6 +41,7 @@ module.exports = function(config) {
 
 		preprocessors: {
 			'build/controllers/player.js': ['coverage', 'eslint'],
+			'build/factories/*.js': ['coverage', 'eslint'],
 			'build/demo.json': ['json_fixtures']
 		},
 

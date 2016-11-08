@@ -318,7 +318,7 @@ describe('Hangman Widget', function () {
 		}));
 
 		/*
-		*	Simulates the user ending the last question, and makes sure the instance
+		* Simulates the user ending the last question, and makes sure the instance
 		* is ended
 		*/
 		it('ends the last question correctly', function(){
@@ -350,7 +350,7 @@ describe('Hangman Widget', function () {
 			$scope.toggleGame();
 		});
 
-		it('knows how to identify a valid letter', function(){
+		it('should identify a valid letter', function(){
 			var validLetters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"+
 				"0123456789";
 
@@ -370,29 +370,58 @@ describe('Hangman Widget', function () {
 		});
 	});
 
-	// describe('Creator Controller', function(){
-	// 	//grab the 'helloWidgetCreator' module for use in upcoming tests
-	// 	module.sharedInjector();
-	// 	beforeAll(module('HangmanEngine'));
-	// 	//set up the controller/scope prior to these tests
-	// 	beforeAll(inject(function($rootScope, $controller){
-	// 		//instantiate $scope with all of the generic $scope methods/properties
-	// 		$scope = $rootScope.$new();
-	// 		//pass $scope through the 'helloWidgetCreatorCtrl' controller
-	// 		ctrl = $controller('helloWidgetCreatorCtrl', { $scope: $scope });
-	// 	}));
-	//
-	// 	beforeEach(function(){
-	// 		//lets us check which arguments are passed to this function when it's called
-	// 		spyOn(Materia.CreatorCore, 'alert').and.callThrough();
-	// 		spyOn(Materia.CreatorCore, 'save').and.callFake(function(title, qset){
-	// 			//the creator core calls this on the creator when saving is successful
-	// 			$scope.onSaveComplete();
-	// 			return {title: title, qset: qset};
-	// 		});
-	// 		spyOn(Materia.CreatorCore, 'cancelSave').and.callFake(function(msg){
-	// 			throw new Error(msg);
-	// 		});
-	// 	});
-	// });
+	describe('Creator Controller', function(){
+		//grab the 'helloWidgetCreator' module for use in upcoming tests
+		module.sharedInjector();
+		beforeAll(module('HangmanEngine'));
+		//set up the controller/scope prior to these tests
+		beforeAll(inject(function($rootScope, $controller){
+			//instantiate $scope with all of the generic $scope methods/properties
+			$scope = $rootScope.$new();
+			//pass $scope through the 'helloWidgetCreatorCtrl' controller
+			ctrl = $controller('HangmanCreatorCtrl', { $scope: $scope });
+		}));
+
+		beforeEach(function(){
+			//lets us check which arguments are passed to this function when it's called
+			spyOn(Materia.CreatorCore, 'alert').and.callThrough();
+			spyOn(Materia.CreatorCore, 'save').and.callFake(function(title, qset){
+				//the creator core calls this on the creator when saving is successful
+				$scope.onSaveComplete();
+				return {title: title, qset: qset};
+			});
+			spyOn(Materia.CreatorCore, 'cancelSave').and.callFake(function(msg){
+				throw new Error(msg);
+			});
+		});
+
+		it('can set partial to true', function(){
+			$scope.setPartial(true);
+			expect($scope.partial).toBe(true);
+		});
+
+		it('can set partial to false', function(){
+			$scope.setPartial(false);
+			expect($scope.partial).toBe(false);
+		});
+
+		it('should identify a valid letter', function(){
+			var validLetters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"+
+				"0123456789";
+
+			for(var i=0; i<validLetters.length; i++)
+				expect($scope.isLetter(validLetters.charAt(i))[0])
+					.toEqual(validLetters.charAt(i));
+		});
+
+		// Status: Finished
+		// TODO: Checking how the app reacts to emojis could be helpful
+		it('knows how to identify an invalid letter', function(){
+			// this is only a sample of invalid characters
+			var invalidLetters = '~`!@#$%^&*()_+=-?><,./:;}{[]}\'\"{}|\][';
+
+			for(var i=0; i<invalidLetters.length; i++)
+				expect($scope.isLetter(invalidLetters.charAt(i))).toBe(null);
+		});
+	});
 });
