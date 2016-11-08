@@ -1,14 +1,3 @@
-###
-
-Materia
-It's a thing
-
-Widget  : Hangman, Creator
-Authors : Jonathan Warner, Micheal Parks, Brandon Stull
-Updated : 8/14
-
-###
-
 # Create an angular module to import the animation module and house our controller.
 Hangman = angular.module 'HangmanEngine'
 
@@ -20,6 +9,14 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 	$scope.partial = false
 	$scope.random = false
 	$scope.attempts = 5
+
+	# for use with paginating results
+	$scope.currentPage = 0;
+	$scope.pageSize = 20;
+
+	# determine how many pages of questions we have
+	$scope.numberOfPages = ->
+		Math.ceil $scope.items.length/$scope.pageSize
 
 	$scope.updateForBoard = (item) ->
 		if item.ans
@@ -134,10 +131,21 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 	$scope.onMediaImportComplete = (media) -> true
 
 	$scope.addItem = (ques = "", ans = "", id = "") ->
+		pages = $scope.numberOfPages()
 		$scope.items.push {ques:ques, ans:ans, foc:false, id: id }
+		# if adding this item makes a new page, go to that new page
+		if pages > 0 and pages < $scope.numberOfPages()
+			$scope.currentPage++
 
 	$scope.removeItem = (index) ->
-		$scope.items.splice index, 1
+		# Note: ng-repeat's $index will not take into account pagination
+		# Offset the index based on the current page & page size
+		itemsIndex = $scope.currentPage * $scope.pageSize + index
+		$scope.items.splice itemsIndex, 1
+
+		# If removing this item empties the page, paginate backwards
+		pages = $scope.numberOfPages()
+		if $scope.currentPage > 0 and $scope.currentPage > (pages - 1) then $scope.currentPage--
 
 	$scope.setAttempts = (num) ->
 		$scope.attempts = num
