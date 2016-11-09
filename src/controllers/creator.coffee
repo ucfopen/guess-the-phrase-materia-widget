@@ -1,8 +1,8 @@
 # Create an angular module to import the animation module and house our controller.
-Hangman = angular.module 'HangmanEngine'
+HangmanEngine = angular.module 'HangmanEngine'
 
 # Set the controller for the scope of the document body.
-Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
+HangmanEngine.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 ($scope, $sanitize, Resource) ->
 	$scope.title = "My Hangman widget"
 	$scope.items = []
