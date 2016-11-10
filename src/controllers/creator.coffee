@@ -148,11 +148,14 @@ HangmanEngine.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource
 		if $scope.currentPage > 0 and $scope.currentPage > (pages - 1) then $scope.currentPage--
 
 	$scope.setAttempts = (num) ->
-		$scope.attempts = num
+		# UI only allows for three to seven attempts
+		if num >= 3 and num <= 7
+			$scope.attempts = num
 
 	$scope.setPartial = (bool) ->
 		$scope.partial = bool
 
+	# is the index necessary?
 	$scope.editItem = (item,index) ->
 		item.editing = true
 
