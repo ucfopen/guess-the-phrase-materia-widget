@@ -20,9 +20,9 @@ HangmanEngine.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource
 
 	$scope.updateForBoard = (item) ->
 		if item.ans
-			item.answer = $scope.forBoard(item.ans.toString())
+			item.answer = _forBoard(item.ans.toString())
 
-	$scope.forBoard = (ans) ->
+	_forBoard = (ans) ->
 		# Question-specific data
 		dashes = []
 		guessed = []
@@ -133,6 +133,7 @@ HangmanEngine.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource
 	$scope.addItem = (ques = "", ans = "", id = "") ->
 		pages = $scope.numberOfPages()
 		$scope.items.push {ques:ques, ans:ans, foc:false, id: id }
+
 		# if adding this item makes a new page, go to that new page
 		if pages > 0 and pages < $scope.numberOfPages()
 			$scope.currentPage++
@@ -140,7 +141,9 @@ HangmanEngine.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource
 	$scope.removeItem = (index) ->
 		# Note: ng-repeat's $index will not take into account pagination
 		# Offset the index based on the current page & page size
+
 		itemsIndex = $scope.currentPage * $scope.pageSize + index
+
 		$scope.items.splice itemsIndex, 1
 
 		# If removing this item empties the page, paginate backwards
