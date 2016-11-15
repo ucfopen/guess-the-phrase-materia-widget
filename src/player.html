@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="HangmanEngine" ng-keydown="getKeyInput($event)" ng-controller="HangmanEngineCtrl">
+	<head>
+		<title>Hangman Engine</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+
+		<!-- STYLESHEETS -->
+		<link href="//fonts.googleapis.com/css?family=Montserrat:400,700|Purple+Purse" rel="stylesheet" type="text/css">
+		<link href="player.css" rel="stylesheet" type="text/css">
+
+		<!-- REQUIRED MATERIA JAVASCRIPT -->
+		<script src="materia.enginecore.js"></script>
+		<script src="materia.score.js"></script>
+
+		<!-- YOUR PREREQUISITES -->
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js" data-embed="false"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-animate.min.js" data-embed="false"></script>
+		<script src="assets/lib/createjs.js"></script>
+		<script src="assets/lib/modernizr.js" data-embed="false"></script>
+		<script src="assets/lib/hammer.min.js" data-embed="false"></script>
+		<script src="assets/lib/angular-hammer.min.js" data-embed="false"></script>
+		<script src="assets/lib/draw.js" data-embed='false'></script>
+
+		<!-- MAIN PLAYER SCRIPT -->
+		<script src="player.js"></script>
+	</head>
+	<body ng-cloak>
+		<div class="browserwarning">We recommend you upgrade your browser for a better experience</div>
+		<div id="browserfailure">
+			<p>We're sorry</p>
+			<p>But this widget requires features that your browser does not support.</p>
+			<p>Please upgrade to a newer version to play Hangman.</p>
+		</div>
+		<div ng-hide="inGame" hammer-tap="toggleGame()" class="overlay">
+			<div class="portal">
+				<h1>Hangman</h1>
+				<p ng-show="!gameDone">Press or type letters to guess words and phrases.</p>
+				<p ng-show="gameDone">Game completed!</p>
+				<div ng-show="loading" class="loader">
+					<center>
+						<div class="bar"></div>
+						<div>Loading...</div>
+					</center>
+				</div>
+				<div id="start" ng-show="!loading &amp;&amp; !gameDone" class="start">Start</div>
+				<div ng-show="!loading &amp;&amp; gameDone" class="finished"><span>FINISH</span></div>
+			</div>
+		</div>
+		<div class="game">
+			<canvas id="stage" aria-hidden="true" height="620" width="800"></canvas>
+			<div class="anvil-container stage-{{anvilStage}}">
+				<img src="assets/img/anvil.png" aria-hidden="true" class="anvil">
+			</div>
+			<div aria-hidden="true" class="podium"></div>
+			<div class="title"></div>
+			<div class="question-num">{{ curItem+1 }}</div>
+			<div class="total-questions"></div>
+			<div ng-class="{transition: inQues}" class="answer">
+				<div ng-repeat="word in answer.string" class="row">
+					<span ng-repeat="letter in word" ng-class="{quirks: cssQuirks}" class="box">
+						<span class="letter"
+							ng-class="{
+							spin: answer.guessed[$parent.$index][$index] != &quot;&quot;,
+							space: $index != 11 &amp;&amp; !isLetter(answer.guessed[$parent.$index][$index])}">
+							{{ answer.guessed[$parent.$index][$index] }}
+						</span>
+					</span>
+					<span ng-show="answer.dashes[$index]" class="box">
+						<span class="letter space spin">-</span>
+					</span>
+				</div>
+			</div>
+			<div ng-class="{transition: inQues}"
+				ng-show="inGame"
+				class="question">
+				{{ ques }}
+				<div class="tail"></div>
+			</div>
+			<div ng-show="inQues" class="attempts">
+				<span ng-repeat="attempt in max"
+					ng-class="{shown:attempt.fail}"
+					class="icon-close">
+				</span>
+			</div>
+			<div aria-hidden="true" class="keyboard-bg"></div>
+			<div aria-hidden="true"
+				ng-show="inQues"
+				ng-init="keys=[
+					['0','1','2','3','4','5','6','7','8','9'],
+					['q','w','e','r','t','y','u','i','o','p'],
+					['a','s','d','f','g','h','j','k','l'],
+					['z','x','c','v','b','n','m']
+				]"
+				class="keyboard">
+				<center>
+					<div ng-repeat="row in keys" class="row">
+						<span ng-repeat="key in keys[$index]"
+							ng-class="{faded:keyboard[key].hit == 1}"
+							hammer-tap="getUserInput(key)"
+							class="key">
+							{{ key }}
+						</span>
+					</div>
+					<div class="descript">PRESS OR TYPE</div>
+				</center>
+			</div>
+			<div ng-show="!inQues &amp;&amp; inGame"
+				hammer-tap="startQuestion()"
+				class="next">
+				Next
+			</div>
+		</div>
+	</body>
+</html>
