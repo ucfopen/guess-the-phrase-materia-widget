@@ -19,7 +19,7 @@ HangmanEngine.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource
 		Math.ceil $scope.items.length/$scope.pageSize
 
 	$scope.updateForBoard = (item) ->
-		if item.ans
+		if item? && item.ans
 			item.answer = _forBoard(item.ans.toString())
 
 	_forBoard = (ans) ->
