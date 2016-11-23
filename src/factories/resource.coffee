@@ -44,20 +44,4 @@ HangmanEngine.factory 'Resource', ['$sanitize', ($sanitize) ->
 		type: 'QA'
 		questions: [{text : item.ques}]
 		answers: [{value : '100', text : item.ans}]
-
-	# IE8/IE9 are super special and need this
-	placeholderPolyfill: () ->
-		$('[placeholder]')
-		.focus ->
-			if this.value is this.placeholder
-				this.value = ''
-				this.className = ''
-		.blur ->
-			if this.value is '' or this.value is this.placeholder
-				this.className = 'placeholder'
-				this.value = this.placeholder
-
-		$('form').submit ->
-			$(this).find('[placeholder]').each ->
-				if this.value is this.placeholder then this.value = ''
 ]
