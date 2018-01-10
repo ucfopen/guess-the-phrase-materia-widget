@@ -85,6 +85,7 @@
 			</li>
 			<li ng-repeat="item in items | startFrom:currentPage*pageSize | limitTo:pageSize" class="item" ng-class="{new: item.ques == ''}">
 				<span class="num">{{$index+1 + pageSize * currentPage}}</span>
+
 				<img ng-class="{shown:item.foc || item.editing}" src="assets/img/head-bubble.png">
 				<span aria-label="hint" class="hint">
 					<div ng-class="{shown:item.foc || item.editing}" class="arrow-left"></div>
@@ -130,6 +131,18 @@
 					class="delete">
 					<span class="icon-close"></span>
 					<span class="descript">remove</span>
+				</button>
+				<button aria-label="moveUp"
+					hammer-tap="moveItemUp($index)"
+					class="moveUp">
+					<span class="icon-arrow-up"></span>
+					<span class="descript">Move this question up</span>
+				</button>
+				<button aria-label="moveDown"
+					hammer-tap="moveItemDown($index)"
+					class="moveDown">
+					<span class="icon-arrow-down"></span>
+					<span class="descript">Move this question down</span>
 				</button>
 			</li>
 			<li>
