@@ -224,8 +224,11 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 		# if adding this item makes a new page, go to that new page
 		if pages > 0 and pages < $scope.numberOfPages()
 			$scope.currentPage++
+		console.log("add")
+
 
 	$scope.removeItem = (index) ->
+		console.log("remove")
 		# Note: ng-repeat's $index will not take into account pagination
 		# Offset the index based on the current page & page size
 		itemsIndex = $scope.currentPage * $scope.pageSize + index
@@ -246,6 +249,18 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 
 	$scope.isLetter = (letter) ->
 		letter.match(/[a-zA-Z0-9]/)
+
+	$scope.moveItemDown = (index) ->
+		if(index != $scope.items.length-1)
+			temp = $scope.items[index+1]
+			$scope.items[index+1] = $scope.items[index]
+			$scope.items[index] = temp
+
+	$scope.moveItemUp = (index) ->
+		if(index != 0)
+			temp = $scope.items[index-1]
+			$scope.items[index-1] = $scope.items[index]
+			$scope.items[index] = temp
 
 	Materia.CreatorCore.start $scope
 ]
