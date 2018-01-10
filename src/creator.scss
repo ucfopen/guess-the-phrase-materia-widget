@@ -36,6 +36,12 @@ $green: #70bd34;
 .icon-plus:before {
 	content: "\e601";
 }
+.icon-arrow-up:before {
+  content: "\2191";
+}
+.icon-arrow-down:before {
+	content: "\2193";
+}
 
 button, input, textarea, div {
 	&:focus {outline: none;}
@@ -316,6 +322,30 @@ ul {
 				color:#000;
 			}
 		}
+
+
+		button.moveUp {
+			right: -58px;
+			width: 35px;
+			margin-top: 60px;
+			cursor: pointer;
+			&:hover{
+				background-color: green;
+				color: white;
+			}
+		}
+
+		button.moveDown {
+			right: -58px;
+			width: 35px;
+			margin-top: 100px;
+			cursor: pointer;
+			&:hover{
+				background-color: green;
+				color: white;
+			}
+		}
+
 		.descript {
 			top: 7px;
 			left: 25px;
@@ -947,4 +977,3 @@ ul {
 		}
 	}
 }
-
