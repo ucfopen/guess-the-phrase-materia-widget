@@ -149,6 +149,23 @@ HangmanEngine.factory 'Input', ->
 		# Represents all letters correctly guessed
 		return 2
 
+# directive to handle click events during the transition between questions
+HangmanEngine.directive 'transitionManager', () ->
+	restrict: 'A',
+	link: ($scope, $element, $attrs) ->
+
+		$scope.inTransition = false
+
+		$element.on "transitionend", () ->
+		
+			if $scope.inTransition
+				$scope.inTransition = false
+				$scope.startQuestion()
+
+		$scope.preStartQuestion = ->
+			unless $scope.inTransition then $scope.inQues = $scope.inTransition = true
+
+
 HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'Reset', 'Input', ($scope, $timeout, Parse, Reset, Input) ->
 	_qset = null
 
@@ -238,6 +255,9 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 					$scope.startQuestion()
 
 	$scope.getUserInput = (input) ->
+
+		# Keyboard appears slightly before question transition is complete, so ignore early inputs
+		if $scope.inTransition then return
 		# Don't process keys that have been entered
 		if $scope.keyboard[input].hit is 1 then return
 
@@ -269,13 +289,11 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 	$scope.startQuestion = ->
 		$scope.inQues = true
 		$scope.curItem++
-		$timeout ->
-			$scope.answer = Parse.forBoard _qset.items[0].items[$scope.curItem].answers[0].text
-		, 500
-		$timeout ->
-			$scope.ques = _qset.items[0].items[$scope.curItem].questions[0].text
-			$scope.readyForInput = true
-		, 700
+
+		$scope.answer = Parse.forBoard _qset.items[0].items[$scope.curItem].answers[0].text
+		$scope.ques = _qset.items[0].items[$scope.curItem].questions[0].text
+
+		$scope.readyForInput = true
 
 		Hangman.Draw.playAnimation 'torso', 'pull-card'
 
@@ -291,7 +309,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 		# Stop the user from typing
 		$scope.readyForInput = false
 
-		if $scope.curItem is $scope.total-1
+		if $scope.curItem >= $scope.total-1 # >= for the rare instance where the index skips ahead unexpectedly (should be fixed though)
 			$scope.inGame = false
 			# Assigning this triggers the finish button's visibility
 			$scope.gameDone = true
