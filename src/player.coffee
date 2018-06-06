@@ -157,7 +157,6 @@ HangmanEngine.directive 'transitionManager', () ->
 		$scope.inTransition = false
 
 		$element.on "transitionend", () ->
-		
 			if $scope.inTransition
 				$scope.inTransition = false
 				$scope.startQuestion()
@@ -255,7 +254,6 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 					$scope.startQuestion()
 
 	$scope.getUserInput = (input) ->
-
 		# Keyboard appears slightly before question transition is complete, so ignore early inputs
 		if $scope.inTransition then return
 		# Don't process keys that have been entered
@@ -294,6 +292,8 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 		$scope.ques = _qset.items[0].items[$scope.curItem].questions[0].text
 
 		$scope.readyForInput = true
+
+		$scope.$apply()
 
 		Hangman.Draw.playAnimation 'torso', 'pull-card'
 
