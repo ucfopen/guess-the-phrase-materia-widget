@@ -286,15 +286,15 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 				$scope.anvilStage = 1
 
 	$scope.startQuestion = ->
-		$scope.inQues = true
-		$scope.curItem++
 
-		$scope.answer = Parse.forBoard _qset.items[0].items[$scope.curItem].answers[0].text
-		$scope.ques = _qset.items[0].items[$scope.curItem].questions[0].text
+		$scope.$apply ->
+			$scope.inQues = true
+			$scope.curItem++
 
-		$scope.readyForInput = true
+			$scope.answer = Parse.forBoard _qset.items[0].items[$scope.curItem].answers[0].text
+			$scope.ques = _qset.items[0].items[$scope.curItem].questions[0].text
 
-		$scope.$apply()
+			$scope.readyForInput = true
 
 		Hangman.Draw.playAnimation 'torso', 'pull-card'
 
