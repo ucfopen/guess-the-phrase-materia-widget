@@ -251,7 +251,8 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 			if event.keyCode is 13
 				# The user hit enter to move on to another question
 				if $scope.inGame and !$scope.inQues
-					$scope.startQuestion()
+					$timeout ->
+						$scope.startQuestion()
 
 	$scope.getUserInput = (input) ->
 		# Keyboard appears slightly before question transition is complete, so ignore early inputs
