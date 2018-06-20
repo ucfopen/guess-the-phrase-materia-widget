@@ -157,7 +157,6 @@ HangmanEngine.directive 'transitionManager', () ->
 		$scope.inTransition = false
 
 		$element.on "transitionend", () ->
-		
 			if $scope.inTransition
 				$scope.inTransition = false
 				$scope.startQuestion()
@@ -252,10 +251,10 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 			if event.keyCode is 13
 				# The user hit enter to move on to another question
 				if $scope.inGame and !$scope.inQues
-					$scope.startQuestion()
+					$timeout ->
+						$scope.startQuestion()
 
 	$scope.getUserInput = (input) ->
-
 		# Keyboard appears slightly before question transition is complete, so ignore early inputs
 		if $scope.inTransition then return
 		# Don't process keys that have been entered
@@ -287,13 +286,15 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 				$scope.anvilStage = 1
 
 	$scope.startQuestion = ->
-		$scope.inQues = true
-		$scope.curItem++
 
-		$scope.answer = Parse.forBoard _qset.items[0].items[$scope.curItem].answers[0].text
-		$scope.ques = _qset.items[0].items[$scope.curItem].questions[0].text
+		$scope.$apply ->
+			$scope.inQues = true
+			$scope.curItem++
 
-		$scope.readyForInput = true
+			$scope.answer = Parse.forBoard _qset.items[0].items[$scope.curItem].answers[0].text
+			$scope.ques = _qset.items[0].items[$scope.curItem].questions[0].text
+
+			$scope.readyForInput = true
 
 		Hangman.Draw.playAnimation 'torso', 'pull-card'
 
