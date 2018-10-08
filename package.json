@@ -1,33 +1,16 @@
 {
-  "name": "Hangman",
+  "name": "@ucfopen/hangman",
   "materia": {
     "cleanName": "hangman"
   },
-  "version": "2.0.0",
-  "dependencies": {
-    "materia-widget-development-kit": "git+ssh://git@clu.cdl.ucf.edu:materia/materia-widget-development-kit.git#v1.1.0"
-  },
+  "version": "1.0.0",
   "scripts": {
     "start": "webpack-dev-server",
     "build-dev": "webpack",
-    "build": "webpack -p",
-    "pretest": "npm run build-dev",
-    "test": "karma start ./karma.conf.js --no-auto-watch --single-run",
-    "devKit:link": "cd ../materia-widget-development-kit && yarn link && cd - && yarn link materia-widget-development-kit"
+    "build": "webpack -p"
   },
-  "author": "University of Central Florida, Center for Distributed Learning",
   "devDependencies": {
-    "angular": "~1.5.0",
-    "angular-loader": "~1.5.0",
-    "angular-mocks": "~1.5.0",
-    "angular-route": "~1.5.0",
-    "jasmine-core": "^2.4.1",
-    "karma": "^0.13.22",
-    "karma-coverage": "^0.5.5",
-    "karma-eslint": "^2.1.0",
-    "karma-jasmine": "^0.3.8",
-    "karma-json-fixtures-preprocessor": "0.0.6",
-    "karma-mocha-reporter": "^2.1.0",
-    "karma-phantomjs-launcher": "^1.0.2"
-  }
+    "materia-widget-development-kit": "v1.2.2"
+  },
+  "license": "AGPL-3.0"
 }
