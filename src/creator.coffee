@@ -90,8 +90,8 @@ Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
 ]
 
 # Set the controller for the scope of the document body.
-Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
-($scope, $sanitize, Resource) ->
+Hangman.controller 'HangmanCreatorCtrl', ['$timeout', '$scope', '$sanitize', 'Resource',
+($timeout, $scope, $sanitize, Resource) ->
 	$scope.title = "My Hangman widget"
 	$scope.items = []
 	$scope.partial = false
@@ -100,7 +100,7 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 
 	# for use with paginating results
 	$scope.currentPage = 0;
-	$scope.pageSize = 20;
+	$scope.pageSize = 15;
 
 	# determine how many pages of questions we have
 	$scope.numberOfPages = ->
@@ -213,30 +213,41 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 	$scope.onSaveComplete = (title, widget, qset, version) -> true
 
 	$scope.onQuestionImportComplete = (items) ->
-		$scope.addItem items[i].questions[0].text, items[i].answers[0].text, items[i].id for i in [0..items.length-1]
-		$scope.$apply()
+		$scope.$apply ->
+			for i in [0..items.length-1]
+				$scope.addItem items[i].questions[0].text, items[i].answers[0].text, items[i].id
 
 	$scope.onMediaImportComplete = (media) -> true
+
+	$scope.newQuestion = ->
+		$scope.addItem()
+		# go to the last page where the new item is
+		if $scope.currentPage != $scope.numberOfPages() - 1
+			$scope.currentPage = $scope.numberOfPages() - 1
+
+		$timeout ->
+			body = document.body
+			html = document.documentElement;
+			height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+
+			window.scrollTo({ left: 0, top: height, behavior: 'smooth'})
+		,
+		400
 
 	$scope.addItem = (ques = "", ans = "", id = "") ->
 		pages = $scope.numberOfPages()
 		$scope.items.push {ques:ques, ans:ans, foc:false, id: id }
-		# if adding this item makes a new page, go to that new page
-		if pages > 0 and pages < $scope.numberOfPages()
-			$scope.currentPage++
-		console.log("add")
 
+	$scope.shouldBeFocused = (item) ->
+		item.ques.length == 0 && item.ans.length == 0
 
 	$scope.removeItem = (index) ->
-		console.log("remove")
-		# Note: ng-repeat's $index will not take into account pagination
-		# Offset the index based on the current page & page size
-		itemsIndex = $scope.currentPage * $scope.pageSize + index
-		$scope.items.splice itemsIndex, 1
+		$scope.items.splice index, 1
 
 		# If removing this item empties the page, paginate backwards
 		pages = $scope.numberOfPages()
-		if $scope.currentPage > 0 and $scope.currentPage > (pages - 1) then $scope.currentPage--
+		if $scope.currentPage > pages - 1
+			$scope.currentPage = pages - 1
 
 	$scope.setAttempts = (num) ->
 		$scope.attempts = num
@@ -251,16 +262,18 @@ Hangman.controller 'HangmanCreatorCtrl', ['$scope', '$sanitize', 'Resource',
 		letter.match(/[a-zA-Z0-9]/)
 
 	$scope.moveItemDown = (index) ->
-		if(index != $scope.items.length-1)
-			temp = $scope.items[index+1]
-			$scope.items[index+1] = $scope.items[index]
-			$scope.items[index] = temp
+		return if index == $scope.items.length-1
+
+		temp = $scope.items[index+1]
+		$scope.items[index+1] = $scope.items[index]
+		$scope.items[index] = temp
 
 	$scope.moveItemUp = (index) ->
-		if(index != 0)
-			temp = $scope.items[index-1]
-			$scope.items[index-1] = $scope.items[index]
-			$scope.items[index] = temp
+		return if index == 0
+
+		temp = $scope.items[index-1]
+		$scope.items[index-1] = $scope.items[index]
+		$scope.items[index] = temp
 
 	Materia.CreatorCore.start $scope
 ]

@@ -12,9 +12,9 @@
 		<script src="materia.creatorcore.js"></script>
 
 		<!-- YOUR PREREQUISITES -->
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-animate.min.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-sanitize.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.9/angular.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.9/angular-animate.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.9/angular-sanitize.min.js"></script>
 		<script src="assets/lib/hammer.min.js" data-embed="false"></script>
 		<script src="assets/lib/angular-hammer.min.js" data-embed="false"></script>
 
@@ -23,17 +23,6 @@
 	</head>
 	<body ng-cloak ng-controller="HangmanCreatorCtrl">
 		<div id="modal"></div>
-		<div class="question-tip">?
-			<div class="qtip-box">
-				<p>
-					If <b>partial scoring</b> is on then students will receive credit equal to the percentage of the phrase they reveal.
-					When off students will receive a 100% if they guess the phrase correctly and a 0% otherwise.
-				</p>
-				<p>
-					If the student doesn't reveal the phrase after the number of allowed <b>incorrect guesses</b> they move on to the next phrase.
-				</p>
-			</div>
-		</div>
 		<div id="header">
 			<div class="logo"></div>
 			<h1 id="title" ng-bind="title" ng-click="showTitleDialog = true"></h1>
@@ -71,9 +60,20 @@
 				<input type="checkbox" id="partial" ng-model="partial">
 				<label for="partial" class="checktoggle"></label>
 			</div>
+			<div class="question-tip">?
+				<div class="qtip-box">
+					<p>
+						If <b>partial scoring</b> is on then students will receive credit equal to the percentage of the phrase they reveal.
+						When off students will receive a 100% if they guess the phrase correctly and a 0% otherwise.
+					</p>
+					<p>
+						If the student doesn't reveal the phrase after the number of allowed <b>incorrect guesses</b> they move on to the next phrase.
+					</p>
+				</div>
+			</div>
 			<div class="bottom"></div>
 		</div>
-		<div id="pagination" ng-show="numberOfPages() > 1">
+		<div class="pagination" ng-show="numberOfPages() > 1">
 			<button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">Previous</button>
 			<span>{{currentPage+1}}/{{numberOfPages()}}</span>
 			<button ng-disabled="currentPage >= numberOfPages() - 1" ng-click="currentPage=currentPage+1">Next</button>
@@ -84,7 +84,12 @@
 				<h3>Phrase</h3>
 			</li>
 			<li ng-repeat="item in items | startFrom:currentPage*pageSize | limitTo:pageSize" class="item" ng-class="{new: item.ques == ''}">
-				<span class="num">{{$index+1 + pageSize * currentPage}}</span>
+				{{
+					questionIndex=$index+pageSize*currentPage;
+					""
+				}}
+
+				<span class="num">{{questionIndex+1}}</span>
 
 				<img ng-class="{shown:item.foc || item.editing}" src="assets/img/head-bubble.png">
 				<span aria-label="hint" class="hint">
@@ -94,8 +99,7 @@
 						ng-focus="item.foc=true"
 						ng-blur="item.foc=false"
 						ng-model="item.ques"
-						tabindex="{{$index + 1}}"
-						focus-me="true">
+						focus-me="shouldBeFocused(item)">
 					</textarea>
 				</span>
 				<span aria-label="word" class="word">
@@ -108,7 +112,6 @@
 						ng-focus="item.editing=true"
 						ng-enter="item.editing=false"
 						ng-class="{ show: item.editing }"
-						tabindex="{{$index + 2}}"
 						focus-me="item.editing">
 					</textarea>
 					<div ng-class="{ toolong: item.answer.string.length > 3 }"
@@ -127,28 +130,46 @@
 					</div>
 				</span>
 				<button aria-label="delete"
-					hammer-tap="removeItem($index)"
+					hammer-tap="removeItem(questionIndex)"
+					ng-enter="removeItem(questionIndex)"
 					class="delete">
 					<span class="icon-close"></span>
-					<span class="descript">remove</span>
+					<span class="label">Remove</span>
 				</button>
 				<button aria-label="moveUp"
-					hammer-tap="moveItemUp($index)"
+					hammer-tap="moveItemUp(questionIndex)"
+					ng-enter="moveItemUp(questionIndex)"
+					ng-disabled="questionIndex==0"
 					class="moveUp">
 					<span class="icon-arrow-up"></span>
-					<span class="descript">Move this question up</span>
+					<span class="label">Move up</span>
 				</button>
 				<button aria-label="moveDown"
-					hammer-tap="moveItemDown($index)"
+					hammer-tap="moveItemDown(questionIndex)"
+					ng-enter="moveItemDown(questionIndex)"
+					ng-disabled="questionIndex==items.length-1"
 					class="moveDown">
 					<span class="icon-arrow-down"></span>
-					<span class="descript">Move this question down</span>
+					<span class="label">Move down</span>
 				</button>
 			</li>
-			<li>
-				<button aria-label="add item" hammer-tap="addItem()" class="add"><span class="icon-plus"></span><span>&nbsp;Add Question</span></button>
-			</li>
 		</ul>
+
+
+		<button
+			aria-label="add item"
+			hammer-tap="newQuestion()"
+			class="add-question"
+			>
+			<span class="icon-plus"></span> <span>Add Question</span>
+		</button>
+
+		<div class="pagination footer" ng-show="numberOfPages() > 1">
+			<button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">Previous</button>
+			<span>{{currentPage+1}}/{{numberOfPages()}}</span>
+			<button ng-disabled="currentPage >= numberOfPages() - 1" ng-click="currentPage=currentPage+1">Next</button>
+		</div>
+
 		<div ng-show="!items.length &amp;&amp; step" class="arrow-box">
 			<span>Click here to add your first question</span>
 		</div>
