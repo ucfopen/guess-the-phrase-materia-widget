@@ -36,9 +36,11 @@ $green: #70bd34;
 .icon-plus:before {
 	content: "\e601";
 }
-
-button, input, textarea, div {
-	&:focus {outline: none;}
+.icon-arrow-up:before {
+  content: "\2191";
+}
+.icon-arrow-down:before {
+	content: "\2193";
 }
 
 textarea {
@@ -46,20 +48,12 @@ textarea {
 }
 
 html, body {
-	cursor: default;
 	background: #232b2c;
 	color: #fff;
 	font-family: "Lato","Arial",sans-serif;
 	margin: 0;
 	padding: 0;
-	user-select: none;
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-	overflow-x: hidden;
-	-webkit-backface-visibility: hidden;
+	padding-bottom: 30px;
 }
 
 ul {
@@ -77,24 +71,32 @@ button {
 	padding: 8px;
 	width: 130px;
 	border: none;
-	&:hover .descript, &:focus .descript {
+
+	&:hover .label,
+	&:focus .label {
 		opacity: 1;
 	}
-	.descript {
+
+	.label {
 		position: absolute;
 		font-size: 13px;
-		width: 90px;
 		opacity: 0;
 		padding: 5px;
 		margin: -5px;
 		transition: all 200ms;
+		text-align: left;
+	}
+
+	&:disabled .label {
+		opacity: 0;
 	}
 }
 
-#pagination {
+.pagination {
 	text-align: center;
 	position: relative;
 	padding-top: 20px;
+	margin: 10px;
 
 	&:before {
 		content: "Page:";
@@ -120,10 +122,14 @@ button {
 	}
 }
 
+.pagination.footer {
+	margin: 30px;
+}
+
 ul {
 	position: relative;
 	width: 825px;
-	margin: auto;
+	margin: 0 auto;
 	padding: 0;
 	perspective: 800px;
 	perspective-origin: 50% 100%;
@@ -311,41 +317,68 @@ ul {
 			width: 35px;
 			margin-top: 13px;
 			cursor: pointer;
-			&:hover{
+			&:hover,
+			&:active,
+			&:focus{
+				outline: none;
 				background-color:#F00;
 				color:#000;
 			}
 		}
-		.descript {
-			top: 7px;
-			left: 25px;
-			color: rgba(255, 255, 255, 0.6);
-		}
-		button.add {
-			left: 50%;
-			margin: 0 0 0 -68px;
-			transition: 200ms all;
-			background: $green;
-			color: #fff;
-			border-radius: 0px;
-			padding: 2px;
-			height: 50px;
-			width: 170px;
-			font-family: 'Lato';
-			font-weight: 300;
-			font-size: 18px;
-			cursor: pointer;
+	}
+}
 
-			margin-top: 60px;
+button.moveUp,
+button.moveDown {
+	right: -58px;
+	width: 35px;
+	margin-top: 60px;
+	cursor: pointer;
+	&:hover,
+	&:active,
+	&:focus{
+		outline: none;
+		background-color: green;
+		color: white;
+	}
+	&:disabled{
+		cursor: default;
+		background-color: rgba(0, 0, 0, 0.3);
+		color: rgba(255, 255, 255, 0.3);;
+	}
+}
 
-			&:hover {
-				background: #7AD038;
-			}
+button.moveDown {
+	margin-top: 100px;
+}
 
-			span {
-				margin: 0px 3px;
-			}
-		}
+button .label {
+	top: 7px;
+	left: 45px;
+	color: rgba(255, 255, 255, 0.6);
+}
+
+button.add-question {
+	display: block;
+	position: relative;
+	margin: 10px auto;
+	background: $green;
+	color: #fff;
+	border-radius: 0px;
+	padding:10px 20px;
+	width: 170px;
+	font-family: 'Lato';
+	font-weight: 300;
+	font-size: 18px;
+	cursor: pointer;
+	box-sizing: content-box;
+
+	&:hover {
+		background: #7AD038;
+	}
+
+	span {
+		margin: 0px 3px;
 	}
 }
 
@@ -388,7 +421,6 @@ ul {
 	box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 	color: #333;
 
-	font-family: 'Lato';
 	font-weight: 300;
 
 	img {
@@ -456,15 +488,14 @@ ul {
 	background: #fbf767;
 	border: 2px solid #fbf767;
 	left: 50%;
-	top: 154px;
+	top: 110px;
 	color: #151515;
 	font-weight: 400;
 	padding: 5px;
 	height: 50px;
 	width: 150px;
-
+	z-index: 100;
 	margin-left: 150px;
-
 	animation: pounce 1s infinite;
 
 	span {
@@ -515,7 +546,7 @@ ul {
 }
 
 #header {
-	position: relative;
+	position: sticky;
 	top: 0px;
 	left: 0px;
 	right: 0px;
@@ -533,7 +564,6 @@ ul {
 		left: 0px;
 		right: 0px;
 		bottom: 0px;
-		margin: 0px -8px;
 		border-bottom: solid 8px #9ec100;
 	}
 
@@ -947,4 +977,3 @@ ul {
 		}
 	}
 }
-

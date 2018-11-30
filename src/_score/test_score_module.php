@@ -1,11 +1,5 @@
 <?php
 /**
- *
- * @package	    Materia
- * @subpackage  scoring
- * @category    Modules
- * @author      ADD NAME HERE
- * 
  * @group App
  * @group Materia
  * @group Score

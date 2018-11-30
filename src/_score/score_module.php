@@ -1,26 +1,11 @@
 <?php
-/**
- * {ADD YOUR DOCUMENTATION HERE}
- *
- * 
- *
- * The widget score module
- *
- * @package	    Materia
- * @subpackage  scoring
- * @category    Modules
- * @author      ADD NAME HERE
- *
- * @group App
- * @group Materia
- * @group Score
- * @group Hangman
- */
 
 namespace Materia;
 
 class Score_Modules_Hangman extends Score_Module
 {
+	protected $_ss_table_headers = ['Question Score', 'The Question', 'Your Correct Guesses', 'Correct Answer'];
+
 	public function check_answer($log)
 	{
 		// get qset once for options

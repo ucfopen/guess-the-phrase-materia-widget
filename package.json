@@ -12,5 +12,10 @@
   "devDependencies": {
     "materia-widget-development-kit": "2.0.0"
   },
-  "license": "AGPL-3.0"
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "createjs": "1.0.0",
+    "hammerjs": "1.0.5",
+    "modernizr-webpack-plugin": "^1.0.7"
+  }
 }
