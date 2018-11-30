@@ -15,47 +15,47 @@ class Test_Score_Modules_Hangman extends \Basetest
 					{
 						"items":[
 							{
-						 		"name":null,
-						 		"type":"QA",
-						 		"assets":null,
-						 		"answers":[
-						 			{
-						 				"text":"'.$ans1.'",
-						 				"options":{},
-						 				"value":"100"
-						 			}
-						 		],
-						 		"questions":[
-						 			{
-						 				"text":"q1",
-						 				"options":{},
-						 				"value":""
-						 			}
-						 		],
-						 		"options":{},
-						 		"id":0
-						 	},
+								"name":null,
+								"type":"QA",
+								"assets":null,
+								"answers":[
+									{
+										"text":"'.$ans1.'",
+										"options":{},
+										"value":"100"
+									}
+								],
+								"questions":[
+									{
+										"text":"q1",
+										"options":{},
+										"value":""
+									}
+								],
+								"options":{},
+								"id":0
+							},
 							{
-						 		"name":null,
-						 		"type":"QA",
-						 		"assets":null,
-						 		"answers":[
-						 			{
-						 				"text":"'.$ans2.'",
-						 				"options":{},
-						 				"value":"100"
-						 			}
-						 		],
-						 		"questions":[
-						 			{
-						 				"text":"q2",
-						 				"options":{},
-						 				"value":""
-						 			}
-						 		],
-						 		"options":{},
-						 		"id":0
-						 	}
+								"name":null,
+								"type":"QA",
+								"assets":null,
+								"answers":[
+									{
+										"text":"'.$ans2.'",
+										"options":{},
+										"value":"100"
+									}
+								],
+								"questions":[
+									{
+										"text":"q2",
+										"options":{},
+										"value":""
+									}
+								],
+								"options":{},
+								"id":0
+							}
 						],
 						"name":"",
 						"options":{},
@@ -63,14 +63,14 @@ class Test_Score_Modules_Hangman extends \Basetest
 						"rand":false
 					}
 				],
-				 "name":"",
-				 "options":
-				 	{
-				 		"attempts":5,
-				 		"partial":'.$partial.'
-				 	},
-				 "assets":[],
-				 "rand":false
+				"name":"",
+				"options":
+					{
+						"attempts":5,
+						"partial":'.$partial.'
+					},
+				"assets":[],
+				"rand":false
 			}');
 	}
 

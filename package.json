@@ -6,16 +6,20 @@
   "version": "1.1.1",
   "scripts": {
     "start": "webpack-dev-server",
+    "build": "webpack -p",
     "build-dev": "webpack",
-    "build": "webpack -p"
+    "test": "echo 'tests not implemented'",
+    "test-ci": "echo 'tests not implemented'"
   },
   "devDependencies": {
     "materia-widget-development-kit": "2.0.0"
   },
-  "license": "AGPL-3.0",
   "dependencies": {
     "createjs": "1.0.0",
     "hammerjs": "1.0.5",
     "modernizr-webpack-plugin": "^1.0.7"
-  }
+  },
+  "license": "AGPL-3.0",
+  "description": "Hangman is a guessing game played by guessing letters in a word using the provided clues.",
+  "author": "University of Central Florida, Center for Distributed Learning"
 }

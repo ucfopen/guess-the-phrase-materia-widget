@@ -24,9 +24,9 @@ class Score_Modules_Hangman extends Score_Module
 			$submitted = $this->clean_str($log->text);
 			$submitted = array_slice($submitted, 0, $answer_size + $wrong_limit - 1);
 
-	 		$missed = count(array_diff($answer, $submitted));
+			$missed = count(array_diff($answer, $submitted));
 
-	 		// if qset option allows partial scores, calculate
+			// if qset option allows partial scores, calculate
 			if ($missed)
 			{
 				if ($is_partial) return (100 - (($missed / $answer_size) * 100));
