@@ -37,9 +37,9 @@ const modernizrConfig = {
 	noChunk: true,
 	filename: 'assets/lib/modernizr.js',
 	'options':[
-		'domprefixes',
+		'domPrefixes',
 		'prefixes',
-		'setclasses',
+		'setClasses',
 		"html5shiv",
 		"testAllProps",
 		"testProp",
