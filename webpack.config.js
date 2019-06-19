@@ -1,34 +1,59 @@
+const fs = require('fs')
 const path = require('path')
-const srcPath = path.join(__dirname, 'src') + path.sep
-const outputPath = path.join(__dirname, 'build')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const marked = require('meta-marked')
 const widgetWebpack = require('materia-widget-development-kit/webpack-widget')
 const ModernizrWebpackPlugin = require('modernizr-webpack-plugin');
 
-const entries = widgetWebpack.getDefaultEntries()
+const rules = widgetWebpack.getDefaultRules()
 const copy = widgetWebpack.getDefaultCopyList()
 
-entries['player.js'] = [
-	srcPath+'draw.coffee',
-	srcPath+'player.coffee'
-]
-entries['assets/lib/draw.js'] = [srcPath+'draw.coffee']
-entries['assets/lib/angular-hammer.min.js'] = [srcPath+'angular-hammer.js']
+const entries = {
+	'creator.js': [
+		path.join(__dirname, 'src', 'draw.coffee'),
+		path.join(__dirname, 'src', 'creator.coffee')
+	],
+	'player.js': [
+		path.join(__dirname, 'src', 'draw.coffee'),
+		path.join(__dirname, 'src', 'player.coffee')
+	],
+	'creator.css': [
+		path.join(__dirname, 'src', 'creator.html'),
+		path.join(__dirname, 'src', 'creator.scss')
+	],
+	'player.css': [
+		path.join(__dirname, 'src', 'player.html'),
+		path.join(__dirname, 'src', 'player.scss')
+	],
+	'guides/guideStyles.css': [
+		path.join(__dirname, 'src', '_helper-docs', 'guideStyles.scss')
+	]
+}
 
 // copy libs from node_modules to libs dir
+const srcPath = path.join(process.cwd(), 'src')
+const outputPath = path.join(process.cwd(), 'build')
+
 const customCopy = copy.concat([
+	{
+		from: `${srcPath}/_helper-docs/assets`,
+		to: `${outputPath}/guides/assets`,
+		toType: 'dir'
+	},
 	{
 		from: path.join(__dirname, 'node_modules', 'hammerjs', 'dist', 'hammer.min.js'),
 		to: path.join(__dirname, 'build', 'assets', 'lib')
 	},
-	{
-		from: path.join(__dirname, 'node_modules', 'createjs', 'builds', 'createjs-2013.12.12.min.js'),
-		to: path.join(__dirname, 'build', 'assets', 'lib', 'createjs.js')
-	}
+	//maybe take below out?
+	// {
+	// 	from: path.join(__dirname, 'node_modules', 'createjs', 'builds', 'createjs-2013.12.12.min.js'),
+	// 	to: path.join(__dirname, 'build', 'assets', 'lib', 'createjs.js')
+	// }
 ])
 
-let options = {
-	entries: entries,
-	copyList: customCopy
+const options = {
+	copyList: customCopy,
+	entries: entries
 }
 
 const webpackConfig = widgetWebpack.getLegacyWidgetBuildConfig(options)
@@ -67,4 +92,24 @@ const modernizrConfig = {
 
 webpackConfig.plugins.push(new ModernizrWebpackPlugin(modernizrConfig))
 
-module.exports = webpackConfig
+const generateHelperPlugin = name => {
+	const file = fs.readFileSync(path.join(__dirname, 'src', '_helper-docs', name+'.md'), 'utf8')
+	const content = marked(file)
+
+	return new HtmlWebpackPlugin({
+		template: path.join(__dirname, 'src', '_helper-docs', 'helperTemplate'),
+		filename: path.join(outputPath, 'guides', name+'.html'),
+		title: name.charAt(0).toUpperCase() + name.slice(1),
+		chunks: ['guides'],
+		content: content.html
+	})
+}
+
+let buildConfig = widgetWebpack.getLegacyWidgetBuildConfig(options)
+
+buildConfig.plugins.unshift(generateHelperPlugin('creator'))
+buildConfig.plugins.unshift(generateHelperPlugin('player'))
+
+module.exports = buildConfig
+
+//module.exports = webpackConfig

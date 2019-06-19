@@ -56,6 +56,10 @@ files:
   # Minimum flash version required to view the player (and creator).
   flash_version: 0
 
+  creator_guide: guides/creator.html
+
+  player_guide: guides/player.html
+
 score:
   # Whether the widget is scorable or not
   is_scorable: Yes
