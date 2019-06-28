@@ -80,6 +80,10 @@ meta_data:
   # A list of the types of data which this widget supports. This will be presented in the widget catalog.
   supported_data:
     - Question/Answer
+  benefits:
+    - https://media.neliti.com/media/publications/60385-EN-improving-vocabulary-mastery-through-han.pdf
+    - https://iubmb.onlinelibrary.wiley.com/doi/full/10.1002/bmb.20826
+    - http://mathandreadinghelp.org/articles/Hangman-The_Classic_Effect_of_Word_Games.html
   # The text displayed on the widget detail page.
   about: >
     Hangman is a guessing game played by
