@@ -12,7 +12,7 @@
     "test-ci": "echo 'tests not implemented'"
   },
   "devDependencies": {
-    "materia-widget-development-kit": "^2.3.0"
+    "materia-widget-development-kit": "2.4.2"
   },
   "dependencies": {
     "createjs": "1.0.0",
