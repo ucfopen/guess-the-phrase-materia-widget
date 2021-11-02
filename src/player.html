@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="HangmanEngine" ng-keydown="getKeyInput($event)" ng-controller="HangmanEngineCtrl">
 	<head>
-		<title>Hangman Engine</title>
+		<title>Guess the Phrase Engine</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -29,11 +29,11 @@
 		<div id="browserfailure">
 			<p>We're sorry</p>
 			<p>But this widget requires features that your browser does not support.</p>
-			<p>Please upgrade to a newer version to play Hangman.</p>
+			<p>Please upgrade to a newer version to play Guess the Phrase.</p>
 		</div>
 		<div ng-hide="inGame" hammer-tap="toggleGame()" class="overlay">
 			<div class="portal">
-				<h1>Hangman</h1>
+				<h1>Guess the Phrase</h1>
 				<p ng-show="!gameDone">Press or type letters to guess words and phrases.</p>
 				<p ng-show="gameDone">Game completed!</p>
 				<div ng-show="loading" class="loader">

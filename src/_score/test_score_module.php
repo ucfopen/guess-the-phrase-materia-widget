@@ -78,7 +78,7 @@ class Test_Score_Modules_Hangman extends \Basetest
 	{
 		$this->_asAuthor();
 
-		$title = 'HANGMAN SCORE MODULE TEST';
+		$title = 'GUESS THE PHRASE SCORE MODULE TEST';
 		$widget_id = $this->_find_widget_id('Hangman');
 		$qset = (object) ['version' => 1, 'data' => $this->_get_qset('Ajdklpq90!?', ' !Ajdk lpq-]90', $partial)];
 		return \Materia\Api::widget_instance_save($widget_id, $title, $qset, false);

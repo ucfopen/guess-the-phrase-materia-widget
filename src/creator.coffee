@@ -92,7 +92,7 @@ Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
 # Set the controller for the scope of the document body.
 Hangman.controller 'HangmanCreatorCtrl', ['$timeout', '$scope', '$sanitize', 'Resource',
 ($timeout, $scope, $sanitize, Resource) ->
-	$scope.title = "My Hangman widget"
+	$scope.title = "My Guess the Phrase widget"
 	$scope.items = []
 	$scope.partial = false
 	$scope.random = false
