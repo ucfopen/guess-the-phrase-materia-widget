@@ -1,0 +1,48 @@
+body {
+	background-image: url("assets/img/background-tile.png");
+	background-repeat: repeat;
+	background-position: center;
+	background-color: #a5d5da;
+	font-family: "Montserrat", sans-serif;
+}
+table, td {
+  border: 1px solid #c2e1e5;
+	border-collapse: collapse;
+}
+table {
+	background-color: #edf7f8;
+	border: 3px solid #fff277;
+}
+tr:nth-child(odd) {
+	background-color: #daeff2;
+}
+th {
+	background-image: url("assets/img/green-wood-texture.png");
+	background-position: center;
+	background-color: #8da819;
+	font-size: 24px;
+	font-family: "Purple Purse", sans-serif;
+	border: 3px solid #fff277;
+	border-collapse: collapse;
+	padding: 10px 15px;
+}
+td {
+	font-size: 18px;
+	padding: 10px 15px;
+}
+.responses, #title {
+	font-family: "Purple Purse", sans-serif;
+	text-align: center;
+}
+.responses {
+	font-size: 40px;
+}
+.score {
+	font-weight: bold;
+	font-family: "Purple Purse", "Montserrat", sans-serif;
+	font-size: 20px;
+	text-align: center;
+}
+#title {
+	font-size: 24px;
+}

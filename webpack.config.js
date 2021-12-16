@@ -7,6 +7,30 @@ const outputPath = path.join(__dirname, 'build') + path.sep
 
 const copy = widgetWebpack.getDefaultCopyList()
 
+const rules = widgetWebpack.getDefaultRules()
+
+const customDoNothingToJs = rules.loaderDoNothingToJs
+customDoNothingToJs.test = /(?:player|creator)\.js$/
+
+const customReactLoader = {
+	test: /scoreScreen.*\.js$/i,
+	exclude: /node_modules/,
+	use: {
+		loader: 'babel-loader'
+	}
+}
+
+let customRules = [
+	customDoNothingToJs,
+	rules.loaderCompileCoffee,
+	rules.copyImages,
+	rules.loadHTMLAndReplaceMateriaScripts,
+	rules.loadAndPrefixCSS,
+	rules.loadAndPrefixSASS,
+	rules.loadAndCompileMarkdown,
+	customReactLoader
+]
+
 const entries = {
 	'creator.js': [
 			path.join(srcPath, 'creator.coffee'),
@@ -14,6 +38,9 @@ const entries = {
 	'player.js': [
 			path.join(srcPath, 'draw.coffee'),
 			path.join(srcPath, 'player.coffee')
+	],
+	'scoreScreen.js': [
+			path.join(srcPath, 'scoreScreen.js')
 	],
 	'assets/lib/draw.js': [
 			path.join(srcPath, 'draw.coffee')
@@ -28,6 +55,10 @@ const entries = {
 	'player.css': [
 			path.join(srcPath, 'player.html'),
 			path.join(srcPath, 'player.scss')
+	],
+	'scoreScreen.css': [
+			path.join(srcPath, 'scoreScreen.html'),
+			path.join(srcPath, 'scoreScreen.scss')
 	],
 	'guides/player.temp.html': [
 			path.join(srcPath, '_guides', 'player.md')
@@ -55,7 +86,8 @@ const customCopy = copy.concat([
 
 const options = {
 	copyList: customCopy,
-	entries: entries
+	entries: entries,
+	moduleRules: customRules
 }
 
 let buildConfig = widgetWebpack.getLegacyWidgetBuildConfig(options)

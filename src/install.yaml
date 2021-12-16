@@ -66,14 +66,15 @@ score:
 
   # Name of the score module class (in score_module.php).
   # Should be omitted if score_type is CLIENT
-  score_module: Guess the Phrase
+  score_module: Hangman
 
   # Specifies how a widget is graded. Accepted values are:
   #
   #  SERVER - means grading will be handled by a Score Module on the server. Preferred
   #  CLIENT - means your widget will tell Materia what the widget score should be.
   #  SERVER-CLIENT - utilizes both methods.
-  score_type: SERVER
+  #score_type: SERVER
+  score_screen: scoreScreen.html
 
 meta_data:
   # A list of features which will be presented in the widget catalog.
