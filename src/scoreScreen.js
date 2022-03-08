@@ -6,7 +6,6 @@ let title = '';
 const ScoreScreenApp = props => {
 	return(
 		<div>
-			<div id="title">{props.title}</div>
 			<div class="responses">Responses:</div>
 			<table>
 				<tr>
