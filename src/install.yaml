@@ -4,9 +4,6 @@ general:
   # The displayed name of the widget
   name: Guess the Phrase
 
-  # The group name for the widget.
-  group: Materia
-
   # The height of the widget in pixels. Use 0 if the
   # widget should expand to the full height available.
   height: 620
