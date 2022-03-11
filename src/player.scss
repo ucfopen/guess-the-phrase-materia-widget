@@ -399,8 +399,12 @@ canvas {
 	cursor: pointer;
 }
 
-.next.ng-hide, .finished.ng-hide, .start.ng-hide {
+.next.ng-hide, .finished.ng-hide {
 	transform: translateY(300px);
+}
+
+.start.ng-hide {
+	transform: translateY(-300px);
 }
 
 .next {
