@@ -1,6 +1,6 @@
 <h1>
     <img src="src/_icons/icon-60.png" width="36px"/>
-    : A Materia Widget
+    Guess the Phrase: A Materia Widget
 </h1>
 
 Guess the Phrase is a guessing game played by guessing letters in a word using the provided clues. Five wrong guesses and the player loses. Guess the Phrase is designed for use with [Materia](https://github.com/ucfopen/Materia), an open-source platform for interactive course content developed by the University of Central Florida.
