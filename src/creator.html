@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="HangmanCreator">
 	<head>
-		<title>Hangman Creator</title>
+		<title>Guess the Phrase Creator</title>
 		<meta charset="utf-8">
 
 		<!-- STYLESHEETS -->
@@ -176,17 +176,17 @@
 		<div id="backgroundcover" ng-click="hideCover()" ng-class="{ show: showTitleDialog || showIntroDialog }"></div>
 		<div ng-class="{ show: showIntroDialog }" class="box intro">
 			<img src="assets/creator_example.png">
-			<h1>Hangman</h1>
+			<h1>Guess the Phrase</h1>
 			<p>Create quiz show questions and answers</p>
 			<p>Define how many incorrect guesses students get per phrase</p>
 			<p>Enable partial credit to give students credit for guessing some of the characters correctly</p>
 			<hr>
-			<b>Start by giving your Hangman widget a title</b>
-			<input type="text" placeholder="My Hangman widget" autofocus="1" ng-enter="setTitle()" focus-me="showIntroDialog" ng-model="introTitle">
+			<b>Start by giving your Guess the Phrase widget a title</b>
+			<input type="text" placeholder="My Guess the Phrase widget" autofocus="1" ng-enter="setTitle()" focus-me="showIntroDialog" ng-model="introTitle">
 			<input type="button" value="Get Started" ng-click="setTitle()">
 		</div>
-		<div ng-class="{ show: showTitleDialog }" class="box title"><b>Give your Hangman widget a title</b>
-			<input type="text" placeholder="My Hangman widget" ng-model="title" focus-me="showTitleDialog" ng-enter="hideCover()">
+		<div ng-class="{ show: showTitleDialog }" class="box title"><b>Give your Guess the Phrase widget a title</b>
+			<input type="text" placeholder="My Guess the Phrase widget" ng-model="title" focus-me="showTitleDialog" ng-enter="hideCover()">
 			<input type="button" value="Done" ng-click="hideCover()">
 		</div>
 	</body>

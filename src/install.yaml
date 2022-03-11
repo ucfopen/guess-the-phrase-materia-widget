@@ -2,7 +2,7 @@
 ---
 general:
   # The displayed name of the widget
-  name: Hangman
+  name: Guess the Phrase
 
   # The group name for the widget.
   group: Materia
@@ -73,7 +73,8 @@ score:
   #  SERVER - means grading will be handled by a Score Module on the server. Preferred
   #  CLIENT - means your widget will tell Materia what the widget score should be.
   #  SERVER-CLIENT - utilizes both methods.
-  score_type: SERVER
+  #score_type: SERVER
+  score_screen: scoreScreen.html
 
 meta_data:
   # A list of features which will be presented in the widget catalog.
@@ -86,10 +87,10 @@ meta_data:
     - Question/Answer
   # The text displayed on the widget detail page.
   about: >
-    Hangman is a guessing game played by
-    guessing letters in a word using the
-    provided clues. Each wrong guess builds
-    another part of a hanged man. Five wrong
+    Guess the Phrase is a guessing game played
+    by guessing letters in a word using the
+    provided clues. Each wrong guess lowers
+    the anvil a little more. Five wrong
     guesses and the player loses.
 
   # The text displayed on the widget catalog page.

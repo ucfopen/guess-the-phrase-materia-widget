@@ -319,8 +319,11 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 
 		else
 			# Prepare elements for the next question
-			$scope.max = Reset.attempts ~~_qset.options.attempts
-			$scope.keyboard = Reset.keyboard()
+			$timeout (() ->
+				$scope.max = Reset.attempts ~~_qset.options.attempts
+				$scope.keyboard = Reset.keyboard()
+			), 500
+				
 
 	_shuffle = (a) ->
 		for i in [1...a.length]

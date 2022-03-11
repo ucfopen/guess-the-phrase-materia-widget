@@ -1,7 +1,7 @@
 {
   "name": "@ucfopen/hangman",
   "materia": {
-    "cleanName": "hangman"
+    "cleanName": "guess-the-phrase"
   },
   "version": "1.1.3",
   "scripts": {
@@ -12,14 +12,17 @@
     "test-ci": "echo 'tests not implemented'"
   },
   "devDependencies": {
-    "materia-widget-development-kit": "2.4.2"
+    "materia-widget-development-kit": "2.5.2"
   },
   "dependencies": {
+    "@babel/preset-react": "^7.16.0",
     "createjs": "1.0.0",
     "hammerjs": "1.0.5",
-    "modernizr-webpack-plugin": "^1.0.7"
+    "modernizr-webpack-plugin": "^1.0.7",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "license": "AGPL-3.0",
-  "description": "Hangman is a guessing game played by guessing letters in a word using the provided clues.",
+  "description": "Guess the Phrase is a guessing game played by guessing letters in a word using the provided clues.",
   "author": "University of Central Florida, Center for Distributed Learning"
 }
