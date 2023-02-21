@@ -21,7 +21,7 @@ const ScoreScreenApp = props => {
 					<td>{row.data[1]}</td>
 					<td>{row.data[2]}</td>
 				</tr>
-			)}
+			) }
 			</table>
 		</div>
 	);
@@ -29,10 +29,9 @@ const ScoreScreenApp = props => {
 
 export default ScoreScreenApp;
 
-const updateDisplay = (qset, scoreTable, title) => {
+const updateDisplay = (scoreTable, title) => {
 	ReactDOM.render(
 		<ScoreScreenApp
-			qset={qset}
 			scoreTable={scoreTable}
 			title={title}
 		/>,
@@ -43,10 +42,10 @@ const updateDisplay = (qset, scoreTable, title) => {
 const materiaCallbacks = {
 	start: (instance, qset, scoreTable, isPreview, qsetVersion) => {
 		title = instance.name;
-		updateDisplay(qset, scoreTable, title);
+		updateDisplay(scoreTable, title);
 	},
 	update: (qset, scoreTable) => {
-		updateDisplay(qset, scoreTable, title);
+		updateDisplay(scoreTable, title);
 	}
 };
 
