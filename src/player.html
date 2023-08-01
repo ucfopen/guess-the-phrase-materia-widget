@@ -31,7 +31,7 @@
 			<p>But this widget requires features that your browser does not support.</p>
 			<p>Please upgrade to a newer version to play Guess the Phrase.</p>
 		</div>
-		<div ng-hide="inGame" hammer-tap="toggleGame()" class="overlay">
+		<div ng-hide="inGame" ng-click="toggleGame()" class="overlay">
 			<div class="portal">
 				<h1>Guess the Phrase</h1>
 				<p ng-show="!gameDone">Press or type letters to guess words and phrases.</p>
@@ -42,8 +42,8 @@
 						<div>Loading...</div>
 					</center>
 				</div>
-				<div id="start" ng-show="!loading && !gameDone" class="start">Start</div>
-				<div ng-show="!loading && gameDone" class="finished"><span>FINISH</span></div>
+				<div id="start" ng-show="!loading && !gameDone" class="start" tabindex="0">Start</div>
+				<div ng-show="!loading && gameDone" class="finished" tabindex="0"><span>FINISH</span></div>
 			</div>
 		</div>
 		<div class="game">

@@ -214,7 +214,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 		if $scope.gameDone
 			$scope.endGame()
 		else if not $scope.loading
-			$scope.startGame()
+			$scope.startGame() 
 
 	$scope.startGame =  ->
 		return if $scope.inGame
@@ -253,6 +253,8 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 				if $scope.inGame and !$scope.inQues
 					$timeout ->
 						$scope.startQuestion()
+				else
+					$scope.toggleGame()
 
 	$scope.getUserInput = (input) ->
 		# Keyboard appears slightly before question transition is complete, so ignore early inputs
