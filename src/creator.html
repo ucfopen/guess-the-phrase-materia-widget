@@ -27,6 +27,7 @@
 			<div class="logo"></div>
 			<h1 id="title" ng-bind="title" ng-click="showTitleDialog = true"></h1>
 			<div ng-click="showTitleDialog = true" class="link">Edit...</div>
+			<button class= "questionBankButton" ng-click="openQuestionBankDialog()">Question Bank</button>
 			<span class="attempts">
 				<p>Incorrect guesses per phrase</p>
 				<div class="slide-btn">
@@ -169,23 +170,25 @@
 			<span>{{currentPage+1}}/{{numberOfPages()}}</span>
 			<button ng-disabled="currentPage >= numberOfPages() - 1" ng-click="currentPage=currentPage+1">Next</button>
 		</div>
-		<button ng-show= "!questionBankDialog" ng-click="openQuestionBankDialog()">Enable Question Bank</button>
-		<div ng-show= "questionBankDialog">
-			<div>
-				<div>
-					<strong>Enable Question Bank? </strong>
+		<div ng-show= "questionBankDialog" class="overlay"></div>
+		<div class="questionBank-wrapper" ng-show= "questionBankDialog">
+				<div class="questionBank-content">
+					<strong>Enable question bank? </strong>
+					<br/>
 					<span>
-						<input type="radio" ng-model="enableQuestionBank" value="false"> No {{enableQuestionBank}} </input>
-						<input type="radio" ng-model="enableQuestionBank" value="true"> Yes {{enableQuestionBank}}</input>
+						<input type="radio" ng-model="enableQuestionBank" ng-value=false> No</input>
+						<input type="radio" ng-model="enableQuestionBank" ng-value=true> Yes</input>
 					</span>
-					<span>
-						<strong>How many questions do you want to ask?</strong>
-						<input type="number" ng-model="questionBankVal" min="1" max=qset.items step="1">
-						<span> Out of {{items.length}} annnd {{questionBankVal}}</span>
+					<br/><br/>
+					<span ng-show="enableQuestionBank" >
+						<strong>How many questions to ask?</strong>
+						<br/>
+						<input class="numInput" type="number" ng-model="questionBankVal" ng-attr-min="{{items.length < 1 ? items.length : 1}}" ng-attr-max="{{items.length}}" step="1">
+						<span> out of {{items.length}}</span>
 					</span>
+					<br/>
 				</div>
-				<button ng-click="closeQuestionBankDialog()">Close</button>
-			</div>
+				<button class="dialogCloseButton" ng-click="closeQuestionBankDialog()">Okay</button>
 		</div>
 		<div ng-show="!items.length &amp;&amp; step" class="arrow-box">
 			<span>Click here to add your first question</span>

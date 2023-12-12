@@ -241,6 +241,7 @@ Hangman.controller 'HangmanCreatorCtrl', ['$timeout', '$scope', '$sanitize', 'Re
 
 	$scope.openQuestionBankDialog = ->
 		$scope.questionBankDialog = true
+		$scope.enableQuestionBank = false
 
 	$scope.closeQuestionBankDialog = ->
 		$scope.questionBankDialog = false
