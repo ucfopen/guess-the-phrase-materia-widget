@@ -28,7 +28,7 @@ Hangman.directive('focusMe', ['$timeout', '$parse', ($timeout, $parse) ->
 ])
 
 Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
-	buildQset: (title, items, partial, attempts, random) ->
+	buildQset: (title, items, partial, attempts, random, enableQuestionBank, questionBankVal) ->
 		qsetItems = []
 		qset = {}
 
@@ -47,7 +47,7 @@ Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
 					Materia.CreatorCore.cancelSave 'Word #'+(i+1)+' needs to contain at least one letter or number.'
 					return false
 
-		qset.options = {partial: partial, attempts: attempts, random: random}
+		qset.options = {partial: partial, attempts: attempts, random: random, enableQuestionBank: enableQuestionBank, questionBankVal: questionBankVal}
 		qset.assets = []
 		qset.rand = false
 		qset.name = title
@@ -97,6 +97,9 @@ Hangman.controller 'HangmanCreatorCtrl', ['$timeout', '$scope', '$sanitize', 'Re
 	$scope.partial = false
 	$scope.random = false
 	$scope.attempts = 5
+	$scope.questionBankDialog = false
+	$scope.enableQuestionBank = false
+	$scope.questionBankVal = 0
 
 	# for use with paginating results
 	$scope.currentPage = 0;
@@ -202,12 +205,14 @@ Hangman.controller 'HangmanCreatorCtrl', ['$timeout', '$scope', '$sanitize', 'Re
 		$scope.attempts = ~~qset.options.attempts or 5
 		$scope.partial = qset.options.partial
 		$scope.random = qset.options.random
+		$scope.enableQuestionBank = qset.options.enableQuestionBank
+		$scope.questionBankVal = qset.options.questionBankVal
 		$scope.onQuestionImportComplete qset.items[0].items
 
 		$scope.$apply()
 
 	$scope.onSaveClicked = (mode = 'save') ->
-		qset = Resource.buildQset $sanitize($scope.title), $scope.items, $scope.partial, $scope.attempts, $scope.random
+		qset = Resource.buildQset $sanitize($scope.title), $scope.items, $scope.partial, $scope.attempts, $scope.random, $scope.enableQuestionBank, $scope.questionBankVal
 		if qset then Materia.CreatorCore.save $sanitize($scope.title), qset
 
 	$scope.onSaveComplete = (title, widget, qset, version) -> true
@@ -233,6 +238,12 @@ Hangman.controller 'HangmanCreatorCtrl', ['$timeout', '$scope', '$sanitize', 'Re
 			window.scrollTo({ left: 0, top: height, behavior: 'smooth'})
 		,
 		400
+
+	$scope.openQuestionBankDialog = ->
+		$scope.questionBankDialog = true
+
+	$scope.closeQuestionBankDialog = ->
+		$scope.questionBankDialog = false
 
 	$scope.addItem = (ques = "", ans = "", id = "") ->
 		pages = $scope.numberOfPages()
