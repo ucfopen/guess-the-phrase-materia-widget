@@ -205,8 +205,8 @@ Hangman.controller 'HangmanCreatorCtrl', ['$timeout', '$scope', '$sanitize', 'Re
 		$scope.attempts = ~~qset.options.attempts or 5
 		$scope.partial = qset.options.partial
 		$scope.random = qset.options.random
-		$scope.enableQuestionBank = qset.options.enableQuestionBank
-		$scope.questionBankVal = qset.options.questionBankVal
+		$scope.enableQuestionBank = false
+		$scope.questionBankVal = if qset.options.questionBankVal then qset.options.questionBankVal else false
 		$scope.onQuestionImportComplete qset.items[0].items
 
 		$scope.$apply()
