@@ -184,11 +184,11 @@
 						<strong>How many questions to ask?</strong>
 						<br/>
 						<input class="numInput" type="number" ng-model="questionBankVal" ng-attr-min="{{items.length < 1 ? items.length : 1}}" ng-attr-max="{{items.length}}" step="1">
-						<span> out of {{items.length}}</span>
+						<span> out of {{items.length}} </span>
 					</span>
 					<br/>
 				</div>
-				<button class="dialogCloseButton" ng-click="questionBankDialog = !questionBankDialog">Okay</button>
+				<button class="dialogCloseButton" ng-click="(questionBankVal <= items.length && questionBankVal > 0) && (questionBankDialog = !questionBankDialog)">Okay</button>
 		</div>
 		<div ng-show="!items.length &amp;&amp; step" class="arrow-box">
 			<span>Click here to add your first question</span>

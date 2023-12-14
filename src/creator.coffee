@@ -99,7 +99,7 @@ Hangman.controller 'HangmanCreatorCtrl', ['$timeout', '$scope', '$sanitize', 'Re
 	$scope.attempts = 5
 	$scope.questionBankDialog = false
 	$scope.enableQuestionBank = false
-	$scope.questionBankVal = 0
+	$scope.questionBankVal = 1
 
 	# for use with paginating results
 	$scope.currentPage = 0;
@@ -205,8 +205,8 @@ Hangman.controller 'HangmanCreatorCtrl', ['$timeout', '$scope', '$sanitize', 'Re
 		$scope.attempts = ~~qset.options.attempts or 5
 		$scope.partial = qset.options.partial
 		$scope.random = qset.options.random
-		$scope.enableQuestionBank = false
-		$scope.questionBankVal = if qset.options.questionBankVal then qset.options.questionBankVal else false
+		$scope.enableQuestionBank = if qset.options.enableQuestionBank then qset.options.enableQuestionBank else false
+		$scope.questionBankVal = if qset.options.questionBankVal then qset.options.questionBankVal else 1
 		$scope.onQuestionImportComplete qset.items[0].items
 
 		$scope.$apply()
