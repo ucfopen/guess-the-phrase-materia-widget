@@ -27,7 +27,7 @@
 			<div class="logo"></div>
 			<h1 id="title" ng-bind="title" ng-click="showTitleDialog = true"></h1>
 			<div ng-click="showTitleDialog = true" class="link">Edit...</div>
-			<button class= "questionBankButton" ng-click="openQuestionBankDialog()">Question Bank</button>
+			<button class= "questionBankButton" ng-click="questionBankDialog = !questionBankDialog">Question Bank</button>
 			<span class="attempts">
 				<p>Incorrect guesses per phrase</p>
 				<div class="slide-btn">
@@ -188,7 +188,7 @@
 					</span>
 					<br/>
 				</div>
-				<button class="dialogCloseButton" ng-click="closeQuestionBankDialog()">Okay</button>
+				<button class="dialogCloseButton" ng-click="questionBankDialog = !questionBankDialog">Okay</button>
 		</div>
 		<div ng-show="!items.length &amp;&amp; step" class="arrow-box">
 			<span>Click here to add your first question</span>

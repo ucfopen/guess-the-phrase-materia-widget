@@ -239,13 +239,6 @@ Hangman.controller 'HangmanCreatorCtrl', ['$timeout', '$scope', '$sanitize', 'Re
 		,
 		400
 
-	$scope.openQuestionBankDialog = ->
-		$scope.questionBankDialog = true
-		$scope.enableQuestionBank = false
-
-	$scope.closeQuestionBankDialog = ->
-		$scope.questionBankDialog = false
-
 	$scope.addItem = (ques = "", ans = "", id = "") ->
 		pages = $scope.numberOfPages()
 		$scope.items.push {ques:ques, ans:ans, foc:false, id: id }
