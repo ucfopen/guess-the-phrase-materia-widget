@@ -490,7 +490,7 @@ button.add-question {
 	left: 50%;
 	margin: 0;
 	transform: translate(-50%, -50%);
-	background-color: white;
+	background-color: #ffffff;
 	padding: 0;
 	height: 200px;
 	width: 300px;
@@ -503,7 +503,7 @@ button.add-question {
 		margin-top: 0;
 		padding: 0;
 		width: unset;
-		background: white;
+		background: #ffffff;
 		font-size: 17px;
 		text-align: center;
 		border: none;
@@ -552,7 +552,7 @@ button.add-question {
 
 		&:disabled {
 			background-color: #cccccc;
-			color: white;
+			color: #ffffff;
 		}
 	}
 }
