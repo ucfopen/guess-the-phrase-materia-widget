@@ -194,7 +194,7 @@ Hangman.controller 'HangmanCreatorCtrl', ['$timeout', '$scope', '$sanitize', 'Re
 		$scope.hideCover()
 
 	$scope.hideCover = ->
-		$scope.showTitleDialog = $scope.showIntroDialog = false
+		$scope.showTitleDialog = $scope.showIntroDialog = $scope.questionBankDialog = false
 
 	$scope.initNewWidget = (widget, baseUrl) ->
 		$scope.$apply ->
