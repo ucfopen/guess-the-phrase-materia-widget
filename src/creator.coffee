@@ -97,9 +97,10 @@ Hangman.controller 'HangmanCreatorCtrl', ['$timeout', '$scope', '$sanitize', 'Re
 	$scope.partial = false
 	$scope.random = false
 	$scope.attempts = 5
-	$scope.questionBankDialog = false
+	$scope.questionBankModal = false
 	$scope.enableQuestionBank = false
 	$scope.questionBankVal = 1
+	$scope.questionBankValTemp = 1
 
 	# for use with paginating results
 	$scope.currentPage = 0;
@@ -194,7 +195,12 @@ Hangman.controller 'HangmanCreatorCtrl', ['$timeout', '$scope', '$sanitize', 'Re
 		$scope.hideCover()
 
 	$scope.hideCover = ->
-		$scope.showTitleDialog = $scope.showIntroDialog = $scope.questionBankDialog = false
+		$scope.showTitleDialog = $scope.showIntroDialog = $scope.questionBankModal = false
+		$scope.questionBankValTemp = $scope.questionBankVal
+
+	$scope.validateQuestionBankVal = ->
+		if ($scope.questionBankValTemp >= 1 && $scope.questionBankValTemp <= $scope.items.length)
+			$scope.questionBankVal = $scope.questionBankValTemp
 
 	$scope.initNewWidget = (widget, baseUrl) ->
 		$scope.$apply ->
@@ -207,6 +213,8 @@ Hangman.controller 'HangmanCreatorCtrl', ['$timeout', '$scope', '$sanitize', 'Re
 		$scope.random = qset.options.random
 		$scope.enableQuestionBank = if qset.options.enableQuestionBank then qset.options.enableQuestionBank else false
 		$scope.questionBankVal = if qset.options.questionBankVal then qset.options.questionBankVal else 1
+		$scope.questionBankValTemp = if qset.options.questionBankVal then qset.options.questionBankVal else 1
+
 		$scope.onQuestionImportComplete qset.items[0].items
 
 		$scope.$apply()

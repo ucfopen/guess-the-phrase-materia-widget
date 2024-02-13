@@ -28,8 +28,8 @@
 			<h1 id="title" ng-bind="title" ng-click="showTitleDialog = true"></h1>
 			<div ng-click="showTitleDialog = true" class="link">Edit...</div>
 			<button
-				ng-class= "{'questionBankButton': true, 'gray-out': !enableQuestionBank}"
-				ng-click="questionBankDialog = !questionBankDialog"
+				ng-class= "{'qb-button': true, 'gray-out': !enableQuestionBank}"
+				ng-click="questionBankModal = !questionBankModal"
 				ng-disabled="items.length === 0">
 				Question Bank: {{enableQuestionBank === true ? "ON" : "OFF"}}
 			</button>
@@ -178,7 +178,7 @@
 		<div ng-show="!items.length &amp;&amp; step" class="arrow-box">
 			<span>Click here to add your first question</span>
 		</div>
-		<div id="backgroundcover" ng-click="hideCover()" ng-class="{ show: showTitleDialog || showIntroDialog || questionBankDialog }"></div>
+		<div id="backgroundcover" ng-click="hideCover()" ng-class="{ show: showTitleDialog || showIntroDialog || questionBankModal }"></div>
 		<div ng-class="{ show: showIntroDialog }" class="box intro">
 			<img src="assets/creator_example.png">
 			<h1>Guess the Phrase</h1>
@@ -194,28 +194,28 @@
 			<input type="text" placeholder="My Guess the Phrase widget" ng-model="title" focus-me="showTitleDialog" ng-enter="hideCover()">
 			<input type="button" value="Done" ng-click="hideCover()">
 		</div>
-		<div ng-class="{ show: questionBankDialog }" ng-click= 'hideCover()' class="box questionBankDialog">
+		<div ng-class="{ show: questionBankModal }" ng-click= 'hideCover()' class="box question-bank-dialog">
 			<div class="enable-qb-question">
-				<strong>Enable question bank? </strong>
+				<label style="font-weight: bold;">Enable question bank? </label>
 				<div class="enable-qb-options" ng-click="$event.stopPropagation()">
 					<span>
 						<input type="radio" ng-model="enableQuestionBank" ng-value=false> No</input>
-						<input type="radio" ng-model="enableQuestionBank" ng-value=true> Yes</input>
+						<input type="radio" ng-model="enableQuestionBank" ng-change="questionBankValTemp = questionBankVal = items.length" ng-value=true> Yes</input>
 					</span>
 				</div>
 			</div>
 			<div>
 				<span ng-show="enableQuestionBank" >
-					<strong>How many questions to ask? </strong>
+					<label style="font-weight: bold;">How many questions to ask? </label>
 					<div class="num-input-wrapper" ng-click="$event.stopPropagation()">
-						<input class="numInput" type="number" ng-model="questionBankVal" ng-attr-min="{{items.length < 1 ? items.length : 1}}" ng-attr-max="{{items.length}}" step="1">
+						<input class="num-input" type="number" ng-model="questionBankValTemp" ng-change="validateQuestionBankVal()" step="1">
 						<span> out of {{items.length}} </span>
 					</div>
 				</span>
 			</div>
-			<button class="dialogCloseButton"
-			ng-click="(questionBankVal <= items.length && questionBankVal > 0) && (questionBankDialog = !questionBankDialog)"
-			ng-disabled="questionBankVal < 0 || questionBankVal > items.length">Confirm</button>
+			<button class="dialog-close-button"
+			ng-click="questionBankModal = false"
+			ng-disabled="questionBankValTemp < 1 || questionBankValTemp > items.length">Confirm</button>
 		</div>
 
 	</body>

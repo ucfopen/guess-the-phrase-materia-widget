@@ -483,7 +483,7 @@ button.add-question {
 	}
 }
 
-.questionBankDialog {
+.question-bank-dialog {
 
 	position: fixed;
 	top: 50%;
@@ -517,7 +517,7 @@ button.add-question {
 		align-items: center;
 		margin-bottom: 15px;
 
-		.numInput {
+		.num-input {
 			color: black;
 			outline: 1px solid black;
 			width: 35px;
@@ -527,7 +527,7 @@ button.add-question {
 
 	.enable-qb-question {
 		margin-top: 15px;
-		margin-bottom: 15px;
+		margin-bottom: 10px;
 
 		.enable-qb-options {
 			display: flex;
@@ -535,10 +535,9 @@ button.add-question {
 		}
 	}
 
-	.dialogCloseButton {
+	.dialog-close-button {
 		position: relative;
-		margin-top: 5px;
-		margin-bottom: 5px;
+		margin: 15 0 10 0;
 		font-size: 15px;
 		width: 100px;
 		background-color: #70bd34;
@@ -695,7 +694,7 @@ button.add-question {
 		background: #fff;
 	}
 
-	.questionBankButton {
+	.qb-button {
 		position: absolute;
 		background-color: $green;
 		color: #fff;
