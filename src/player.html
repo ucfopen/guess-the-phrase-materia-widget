@@ -25,6 +25,7 @@
 		<script src="player.js"></script>
 	</head>
 	<body ng-cloak>
+		<div id="ariaLive" aria-live="polite" aria-atomic="true"></div>
 		<div class="browserwarning">We recommend you upgrade your browser for a better experience</div>
 		<div id="browserfailure">
 			<p>We're sorry</p>
@@ -52,10 +53,10 @@
 				<img src="assets/img/anvil.png" aria-hidden="true" class="anvil">
 			</div>
 			<div aria-hidden="true" class="podium"></div>
-			<div class="title"></div>
+			<div class="title" tabindex="0" aria-label="{{focusTitleMessage}}"></div>
 			<div class="question-num">{{ curItem+1 }}</div>
 			<div class="total-questions"></div>
-			<div ng-class="{transition: inQues}" class="answer">
+			<div ng-class="{transition: inQues}" class="answer" tabindex="0" aria-label="{{focusAnswerMessage}}">
 				<div ng-repeat="word in answer.string" class="row">
 					<span ng-repeat="letter in word" ng-class="{quirks: cssQuirks}" class="box">
 						<span class="letter"
@@ -72,7 +73,9 @@
 			</div>
 			<div ng-class="{transition: inQues}"
 				ng-show="inGame"
-				class="question">
+				class="question"
+				tabindex="0"
+				aria-label="{{focusQuestionMessage}}">
 				{{ ques }}
 				<div class="tail"></div>
 			</div>
@@ -82,7 +85,7 @@
 					class="icon-close">
 				</span>
 			</div>
-			<div aria-hidden="true" class="keyboard-bg"></div>
+			<div aria-hidden="true" class="keyboard-bg" tabindex="0" aria-label="{{focusKeyboardMessage}}"></div>
 			<div aria-hidden="true"
 				ng-show="inQues"
 				ng-init="keys=[

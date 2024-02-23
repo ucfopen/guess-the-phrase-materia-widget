@@ -186,6 +186,11 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 	$scope.anvilStage = 0
 	$scope.keyboard = null # Bound to onscreen keyboard, hit prop fades out key when 1
 
+	$scope.focusTitleMessage = ''
+	$scope.focusAnswerMessage = ''
+	$scope.focusQuestionMessage = ''
+	$scope.focusKeyboardMessage = ''
+
 	_updateAnvil =  ->
 		# Get number of entered attempts
 		for i in [0...$scope.max.length]
@@ -219,6 +224,9 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 	$scope.startGame =  ->
 		return if $scope.inGame
 
+		liveRegionUpdate("The game has begun! Your topic is " + document.getElementsByClassName('title')[0].innerHTML + " with " + $scope.total + " questions.")
+		$scope.focusTitleMessage = document.getElementsByClassName('title')[0].innerHTML + " with " + $scope.total + " questions."
+
 		$scope.curItem++
 		$scope.anvilStage = 1
 		$scope.inGame = true
@@ -226,7 +234,11 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 		$scope.readyForInput = true
 		$scope.ques = _qset.items[0].items[$scope.curItem].questions[0].text
 		$scope.answer = Parse.forBoard _qset.items[0].items[$scope.curItem].answers[0].text
+		$scope.focusQuestionMessage = "Question " + ($scope.curItem + 1) + ": " + $scope.ques
+		$scope.focusAnswerMessage = "Current answer: " + condenseBlanks($scope.answer.guessed)
+		$scope.focusKeyboardMessage = "You have " + ($scope.max.length - $scope.anvilStage + 1) + " guesses. Press or type a letter."
 		$timeout ->
+			liveRegionUpdate("Question 1: " + $scope.ques + condenseBlanks($scope.answer.guessed))
 			Hangman.Draw.playAnimation 'torso', 'pull-card'
 		, 800
 
@@ -256,6 +268,66 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 				else
 					$scope.toggleGame()
 
+	liveRegionUpdate = (message) ->
+		document.getElementById('ariaLive').innerHTML = message
+
+	addBlanksForLiveRegion = (guessed) ->
+		# Takes the user's current answer and adds "blank" where there are blanks so the screen reader will read them out loud
+		# Used to tell screen reader users what their current board looks like
+		message = ''
+		words = 0
+		maxWords = 0
+		for word in guessed
+			maxWords += 1
+		for word in guessed
+			words += 1
+			for letter in word
+				if letter == ''
+					message = message.concat('blank, ')
+				else
+					message = message.concat(letter, ', ')
+			if words < maxWords
+				message = message.concat('new word, ')
+		
+		return message
+
+	guessedToString = (guessed) ->
+		# Converts the user's current answer to a string to be read by the screen reader
+		# Used to read the final answer in full words so the player knows what they got
+		message = ''
+		for word in guessed
+			for letter in word
+				message = message.concat(letter)
+			message = message.concat(' ')
+		return message
+
+	usedKeysToString = () ->
+		# Converts the user's previously guessed letters to a string to be read by the screen reader
+		# Used to tell the player which letters they've already guessed, both correct and incorrect
+		message = ''
+		for index, letter of $scope.keyboard
+			if letter.hit == 1
+				message += index + ', '
+		return message
+
+	condenseBlanks = (guessed) ->
+		# Counts the words in the answer and the letters in each word and turns them into a string
+		# Used to tell the player how many words and letters are in the answer at the beginning of a question
+		message = ''
+		words = 0
+		for word in guessed
+			words += 1
+		message = message.concat(words + " words. ")
+		words = 0
+		for word in guessed
+			letters = 0
+			words += 1
+			message = message.concat("Word " + words + ": ")
+			for letter in word
+				letters += 1
+			message = message.concat(letters + " letters. ")
+		return message
+
 	$scope.getUserInput = (input) ->
 		# Keyboard appears slightly before question transition is complete, so ignore early inputs
 		if $scope.inTransition then return
@@ -272,20 +344,28 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 		if matches.length is 0
 			$scope.max = Input.incorrect $scope.max
 			_updateAnvil()
+			liveRegionUpdate(input + " is incorrect. " + ($scope.max.length - $scope.anvilStage + 1) + " guesses remaining.")
+			$scope.focusKeyboardMessage = ($scope.max.length - $scope.anvilStage + 1) + " guesses remaining. Letters guessed: " + usedKeysToString()
 
 		# User entered a correct guess
 		else
 			$scope.answer.guessed = Input.correct matches, input, $scope.answer.guessed
+			liveRegionUpdate(input + " is correct! Current answer: " + addBlanksForLiveRegion($scope.answer.guessed))
+			$scope.focusAnswerMessage = "Current answer: " + addBlanksForLiveRegion($scope.answer.guessed)
+			$scope.focusKeyboardMessage = ($scope.max.length - $scope.anvilStage + 1) + " guesses remaining. Letters guessed: " + usedKeysToString()
+			
 
 		# Find out if the user can continue to submit guesses
 		result = Input.cannotContinue $scope.max, $scope.answer.guessed
 		if result
+			liveRegionUpdate("Out of guesses. Press Enter to go to the next question.")
 			$scope.endQuestion()
 
 			# The user can't continue because they won and are awesomesauce
 			if result is 2
 				Hangman.Draw.playAnimation 'torso', 'pander'
 				$scope.anvilStage = 1
+				liveRegionUpdate(guessedToString($scope.answer.guessed) + " is correct! Press Enter to go to the next question.")
 
 	$scope.startQuestion = ->
 
@@ -297,6 +377,11 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 			$scope.ques = _qset.items[0].items[$scope.curItem].questions[0].text
 
 			$scope.readyForInput = true
+
+		liveRegionUpdate("Question " + ($scope.curItem + 1) + ": " + $scope.ques + condenseBlanks($scope.answer.guessed))
+		$scope.focusQuestionMessage = "Question " + ($scope.curItem + 1) + ": " + $scope.ques
+		$scope.focusAnswerMessage = "Current answer: " + condenseBlanks($scope.answer.guessed)
+		$scope.focusKeyboardMessage = "You have " + ($scope.max.length - $scope.anvilStage + 1) + " guesses. Press or type a letter."
 
 		Hangman.Draw.playAnimation 'torso', 'pull-card'
 
