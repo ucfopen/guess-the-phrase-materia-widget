@@ -515,7 +515,7 @@ button.add-question {
 		justify-content: center;
 		width: 100%;
 		align-items: center;
-		margin-bottom: 15px;
+		margin-bottom: 5px;
 
 		.num-input {
 			color: black;
@@ -533,6 +533,11 @@ button.add-question {
 			display: flex;
 			justify-content: center;
 		}
+	}
+	.qb-warning {
+		font-size: 14px;
+		margin: 0;
+		text-align: center;
 	}
 
 	.dialog-close-button {
@@ -699,7 +704,7 @@ button.add-question {
 		background-color: $green;
 		color: #fff;
 		width: unset;
-		right: 550px;
+		right: 590px;
 		top: 35px;
 
 		&:hover {
@@ -731,7 +736,7 @@ button.add-question {
 
 	.attempts {
 		position: absolute;
-		right: 355px;
+		right: 395px;
 		cursor: pointer;
 		top:0px;
 
@@ -874,10 +879,17 @@ button.add-question {
 	.random {
 		position: absolute;
 		top: 0px;
-		right: 185px;
+		right: 225px;
 		font-family: "Lato";
+
 		label.checktoggle {
 			left: 24px;
+
+			&.disabled-look {
+				background-color: #676363;
+				opacity: 0.5;
+				cursor: not-allowed;
+			}
 		}
 	}
 }
@@ -898,6 +910,9 @@ button.add-question {
 
 	transition: all 0.15s ease;
 
+	&.randomizer-tip {
+		right: 190px;
+	}
 	&:hover {
 		opacity: 1;
 		background: #53a1d1;
@@ -959,6 +974,10 @@ button.add-question {
 		b {
 			font-weight: 400;
 		}
+	}
+
+	&.randomize-tooltip {
+		right: 180px;
 	}
 
 }

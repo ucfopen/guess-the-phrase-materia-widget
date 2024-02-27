@@ -58,8 +58,16 @@
 			</span>
 			<div class="random partial">
 				<p>Randomize Order</p>
-				<input type="checkbox" id="randomize" ng-model="random">
-				<label for="randomize" class="checktoggle"></label>
+				<input type="checkbox" ng-checked=enableQuestionBank ng-disabled=enableQuestionBank id="randomize" ng-model="random">
+				<label for="randomize" ng-class="{'disabled-look': enableQuestionBank}" class="checktoggle"></label>
+			</div>
+			<div class="question-tip randomizer-tip">?
+				<div class="qtip-box">
+					<p>
+						If <b>Question Bank</b> is on then the check to randomize order is disabled. This is because the question bank
+						randomizes the question order already.
+					</p>
+				</div>
 			</div>
 			<div class="partial">
 				<p>Partial scoring</p>
@@ -213,6 +221,7 @@
 					</div>
 				</span>
 			</div>
+			<p class="qb-warning">If question bank is enabled, questions will be randomized. </p>
 			<button class="dialog-close-button"
 			ng-click="questionBankModal = false"
 			ng-disabled="questionBankValTemp < 1 || questionBankValTemp > items.length">Confirm</button>
