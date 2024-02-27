@@ -28,7 +28,7 @@ Hangman.directive('focusMe', ['$timeout', '$parse', ($timeout, $parse) ->
 ])
 
 Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
-	buildQset: (title, items, partial, attempts, random) ->
+	buildQset: (title, items, partial, attempts, random, enableQuestionBank, questionBankVal) ->
 		qsetItems = []
 		qset = {}
 
@@ -47,7 +47,7 @@ Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
 					Materia.CreatorCore.cancelSave 'Word #'+(i+1)+' needs to contain at least one letter or number.'
 					return false
 
-		qset.options = {partial: partial, attempts: attempts, random: random}
+		qset.options = {partial: partial, attempts: attempts, random: random, enableQuestionBank: enableQuestionBank, questionBankVal: questionBankVal}
 		qset.assets = []
 		qset.rand = false
 		qset.name = title
@@ -97,6 +97,10 @@ Hangman.controller 'HangmanCreatorCtrl', ['$timeout', '$scope', '$sanitize', 'Re
 	$scope.partial = false
 	$scope.random = false
 	$scope.attempts = 5
+	$scope.questionBankModal = false
+	$scope.enableQuestionBank = false
+	$scope.questionBankVal = 1
+	$scope.questionBankValTemp = 1
 
 	# for use with paginating results
 	$scope.currentPage = 0;
@@ -191,7 +195,12 @@ Hangman.controller 'HangmanCreatorCtrl', ['$timeout', '$scope', '$sanitize', 'Re
 		$scope.hideCover()
 
 	$scope.hideCover = ->
-		$scope.showTitleDialog = $scope.showIntroDialog = false
+		$scope.showTitleDialog = $scope.showIntroDialog = $scope.questionBankModal = false
+		$scope.questionBankValTemp = $scope.questionBankVal
+
+	$scope.validateQuestionBankVal = ->
+		if ($scope.questionBankValTemp >= 1 && $scope.questionBankValTemp <= $scope.items.length)
+			$scope.questionBankVal = $scope.questionBankValTemp
 
 	$scope.initNewWidget = (widget, baseUrl) ->
 		$scope.$apply ->
@@ -202,12 +211,16 @@ Hangman.controller 'HangmanCreatorCtrl', ['$timeout', '$scope', '$sanitize', 'Re
 		$scope.attempts = ~~qset.options.attempts or 5
 		$scope.partial = qset.options.partial
 		$scope.random = qset.options.random
+		$scope.enableQuestionBank = if qset.options.enableQuestionBank then qset.options.enableQuestionBank else false
+		$scope.questionBankVal = if qset.options.questionBankVal then qset.options.questionBankVal else 1
+		$scope.questionBankValTemp = if qset.options.questionBankVal then qset.options.questionBankVal else 1
+
 		$scope.onQuestionImportComplete qset.items[0].items
 
 		$scope.$apply()
 
 	$scope.onSaveClicked = (mode = 'save') ->
-		qset = Resource.buildQset $sanitize($scope.title), $scope.items, $scope.partial, $scope.attempts, $scope.random
+		qset = Resource.buildQset $sanitize($scope.title), $scope.items, $scope.partial, $scope.attempts, $scope.random, $scope.enableQuestionBank, $scope.questionBankVal
 		if qset then Materia.CreatorCore.save $sanitize($scope.title), qset
 
 	$scope.onSaveComplete = (title, widget, qset, version) -> true
