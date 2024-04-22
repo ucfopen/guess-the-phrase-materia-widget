@@ -74,7 +74,7 @@ score:
   #  CLIENT - means your widget will tell Materia what the widget score should be.
   #  SERVER-CLIENT - utilizes both methods.
   #score_type: SERVER
-  score_screen: scoreScreen.html
+  score_screen: scorescreen.html
 
 meta_data:
   # A list of features which will be presented in the widget catalog.

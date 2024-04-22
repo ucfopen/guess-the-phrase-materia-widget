@@ -1,7 +1,6 @@
 const fs = require('fs')
 const path = require('path')
 const widgetWebpack = require('materia-widget-development-kit/webpack-widget')
-const ModernizrWebpackPlugin = require('modernizr-webpack-plugin');
 const srcPath = path.join(__dirname, 'src') + path.sep
 const outputPath = path.join(__dirname, 'build') + path.sep
 
@@ -13,7 +12,7 @@ const customDoNothingToJs = rules.loaderDoNothingToJs
 customDoNothingToJs.test = /(?:player|creator)\.js$/
 
 const customReactLoader = {
-	test: /scoreScreen.*\.js$/i,
+	test: /scorescreen.*\.js$/i,
 	exclude: /node_modules/,
 	use: {
 		loader: 'babel-loader'
@@ -21,50 +20,31 @@ const customReactLoader = {
 }
 
 let customRules = [
-	customDoNothingToJs,
 	rules.loaderCompileCoffee,
 	rules.copyImages,
 	rules.loadHTMLAndReplaceMateriaScripts,
-	rules.loadAndPrefixCSS,
 	rules.loadAndPrefixSASS,
-	rules.loadAndCompileMarkdown,
 	customReactLoader
 ]
 
 const entries = {
-	'creator.js': [
-			path.join(srcPath, 'creator.coffee'),
+	'creator': [
+		path.join(srcPath, 'creator.html'),
+		path.join(srcPath, 'angular-hammer.js'),
+		path.join(srcPath, 'creator.coffee'),
+		path.join(srcPath, 'creator.scss'),
 	],
-	'player.js': [
-			path.join(srcPath, 'draw.coffee'),
-			path.join(srcPath, 'player.coffee')
+	'player': [
+		path.join(srcPath, 'player.html'),
+		path.join(srcPath, 'angular-hammer.js'),
+		path.join(srcPath, 'draw.coffee'),
+		path.join(srcPath, 'player.coffee'),
+		path.join(srcPath, 'player.scss')
 	],
-	'scoreScreen.js': [
-			path.join(srcPath, 'scoreScreen.js')
-	],
-	'assets/lib/draw.js': [
-			path.join(srcPath, 'draw.coffee')
-	],
-	'assets/lib/angular-hammer.min.js': [
-			path.join(srcPath, 'angular-hammer.js')
-	],
-	'creator.css': [
-			path.join(srcPath, 'creator.html'),
-			path.join(srcPath, 'creator.scss')
-	],
-	'player.css': [
-			path.join(srcPath, 'player.html'),
-			path.join(srcPath, 'player.scss')
-	],
-	'scoreScreen.css': [
-			path.join(srcPath, 'scoreScreen.html'),
-			path.join(srcPath, 'scoreScreen.scss')
-	],
-	'guides/player.temp.html': [
-			path.join(srcPath, '_guides', 'player.md')
-	],
-	'guides/creator.temp.html': [
-			path.join(srcPath, '_guides', 'creator.md')
+	'scorescreen': [
+		path.join(srcPath, 'scorescreen.html'),
+		path.join(srcPath, 'scorescreen.js'),
+		path.join(srcPath, 'scorescreen.scss')
 	]
 }
 
@@ -92,38 +72,9 @@ const options = {
 
 let buildConfig = widgetWebpack.getLegacyWidgetBuildConfig(options)
 
-const modernizrConfig = {
-	noChunk: true,
-	filename: 'assets/lib/modernizr.js',
-	'options':[
-		'domPrefixes',
-		'prefixes',
-		'setClasses',
-		"html5shiv",
-		"testAllProps",
-		"testProp",
-		"testStyles"
-	],
-	'feature-detects': [
-		'css/borderradius',
-		'css/animations',
-		'css/transforms',
-		'css/transforms3d',
-		'css/transitions',
-		'css/fontface',
-		'css/generatedcontent',
-		'input',
-		'css/opacity',
-		'css/rgba'
-	],
-	minify: {
-		output: {
-			comments: true,
-			beautify: false
-		}
-	}
+buildConfig.externals = {
+	"react": "React",
+	"react-dom": "ReactDOM"
 }
-
-buildConfig.plugins.unshift(new ModernizrWebpackPlugin(modernizrConfig))
 
 module.exports = buildConfig
