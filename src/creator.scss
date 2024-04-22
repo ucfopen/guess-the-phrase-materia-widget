@@ -483,6 +483,85 @@ button.add-question {
 	}
 }
 
+.question-bank-dialog {
+
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin: 0;
+	transform: translate(-50%, -50%);
+	background-color: #ffffff;
+	padding: 0;
+	height: 200px;
+	width: 300px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+
+	input {
+		margin-top: 0;
+		padding: 0;
+		width: unset;
+		background: #ffffff;
+		font-size: 17px;
+		text-align: center;
+		border: none;
+		vertical-align: unset;
+		font-family: 'Lato';
+	}
+	.num-input-wrapper {
+		display: flex;
+		justify-content: center;
+		width: 100%;
+		align-items: center;
+		margin-bottom: 5px;
+
+		.num-input {
+			color: black;
+			outline: 1px solid black;
+			width: 35px;
+			margin: 2px 5px 0 0;
+		}
+	}
+
+	.enable-qb-question {
+		margin-top: 15px;
+		margin-bottom: 10px;
+
+		.enable-qb-options {
+			display: flex;
+			justify-content: center;
+		}
+	}
+	.qb-warning {
+		font-size: 14px;
+		margin: 0;
+		text-align: center;
+	}
+
+	.dialog-close-button {
+		position: relative;
+		margin: 15 0 10 0;
+		font-size: 15px;
+		width: 100px;
+		background-color: #70bd34;
+		color: black;
+
+		&:hover {
+			background-color: #88df45;
+			border: 1px solid #88df45;
+			color: black;
+			cursor: pointer;
+		}
+
+		&:disabled {
+			background-color: #cccccc;
+			color: #ffffff;
+		}
+	}
+}
+
 .arrow-box {
 	position: absolute;
 	background: #fbf767;
@@ -619,9 +698,45 @@ button.add-question {
 		top: 28px;
 		background: #fff;
 	}
+
+	.qb-button {
+		position: absolute;
+		background-color: $green;
+		color: #fff;
+		width: unset;
+		right: 590px;
+		top: 35px;
+
+		&:hover {
+			background-color: #7AD038;
+			cursor: pointer;
+		}
+
+		&:disabled {
+			background-color: #ccc;
+			border: 1px solid #ccc;
+			color: #fff;
+			cursor: not-allowed;
+		}
+
+		&.gray-out:not(:disabled) {
+			background-color: #5a5a5a;
+			border: 1px solid #5a5a5a;
+			color: #fff;
+
+			&:hover {
+				background-color: #938f8f;
+				border: 1px solid #938f8f;
+				cursor: pointer;
+			}
+
+		}
+
+	}
+
 	.attempts {
 		position: absolute;
-		right: 355px;
+		right: 395px;
 		cursor: pointer;
 		top:0px;
 
@@ -764,10 +879,17 @@ button.add-question {
 	.random {
 		position: absolute;
 		top: 0px;
-		right: 185px;
+		right: 225px;
 		font-family: "Lato";
+
 		label.checktoggle {
 			left: 24px;
+
+			&.disabled-look {
+				background-color: #676363;
+				opacity: 0.5;
+				cursor: not-allowed;
+			}
 		}
 	}
 }
@@ -788,6 +910,9 @@ button.add-question {
 
 	transition: all 0.15s ease;
 
+	&.randomizer-tip {
+		right: 190px;
+	}
 	&:hover {
 		opacity: 1;
 		background: #53a1d1;
@@ -849,6 +974,10 @@ button.add-question {
 		b {
 			font-weight: 400;
 		}
+	}
+
+	&.randomize-tooltip {
+		right: 180px;
 	}
 
 }
