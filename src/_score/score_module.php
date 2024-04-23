@@ -8,9 +8,6 @@ class Score_Modules_Hangman extends Score_Module
 
 	public function check_answer($log)
 	{
-		// get qset once for options
-		if (empty($this->inst->qset)) $this->inst->get_qset($this->inst->id);
-
 		$wrong_limit = $this->inst->qset->data['options']['attempts'];
 		$is_partial  = $this->inst->qset->data['options']['partial'];
 
