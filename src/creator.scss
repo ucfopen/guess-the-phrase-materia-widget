@@ -486,23 +486,36 @@ button.add-question {
 .question-bank-dialog {
 
 	position: fixed;
+	height: 380px;
+	width: 400px;
+	padding: 1em;
 	top: 50%;
 	left: 50%;
-	margin: 0;
 	transform: translate(-50%, -50%);
-	background-color: #ffffff;
-	padding: 0;
-	height: 200px;
-	width: 300px;
+
 	display: flex;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
 	flex-direction: column;
+	gap: 1em;
+	margin: 15px;
+
+	border: 0;
+
+	p {
+		font-size: 0.9em;
+		margin: 0.5em 1em;
+	}
+
+	label {
+		display: block;
+		margin-bottom: 0.5em;
+	}
 
 	input {
 		margin-top: 0;
 		padding: 0;
-		width: unset;
+		width: auto;
 		background: #ffffff;
 		font-size: 17px;
 		text-align: center;
@@ -520,7 +533,7 @@ button.add-question {
 		.num-input {
 			color: black;
 			outline: 1px solid black;
-			width: 35px;
+			width: 3em;
 			margin: 2px 5px 0 0;
 		}
 	}
@@ -541,16 +554,21 @@ button.add-question {
 	}
 
 	.dialog-close-button {
-		position: relative;
-		margin: 15 0 10 0;
+		position: absolute;
+		bottom: 2em;
+		margin-top: 10px;
+		box-shadow: none;
+		text-shadow: none;
 		font-size: 15px;
-		width: 100px;
+
+		border-radius: 0;
+		border: 0;
+
 		background-color: #70bd34;
-		color: black;
+		color: #fff;
 
 		&:hover {
 			background-color: #88df45;
-			border: 1px solid #88df45;
 			color: black;
 			cursor: pointer;
 		}
@@ -661,9 +679,8 @@ button.add-question {
 
 	h1 {
 		max-width: 400px;
-		margin-left: 8px;
-		margin-top: 3px;
-		
+		margin: -0.5em 0 0 0;
+
 		white-space: nowrap;
 		overflow: hidden;
 
@@ -675,7 +692,8 @@ button.add-question {
 	}
 	div.link {
 		position: relative;
-		left: -0.5em;
+		top: -0.5em;
+		left: -1em;
 		display: inline-block;
 		
 		margin: 5px;
@@ -704,19 +722,17 @@ button.add-question {
 
 		&:disabled {
 			border: none;
-			background-color: #5a5a5a;
+			background-color: #a5a5a5;
 			color: #fff;
 			cursor: not-allowed;
 		}
 
 		&.gray-out:not(:disabled) {
 			background-color: #5a5a5a;
-			border: 1px solid #5a5a5a;
 			color: #fff;
 
 			&:hover {
 				background-color: #938f8f;
-				border: 1px solid #938f8f;
 				cursor: pointer;
 			}
 
