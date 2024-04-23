@@ -486,23 +486,36 @@ button.add-question {
 .question-bank-dialog {
 
 	position: fixed;
+	height: 380px;
+	width: 400px;
+	padding: 1em;
 	top: 50%;
 	left: 50%;
-	margin: 0;
 	transform: translate(-50%, -50%);
-	background-color: #ffffff;
-	padding: 0;
-	height: 200px;
-	width: 300px;
+
 	display: flex;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
 	flex-direction: column;
+	gap: 1em;
+	margin: 15px;
+
+	border: 0;
+
+	p {
+		font-size: 0.9em;
+		margin: 0.5em 1em;
+	}
+
+	label {
+		display: block;
+		margin-bottom: 0.5em;
+	}
 
 	input {
 		margin-top: 0;
 		padding: 0;
-		width: unset;
+		width: auto;
 		background: #ffffff;
 		font-size: 17px;
 		text-align: center;
@@ -520,7 +533,7 @@ button.add-question {
 		.num-input {
 			color: black;
 			outline: 1px solid black;
-			width: 35px;
+			width: 3em;
 			margin: 2px 5px 0 0;
 		}
 	}
@@ -541,16 +554,21 @@ button.add-question {
 	}
 
 	.dialog-close-button {
-		position: relative;
-		margin: 15 0 10 0;
+		position: absolute;
+		bottom: 2em;
+		margin-top: 10px;
+		box-shadow: none;
+		text-shadow: none;
 		font-size: 15px;
-		width: 100px;
+
+		border-radius: 0;
+		border: 0;
+
 		background-color: #70bd34;
-		color: black;
+		color: #fff;
 
 		&:hover {
 			background-color: #88df45;
-			border: 1px solid #88df45;
 			color: black;
 			cursor: pointer;
 		}
@@ -629,9 +647,13 @@ button.add-question {
 	top: 0px;
 	left: 0px;
 	right: 0px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 1em;
 	height: 100px;
 	background: #333;
-	padding: 26px 8px;
+	padding: 0 1em;
 	z-index: 100;
 	font-family: 'Lato';
 	font-weight: 300;
@@ -648,64 +670,50 @@ button.add-question {
 
 	.logo {
 		display: block;
-		background: url(assets/materialogo.png) no-repeat;
+		background: url(assets/img/materia-logo.svg) no-repeat;
 		width: 60px;
 		height: 50px;
-		float: left;
 		margin-left: 17px;
 		margin-top: 2px;
 	}
-	.center {
-		position:absolute;
-		margin-left: -25px;;
-		left: 50%;
-		top: 22px;
-	}
 
 	h1 {
-		margin-left: 8px;
-		font-family: 'Lato', serif;
-		font-weight: 300;
-		font-size: 24px !important;
-		vertical-align: middle;
-		margin-top: 3px;
-		float: left;
-		cursor: pointer;
 		max-width: 400px;
+		margin: -0.5em 0 0 0;
+
 		white-space: nowrap;
 		overflow: hidden;
+
+		font-family: 'Lato', serif;
+		font-weight: 300;
+		font-size: 24px;
+
+		cursor: pointer;
 	}
 	div.link {
-		float: left;
-		cursor: pointer;
-		margin: 5px;
-		margin-top: 5px;
-		padding: 10px;
+		position: relative;
+		top: -0.5em;
+		left: -1em;
 		display: inline-block;
-		vertical-align: baseline;
-		z-index: 99;
+		
+		margin: 5px;
+		margin-right: auto;
+		padding: 10px;
+		
 		font-size: 12px;
 		color: #ccc;
 		text-decoration: underline;
-	}
-	.sep {
-		display: block;
-		border-radius: 10px;
-		width: 4px;
-		height: 4px;
-		position: absolute;
-		right: 270px;
-		top: 28px;
-		background: #fff;
+		cursor: pointer;
 	}
 
 	.qb-button {
-		position: absolute;
+		position: relative;
+		top: -0.25em;
+		width: auto;
+		height: auto;
+		border-radius: 0;
 		background-color: $green;
 		color: #fff;
-		width: unset;
-		right: 590px;
-		top: 35px;
 
 		&:hover {
 			background-color: #7AD038;
@@ -713,20 +721,18 @@ button.add-question {
 		}
 
 		&:disabled {
-			background-color: #ccc;
-			border: 1px solid #ccc;
+			border: none;
+			background-color: #a5a5a5;
 			color: #fff;
 			cursor: not-allowed;
 		}
 
 		&.gray-out:not(:disabled) {
 			background-color: #5a5a5a;
-			border: 1px solid #5a5a5a;
 			color: #fff;
 
 			&:hover {
 				background-color: #938f8f;
-				border: 1px solid #938f8f;
 				cursor: pointer;
 			}
 
@@ -735,16 +741,15 @@ button.add-question {
 	}
 
 	.attempts {
-		position: absolute;
-		right: 395px;
+		position: relative;
+		top: -0.5em;
 		cursor: pointer;
-		top:0px;
+		margin-left: 34px;
 
 		p {
-			position: absolute;
+			// position: relative;
 			display: inline-block;
-			margin-left: -34px;
-			top: 0;
+			margin: 0 0 1em -34px;
 			white-space: nowrap;
 		}
 
@@ -760,7 +765,7 @@ button.add-question {
 			}
 		}
 		.slide-btn {
-			margin-top: 54px;
+			padding-bottom: 0.5em;
 			.bar {
 				height: 10px;
 				width: 135px;
@@ -813,10 +818,10 @@ button.add-question {
 		}
 	}
 	.partial {
-		position: absolute;
-		top: 0px;
-		right: 70px;
+		position: relative;
+		top: -0.5em;
 		font-family: "Lato";
+		padding-right: 40px;
 
 		label.checktoggle {
 			display: inline-block;
@@ -877,9 +882,9 @@ button.add-question {
 		}
 	}
 	.random {
-		position: absolute;
-		top: 0px;
-		right: 225px;
+		position: relative;
+		// top: 0px;
+		// right: 225px;
 		font-family: "Lato";
 
 		label.checktoggle {
@@ -896,7 +901,7 @@ button.add-question {
 
 .question-tip {
 	position: absolute;
-	right: 28px;
+	right: 8px;
 	top: 15px;
 	padding: 2px;
 	border: 2px solid #fff;
@@ -910,9 +915,6 @@ button.add-question {
 
 	transition: all 0.15s ease;
 
-	&.randomizer-tip {
-		right: 190px;
-	}
 	&:hover {
 		opacity: 1;
 		background: #53a1d1;
