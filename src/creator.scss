@@ -595,6 +595,11 @@ button.add-question {
 	margin-left: 150px;
 	animation: pounce 1s infinite;
 
+	// applied to ensure it disappears in a timely manner; without this there appears to be a delay because of the animation property
+	&.ng-hide {
+		animation: none;
+	}
+
 	span {
 		display: inline-block;
 		width: 140px;
