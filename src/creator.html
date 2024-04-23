@@ -26,12 +26,6 @@
 			<div class="logo"></div>
 			<h1 id="title" ng-bind="title" ng-click="showTitleDialog = true"></h1>
 			<div ng-click="showTitleDialog = true" class="link">Edit...</div>
-			<button
-				ng-class= "{'qb-button': true, 'gray-out': !enableQuestionBank}"
-				ng-click="questionBankModal = !questionBankModal"
-				ng-disabled="items.length === 0">
-				Question Bank: {{enableQuestionBank === true ? "ON" : "OFF"}}
-			</button>
 			<span class="attempts">
 				<p>Incorrect guesses per phrase</p>
 				<div class="slide-btn">
@@ -59,31 +53,41 @@
 				<p>Randomize Order</p>
 				<input type="checkbox" ng-checked=enableQuestionBank ng-disabled=enableQuestionBank id="randomize" ng-model="random">
 				<label for="randomize" ng-class="{'disabled-look': enableQuestionBank}" class="checktoggle"></label>
-			</div>
-			<div class="question-tip randomizer-tip">?
-				<div class="qtip-box">
-					<p>
-						If <b>Question Bank</b> is on then the check to randomize order is disabled. This is because the question bank
-						randomizes the question order already.
-					</p>
+				<div class="question-tip randomizer-tip">?
+					<div class="qtip-box">
+						<p>
+							If <b>Question Bank</b> is on then the check to randomize order is disabled. This is because the question bank
+							randomizes the question order already.
+						</p>
+					</div>
 				</div>
 			</div>
+			
 			<div class="partial">
 				<p>Partial scoring</p>
 				<input type="checkbox" id="partial" ng-model="partial">
 				<label for="partial" class="checktoggle"></label>
-			</div>
-			<div class="question-tip">?
-				<div class="qtip-box">
-					<p>
-						If <b>partial scoring</b> is on then students will receive credit equal to the percentage of the phrase they reveal.
-						When off students will receive a 100% if they guess the phrase correctly and a 0% otherwise.
-					</p>
-					<p>
-						If the student doesn't reveal the phrase after the number of allowed <b>incorrect guesses</b> they move on to the next phrase.
-					</p>
+				<div class="question-tip">?
+					<div class="qtip-box">
+						<p>
+							If <b>partial scoring</b> is on then students will receive credit equal to the percentage of the phrase they reveal.
+							When off students will receive a 100% if they guess the phrase correctly and a 0% otherwise.
+						</p>
+						<p>
+							If the student doesn't reveal the phrase after the number of allowed <b>incorrect guesses</b> they move on to the next phrase.
+						</p>
+					</div>
 				</div>
 			</div>
+
+			<button
+				class="qb-button"
+				ng-class= "{'gray-out': !enableQuestionBank}"
+				ng-click="questionBankModal = !questionBankModal"
+				ng-disabled="items.length === 0">
+				Question Bank: {{enableQuestionBank === true ? "ON" : "OFF"}}
+			</button>
+
 			<div class="bottom"></div>
 		</div>
 		<div class="pagination" ng-show="numberOfPages() > 1">

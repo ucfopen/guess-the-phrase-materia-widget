@@ -629,9 +629,13 @@ button.add-question {
 	top: 0px;
 	left: 0px;
 	right: 0px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 1em;
 	height: 100px;
 	background: #333;
-	padding: 26px 8px;
+	padding: 0 1em;
 	z-index: 100;
 	font-family: 'Lato';
 	font-weight: 300;
@@ -648,64 +652,50 @@ button.add-question {
 
 	.logo {
 		display: block;
-		background: url(assets/materialogo.png) no-repeat;
+		background: url(assets/img/materia-logo.svg) no-repeat;
 		width: 60px;
 		height: 50px;
-		float: left;
 		margin-left: 17px;
 		margin-top: 2px;
 	}
-	.center {
-		position:absolute;
-		margin-left: -25px;;
-		left: 50%;
-		top: 22px;
-	}
 
 	h1 {
-		margin-left: 8px;
-		font-family: 'Lato', serif;
-		font-weight: 300;
-		font-size: 24px !important;
-		vertical-align: middle;
-		margin-top: 3px;
-		float: left;
-		cursor: pointer;
 		max-width: 400px;
+		margin-left: 8px;
+		margin-top: 3px;
+		
 		white-space: nowrap;
 		overflow: hidden;
+
+		font-family: 'Lato', serif;
+		font-weight: 300;
+		font-size: 24px;
+
+		cursor: pointer;
 	}
 	div.link {
-		float: left;
-		cursor: pointer;
-		margin: 5px;
-		margin-top: 5px;
-		padding: 10px;
+		position: relative;
+		left: -0.5em;
 		display: inline-block;
-		vertical-align: baseline;
-		z-index: 99;
+		
+		margin: 5px;
+		margin-right: auto;
+		padding: 10px;
+		
 		font-size: 12px;
 		color: #ccc;
 		text-decoration: underline;
-	}
-	.sep {
-		display: block;
-		border-radius: 10px;
-		width: 4px;
-		height: 4px;
-		position: absolute;
-		right: 270px;
-		top: 28px;
-		background: #fff;
+		cursor: pointer;
 	}
 
 	.qb-button {
-		position: absolute;
+		position: relative;
+		top: -0.25em;
+		width: auto;
+		height: auto;
+		border-radius: 0;
 		background-color: $green;
 		color: #fff;
-		width: unset;
-		right: 590px;
-		top: 35px;
 
 		&:hover {
 			background-color: #7AD038;
@@ -713,8 +703,8 @@ button.add-question {
 		}
 
 		&:disabled {
-			background-color: #ccc;
-			border: 1px solid #ccc;
+			border: none;
+			background-color: #5a5a5a;
 			color: #fff;
 			cursor: not-allowed;
 		}
@@ -735,16 +725,15 @@ button.add-question {
 	}
 
 	.attempts {
-		position: absolute;
-		right: 395px;
+		position: relative;
+		top: -0.5em;
 		cursor: pointer;
-		top:0px;
+		margin-left: 34px;
 
 		p {
-			position: absolute;
+			// position: relative;
 			display: inline-block;
-			margin-left: -34px;
-			top: 0;
+			margin: 0 0 1em -34px;
 			white-space: nowrap;
 		}
 
@@ -760,7 +749,7 @@ button.add-question {
 			}
 		}
 		.slide-btn {
-			margin-top: 54px;
+			padding-bottom: 0.5em;
 			.bar {
 				height: 10px;
 				width: 135px;
@@ -813,10 +802,10 @@ button.add-question {
 		}
 	}
 	.partial {
-		position: absolute;
-		top: 0px;
-		right: 70px;
+		position: relative;
+		top: -0.5em;
 		font-family: "Lato";
+		padding-right: 40px;
 
 		label.checktoggle {
 			display: inline-block;
@@ -877,9 +866,9 @@ button.add-question {
 		}
 	}
 	.random {
-		position: absolute;
-		top: 0px;
-		right: 225px;
+		position: relative;
+		// top: 0px;
+		// right: 225px;
 		font-family: "Lato";
 
 		label.checktoggle {
@@ -896,7 +885,7 @@ button.add-question {
 
 .question-tip {
 	position: absolute;
-	right: 28px;
+	right: 8px;
 	top: 15px;
 	padding: 2px;
 	border: 2px solid #fff;
@@ -910,9 +899,6 @@ button.add-question {
 
 	transition: all 0.15s ease;
 
-	&.randomizer-tip {
-		right: 190px;
-	}
 	&:hover {
 		opacity: 1;
 		background: #53a1d1;
