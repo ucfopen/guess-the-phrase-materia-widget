@@ -12,11 +12,10 @@
 		<script src="materia.creatorcore.js"></script>
 
 		<!-- YOUR PREREQUISITES -->
-		<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.9/angular.min.js"></script>
-		<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.9/angular-animate.min.js"></script>
-		<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.9/angular-sanitize.min.js"></script>
-		<script src="assets/lib/hammer.min.js" data-embed="false"></script>
-		<script src="assets/lib/angular-hammer.min.js" data-embed="false"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/angular-animate/1.8.3/angular-animate.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.8.3/angular-sanitize.min.js"></script>
+		<script src="assets/lib/hammer.min.js"></script>
 
 		<!-- MAIN CREATOR SCRIPT -->
 		<script src="creator.js"></script>
@@ -52,25 +51,43 @@
 			</span>
 			<div class="random partial">
 				<p>Randomize Order</p>
-				<input type="checkbox" id="randomize" ng-model="random">
-				<label for="randomize" class="checktoggle"></label>
+				<input type="checkbox" ng-checked=enableQuestionBank ng-disabled=enableQuestionBank id="randomize" ng-model="random">
+				<label for="randomize" ng-class="{'disabled-look': enableQuestionBank}" class="checktoggle"></label>
+				<div class="question-tip randomizer-tip">?
+					<div class="qtip-box">
+						<p>
+							If <b>Question Bank</b> is on then the check to randomize order is disabled. This is because the question bank
+							randomizes the question order already.
+						</p>
+					</div>
+				</div>
 			</div>
+			
 			<div class="partial">
 				<p>Partial scoring</p>
 				<input type="checkbox" id="partial" ng-model="partial">
 				<label for="partial" class="checktoggle"></label>
-			</div>
-			<div class="question-tip">?
-				<div class="qtip-box">
-					<p>
-						If <b>partial scoring</b> is on then students will receive credit equal to the percentage of the phrase they reveal.
-						When off students will receive a 100% if they guess the phrase correctly and a 0% otherwise.
-					</p>
-					<p>
-						If the student doesn't reveal the phrase after the number of allowed <b>incorrect guesses</b> they move on to the next phrase.
-					</p>
+				<div class="question-tip">?
+					<div class="qtip-box">
+						<p>
+							If <b>partial scoring</b> is on then students will receive credit equal to the percentage of the phrase they reveal.
+							When off students will receive a 100% if they guess the phrase correctly and a 0% otherwise.
+						</p>
+						<p>
+							If the student doesn't reveal the phrase after the number of allowed <b>incorrect guesses</b> they move on to the next phrase.
+						</p>
+					</div>
 				</div>
 			</div>
+
+			<button
+				class="qb-button"
+				ng-class= "{'gray-out': !enableQuestionBank}"
+				ng-click="questionBankModal = !questionBankModal"
+				ng-disabled="items.length === 0">
+				Question Bank: {{enableQuestionBank === true ? "ON" : "OFF"}}
+			</button>
+
 			<div class="bottom"></div>
 		</div>
 		<div class="pagination" ng-show="numberOfPages() > 1">
@@ -169,11 +186,10 @@
 			<span>{{currentPage+1}}/{{numberOfPages()}}</span>
 			<button ng-disabled="currentPage >= numberOfPages() - 1" ng-click="currentPage=currentPage+1">Next</button>
 		</div>
-
-		<div ng-show="!items.length &amp;&amp; step" class="arrow-box">
+		<div ng-show="!items.length" class="arrow-box">
 			<span>Click here to add your first question</span>
 		</div>
-		<div id="backgroundcover" ng-click="hideCover()" ng-class="{ show: showTitleDialog || showIntroDialog }"></div>
+		<div id="backgroundcover" ng-click="hideCover()" ng-class="{ show: showTitleDialog || showIntroDialog || questionBankModal }"></div>
 		<div ng-class="{ show: showIntroDialog }" class="box intro">
 			<img src="assets/creator_example.png">
 			<h1>Guess the Phrase</h1>
@@ -189,5 +205,31 @@
 			<input type="text" placeholder="My Guess the Phrase widget" ng-model="title" focus-me="showTitleDialog" ng-enter="hideCover()">
 			<input type="button" value="Done" ng-click="hideCover()">
 		</div>
+		<div ng-class="{ show: questionBankModal }" ng-click= 'hideCover()' class="box question-bank-dialog">
+			<h1>Question Bank</h1>
+			<p>When the question bank is enabled, the widget can use a subset of phrases to create a randomized and unique experience every time the student hits play.</p>
+			<div class="enable-qb-question">
+				<label style="font-weight: bold;">Enable question bank? </label>
+				<div class="enable-qb-options" ng-click="$event.stopPropagation()">
+					<span>
+						<input type="radio" ng-model="enableQuestionBank" ng-value=false> No</input>
+						<input type="radio" ng-model="enableQuestionBank" ng-change="questionBankValTemp = questionBankVal = items.length" ng-value=true> Yes</input>
+					</span>
+				</div>
+			</div>
+			<div>
+				<span ng-show="enableQuestionBank" >
+					<label style="font-weight: bold;">How many phrases per play? </label>
+					<div class="num-input-wrapper" ng-click="$event.stopPropagation()">
+						<input class="num-input" type="number" ng-model="questionBankValTemp" ng-change="validateQuestionBankVal()" step="1">
+						<span> out of {{items.length}} </span>
+					</div>
+				</span>
+			</div>
+			<button class="dialog-close-button"
+			ng-click="questionBankModal = false"
+			ng-disabled="questionBankValTemp < 1 || questionBankValTemp > items.length">Confirm</button>
+		</div>
+
 	</body>
 </html>
