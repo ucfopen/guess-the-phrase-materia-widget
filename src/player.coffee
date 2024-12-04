@@ -219,12 +219,17 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 		if $scope.gameDone
 			$scope.endGame()
 		else if not $scope.loading
-			$scope.startGame() 
+			$scope.startGame()
 
 	$scope.startGame =  ->
 		return if $scope.inGame
 
-		liveRegionUpdate("The game has begun! Your topic is " + document.getElementsByClassName('title')[0].innerHTML + " with " + $scope.total + " questions.")
+
+
+		liveRegionUpdate(("The game has begun! Your topic is " +
+		document.getElementsByClassName('title')[0].innerHTML +
+		" with " + $scope.total + " questions."), assertive )
+
 		$scope.focusTitleMessage = document.getElementsByClassName('title')[0].innerHTML + " with " + $scope.total + " questions."
 
 		$scope.curItem++
@@ -234,13 +239,19 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 		$scope.readyForInput = true
 		$scope.ques = _qset.items[0].items[$scope.curItem].questions[0].text
 		$scope.answer = Parse.forBoard _qset.items[0].items[$scope.curItem].answers[0].text
-		$scope.focusQuestionMessage = "Question " + ($scope.curItem + 1) + ": " + $scope.ques
-		$scope.focusAnswerMessage = "Current answer: " + condenseBlanks($scope.answer.guessed)
+
+
+		$scope.focusAnswerMessage = "The correct answer is: " + condenseBlanks($scope.answer.guessed)
 		$scope.focusKeyboardMessage = "You have " + ($scope.max.length - $scope.anvilStage + 1) + " guesses. Press or type a letter."
+
+		liveRegionUpdate("Question 1: " + $scope.ques + condenseBlanks($scope.answer.guessed))
+
 		$timeout ->
-			liveRegionUpdate("Question 1: " + $scope.ques + condenseBlanks($scope.answer.guessed))
+			$scope.focusQuestionMessage = "Question " + ($scope.curItem + 1) + ": " + $scope.ques
 			Hangman.Draw.playAnimation 'torso', 'pull-card'
 		, 800
+
+
 
 	$scope.endGame = ->
 		Materia.Engine.end()
@@ -268,8 +279,23 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 				else
 					$scope.toggleGame()
 
-	liveRegionUpdate = (message) ->
-		document.getElementById('ariaLive').innerHTML = message
+
+	assertive = 'assertive'
+	polite = 'polite'
+
+
+	liveRegionUpdate = (message, priority = polite) ->
+
+		liveRegionId = if priority == assertive then 'ariaLiveAssertive' else 'ariaLivePolite'
+		liveRegion = document.getElementById(liveRegionId)
+
+		if liveRegion?
+			liveRegion.textContent = ''
+			setTimeout((->
+			liveRegion.textContent = message), 100)
+		else
+			console.error("Live region with ID '#{liveRegionId}' not found.")
+
 
 	addBlanksForLiveRegion = (guessed) ->
 		# Takes the user's current answer and adds "blank" where there are blanks so the screen reader will read them out loud
@@ -288,7 +314,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 					message = message.concat(letter, ', ')
 			if words < maxWords
 				message = message.concat('new word, ')
-		
+
 		return message
 
 	guessedToString = (guessed) ->
@@ -341,24 +367,28 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 		matches = Input.isMatch input, $scope.answer.string
 
 		# User entered an incorrect guess
+		totalGuesses = ($scope.max.length - 1) - $scope.anvilStage + 1
+
+
+
 		if matches.length is 0
 			$scope.max = Input.incorrect $scope.max
 			_updateAnvil()
-			liveRegionUpdate(input + " is incorrect. " + ($scope.max.length - $scope.anvilStage + 1) + " guesses remaining.")
-			$scope.focusKeyboardMessage = ($scope.max.length - $scope.anvilStage + 1) + " guesses remaining. Letters guessed: " + usedKeysToString()
+			liveRegionUpdate((input + " is incorrect. " + (totalGuesses) + " guesses remaining."), assertive)
+			$scope.focusKeyboardMessage = (totalGuesses) + " guesses remaining. Letters guessed: " + usedKeysToString() + "You must guess all the letters in the answer or run out of guesses before moving on to the next question."
 
 		# User entered a correct guess
 		else
 			$scope.answer.guessed = Input.correct matches, input, $scope.answer.guessed
-			liveRegionUpdate(input + " is correct! Current answer: " + addBlanksForLiveRegion($scope.answer.guessed))
-			$scope.focusAnswerMessage = "Current answer: " + addBlanksForLiveRegion($scope.answer.guessed)
-			$scope.focusKeyboardMessage = ($scope.max.length - $scope.anvilStage + 1) + " guesses remaining. Letters guessed: " + usedKeysToString()
-			
+			liveRegionUpdate(input + " is correct! Current answer: " + addBlanksForLiveRegion($scope.answer.guessed) + " Press or type another letter.", assertive)
+			$scope.focusAnswerMessage = "Your current answer is displayed here. It is: " + addBlanksForLiveRegion($scope.answer.guessed) + " Guess another letter by pressing the corresponding key on the keyboard."
+			$scope.focusKeyboardMessage = (totalGuesses) + " guesses remaining. Letters guessed: " + usedKeysToString() + "You must guess all the letters in the answer or run out of guesses before moving on to the next question."
+
 
 		# Find out if the user can continue to submit guesses
 		result = Input.cannotContinue $scope.max, $scope.answer.guessed
 		if result
-			liveRegionUpdate("Out of guesses. Press Enter to go to the next question.")
+			liveRegionUpdate(("Out of guesses. Press Enter to go to the next question."), assertive)
 			$scope.endQuestion()
 
 			# The user can't continue because they won and are awesomesauce
@@ -399,6 +429,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 
 		if $scope.curItem >= $scope.total-1 # >= for the rare instance where the index skips ahead unexpectedly (should be fixed though)
 			$scope.inGame = false
+			liveRegionUpdate(("The game has ended. Press Enter to view your score."),assertive)
 			# Assigning this triggers the finish button's visibility
 			$scope.gameDone = true
 			# Push the score but don't redirect yet
@@ -410,7 +441,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 				$scope.max = Reset.attempts ~~_qset.options.attempts
 				$scope.keyboard = Reset.keyboard()
 			), 500
-				
+
 
 	_shuffle = (a) ->
 		for i in [1...a.length]
@@ -439,6 +470,10 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 		document.getElementsByClassName('title')[0].innerHTML = instance.name
 		document.getElementsByClassName('total-questions')[0].innerHTML = 'of ' + $scope.total
 		document.getElementById('start').focus()
+
+		$scope.focused = () =>
+			startButton = document.getElementById('start');
+
 
 		Hangman.Draw.initCanvas()
 

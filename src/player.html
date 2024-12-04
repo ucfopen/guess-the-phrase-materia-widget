@@ -25,14 +25,16 @@
 		<script src="player.js"></script>
 	</head>
 	<body ng-cloak>
-		<div id="ariaLive" aria-live="polite" aria-atomic="true"></div>
+		<div id="ariaLivePolite" aria-live="polite" aria-atomic="true"></div>
+		<div id="ariaLiveAssertive" aria-live="aggressive" aria-atomic="true"></div>
+
 		<div class="browserwarning">We recommend you upgrade your browser for a better experience</div>
 		<div id="browserfailure">
 			<p>We're sorry</p>
 			<p>But this widget requires features that your browser does not support.</p>
 			<p>Please upgrade to a newer version to play Guess the Phrase.</p>
 		</div>
-		<div ng-hide="inGame" ng-click="toggleGame()" class="overlay">
+		<div ng-hide="inGame" class="overlay">
 			<div class="portal">
 				<h1>Guess the Phrase</h1>
 				<p ng-show="!gameDone">Press or type letters to guess words and phrases.</p>
@@ -43,8 +45,8 @@
 						<div>Loading...</div>
 					</center>
 				</div>
-				<div id="start" ng-show="!loading && !gameDone" class="start" tabindex="0">Start</div>
-				<div ng-show="!loading && gameDone" class="finished" tabindex="0"><span>FINISH</span></div>
+				<div id="start" role="button" ng-show="!loading && !gameDone" ng-click="toggleGame()"  class="start" tabindex="0">Start</div>
+				<div role="button" ng-show="!loading && gameDone" class="finished" ng-click="toggleGame()" tabindex="0"><span>FINISH</span></div>
 			</div>
 		</div>
 		<div class="game">
@@ -53,9 +55,9 @@
 				<img src="assets/img/anvil.png" aria-hidden="true" class="anvil">
 			</div>
 			<div aria-hidden="true" class="podium"></div>
-			<div class="title" tabindex="0" aria-label="{{focusTitleMessage}}"></div>
-			<div class="question-num">{{ curItem+1 }}</div>
-			<div class="total-questions"></div>
+			<div class="title" aria-hidden="true" role="banner" tabindex="0"  aria-label="{{focusTitleMessage}}" ></div>
+			<div class="question-num" aria-hidden="true" > {{ curItem+1 }} </div>
+			<div class="total-questions" aria-hidden="true" ></div>
 			<div ng-class="{transition: inQues}" class="answer" tabindex="0" aria-label="{{focusAnswerMessage}}">
 				<div ng-repeat="word in answer.string" class="row">
 					<span ng-repeat="letter in word" ng-class="{quirks: cssQuirks}" class="box">
@@ -85,7 +87,7 @@
 					class="icon-close">
 				</span>
 			</div>
-			<div aria-hidden="true" class="keyboard-bg" tabindex="0" aria-label="{{focusKeyboardMessage}}"></div>
+			<div class="keyboard-bg" tabindex="0" aria-label="{{focusKeyboardMessage}}"></div>
 			<div aria-hidden="true"
 				ng-show="inQues"
 				ng-init="keys=[
