@@ -26,7 +26,7 @@
 	</head>
 	<body ng-cloak>
 		<div id="ariaLivePolite" aria-live="polite" aria-atomic="true"></div>
-		<div id="ariaLiveAssertive" aria-live="aggressive" aria-atomic="true"></div>
+		<div id="ariaLiveAssertive" aria-live="assertive" aria-atomic="true"></div>
 
 		<div class="browserwarning">We recommend you upgrade your browser for a better experience</div>
 		<div id="browserfailure">
@@ -45,8 +45,13 @@
 						<div>Loading...</div>
 					</center>
 				</div>
-				<div id="start" role="button" ng-show="!loading && !gameDone" ng-click="toggleGame()"  class="start" tabindex="0">Start</div>
-				<div role="button" ng-show="!loading && gameDone" class="finished" ng-click="toggleGame()" tabindex="0"><span>FINISH</span></div>
+
+				<p id="GameInfo"> Guess the phrase is an interactive guessing game played by guessing letters in a word or phrase using the provided clues. Too many wrong guesses and the player loses. Click enter to begin. </p>
+				<div id="start" aria-labelledby="GameInfo" role="button" ng-show="!loading && !gameDone" ng-click="toggleGame()"  class="start" tabindex="0">Start</div>
+
+
+                <p id="GameEnd"> Press Enter to see your score. </p>
+				<div role="button" ng-show="!loading && gameDone" class="finished" aria-labelledby="GameEnd" ng-click="toggleGame()" tabindex="0"><span>FINISH</span></div>
 			</div>
 		</div>
 		<div class="game">
@@ -55,12 +60,16 @@
 				<img src="assets/img/anvil.png" aria-hidden="true" class="anvil">
 			</div>
 			<div aria-hidden="true" class="podium"></div>
-			<div class="title" aria-hidden="true" role="banner" tabindex="0"  aria-label="{{focusTitleMessage}}" ></div>
+			<div class="title" role="banner" aria-label="{{focusTitleMessage}}" ></div>
 			<div class="question-num" aria-hidden="true" > {{ curItem+1 }} </div>
 			<div class="total-questions" aria-hidden="true" ></div>
-			<div ng-class="{transition: inQues}" class="answer" tabindex="0" aria-label="{{focusAnswerMessage}}">
-				<div ng-repeat="word in answer.string" class="row">
-					<span ng-repeat="letter in word" ng-class="{quirks: cssQuirks}" class="box">
+
+		  	<div id="ques-info" aria-label="{{focusQuestionMessage}}" ></div>
+			<div id="answer-element" ng-class="{transition: inQues}" class="answer" aria-labelledby="ques-info" tabindex="0" aria-label="{{focusAnswerMessage}}">
+
+				<div id="answer-row" ng-repeat="word in answer.string" class="row" tabindex="0" ng-focus="onRowFocus($index)" aria-label="{{focusAnswerMessage}}">
+
+					<span  ng-repeat="letter in word" ng-class="{quirks: cssQuirks}" class="box">
 						<span class="letter"
 							ng-class="{
 							spin: answer.guessed[$parent.$index][$index] != &quot;&quot;,
@@ -68,15 +77,16 @@
 							{{ answer.guessed[$parent.$index][$index] }}
 						</span>
 					</span>
-					<span ng-show="answer.dashes[$index]" class="box">
+					<span  ng-show="answer.dashes[$index]" class="box">
 						<span class="letter space spin">-</span>
 					</span>
+
 				</div>
+
 			</div>
 			<div ng-class="{transition: inQues}"
 				ng-show="inGame"
 				class="question"
-				tabindex="0"
 				aria-label="{{focusQuestionMessage}}">
 				{{ ques }}
 				<div class="tail"></div>
@@ -87,7 +97,8 @@
 					class="icon-close">
 				</span>
 			</div>
-			<div class="keyboard-bg" tabindex="0" aria-label="{{focusKeyboardMessage}}"></div>
+
+			<div id="keyboard-element" class="keyboard-bg" tabindex="0"  aria-label="{{focusKeyboardMessage}}"></div>
 			<div aria-hidden="true"
 				ng-show="inQues"
 				ng-init="keys=[

@@ -548,9 +548,9 @@ div.browserwarning {
 }
 
 #ariaLivePolite {
-	width: 1px;
+  width: 1px;
   height: 1px;
-   margin: -1px;
+  margin: -1px;
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   clip-path: inset(100%);
@@ -559,11 +559,21 @@ div.browserwarning {
 
 #ariaLiveAssertive {
 	width: 1px;
-  height: 1px;
-   margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  clip-path: inset(100%);
-  white-space: nowrap;
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	clip-path: inset(100%);
+	white-space: nowrap;
+}
+
+#GameInfo
+{
+	visibility: hidden;
+}
+
+#GameEnd
+{
+	visibility: hidden;
 }
 
