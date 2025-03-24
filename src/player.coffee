@@ -428,7 +428,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 
 		if result is 1
 			liveRegionUpdate(("Out of guesses. Press Enter to go to the next question."), assertive)
-			$scope.unfocusedAns();
+			_unfocusedAns();
 			$scope.focusKeyboardMessage = "Press Enter to go to the next question."
 			$scope.endQuestion()
 
@@ -436,7 +436,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 		if result is 2
 			Hangman.Draw.playAnimation 'torso', 'pander'
 			$scope.anvilStage = 1
-			$scope.unfocusedAns();
+			_unfocusedAns();
 			$scope.focusKeyboardMessage = "Press Enter to go to the next question."
 			liveRegionUpdate(guessedToString($scope.answer.guessed) + " is correct! Press Enter to go to the next question.", assertive)
 			$scope.endQuestion()
@@ -480,7 +480,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 			# Assigning this triggers the finish button's visibility
 
 			$scope.gameDone = true
-			$scope.unfocused();
+			_unfocused();
 
 
 			liveRegionUpdate("Congratulations! You've completed the game! Press Enter to see your score.", assertive)
@@ -530,7 +530,7 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 
 
 
-	$scope.unfocused = () =>
+	_unfocused = () =>
 
 			answerElement = document.getElementById('answer-element')
 			answerRow = document.getElementById('answer-row')
@@ -545,8 +545,8 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 			if keyboardElement
 				keyboardElement.setAttribute("tabindex", "-1");
 
-
-	$scope.unfocusedAns = () =>
+			
+	_unfocusedAns = () =>
 
 			answerElement = document.getElementById('answer-element')
 			answerRow = document.getElementById('answer-row')
