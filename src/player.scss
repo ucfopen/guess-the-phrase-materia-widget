@@ -540,3 +540,40 @@ div.browserwarning {
 	padding: 20px;
 	display: none;
 }
+
+#ariaLive {
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+#ariaLivePolite {
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(100%);
+  white-space: nowrap;
+}
+
+#ariaLiveAssertive {
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	clip-path: inset(100%);
+	white-space: nowrap;
+}
+
+#GameInfo
+{
+	visibility: hidden;
+}
+
+#GameEnd
+{
+	visibility: hidden;
+}
+
