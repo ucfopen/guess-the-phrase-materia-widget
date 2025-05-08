@@ -57,6 +57,10 @@ Hangman.factory 'Resource', ['$sanitize', ($sanitize) ->
 			qsetItems.push item if item
 		qset.items = [{items: qsetItems}]
 
+		# Ensure the question bank value is within bounds
+		if(qset.options.questionBankVal > items.length)
+			qset.options.questionBankVal = items.length
+
 		qset
 
 	processQsetItem: (item) ->
@@ -256,6 +260,10 @@ Hangman.controller 'HangmanCreatorCtrl', ['$timeout', '$scope', '$sanitize', 'Re
 
 	$scope.removeItem = (index) ->
 		$scope.items.splice index, 1
+
+		# Update the question bank value when deletions occur so it is not out of bounds
+		if($scope.questionBankVal > $scope.items.length)
+			$scope.questionBankVal = $scope.questionBankValTemp = $scope.items.length
 
 		# If removing this item empties the page, paginate backwards
 		pages = $scope.numberOfPages()
