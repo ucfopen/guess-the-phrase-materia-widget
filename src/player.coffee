@@ -441,6 +441,9 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 			liveRegionUpdate(guessedToString($scope.answer.guessed) + " is correct! Press Enter to go to the next question.", assertive)
 			$scope.endQuestion()
 
+	$scope.prepareQuestionBank = (qsetArr, questionBankVal) ->
+		return _shuffle(qsetArr.items).slice(0, questionBankVal)
+
 	$scope.startQuestion = ->
 
 		$scope.$apply ->
@@ -497,9 +500,8 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 			), 500
 
 
-
 	_shuffle = (a) ->
-		for i in [1...a.length]
+		for i in [0...a.length]
 			j = Math.floor Math.random() * (a.length)
 			[a[i], a[j]] = [a[j], a[i]]
 		a
@@ -518,6 +520,11 @@ HangmanEngine.controller 'HangmanEngineCtrl', ['$scope', '$timeout', 'Parse', 'R
 
 		if _qset.options.random
 			_qset.items[0].items = _shuffle _qset.items[0].items
+
+		if(_qset.options.random and _qset.options.enableQuestionBank)
+			_qset.items[0].items = _qset.items[0].items.slice(0, _qset.options.questionBankVal)
+		else if(qset.options.enableQuestionBank)
+			_qset.items[0].items = window.scope.prepareQuestionBank(qset.items[0], qset.options.questionBankVal)
 
 		$scope.total = _qset.items[0].items.length
 		$scope.max = Reset.attempts ~~_qset.options.attempts
