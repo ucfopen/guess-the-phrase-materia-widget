@@ -45,6 +45,8 @@ general:
   # should specify version 1.
   api_version: 2
 
+  is_generable: Yes
+
 files:
   # Location of the creator swf or html file. Not required if
   # is_creatable is set to ‘No’.
@@ -98,3 +100,5 @@ meta_data:
     Students are provided with a clue and
     must guess the word or phrase within a
     certain amount of letters.
+  accessibility_keyboard: Full
+  accessibility_reader: Full
