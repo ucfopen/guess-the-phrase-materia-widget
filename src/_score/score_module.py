@@ -40,8 +40,9 @@ class Hangman(ScoreModule):
 
     def handle_log_question_answered(self, log):
         item_id = str(log.item_id if hasattr(log, "item_id") else log["item_id"])
+        # skip duplicates logs
         if item_id in self.scores:
-            return  # skip duplicate logs
+            return
 
         score = self.check_answer(log)
         self.scores[item_id] = score
