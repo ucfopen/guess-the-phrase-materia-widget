@@ -3,30 +3,21 @@ import json
 from core.models import WidgetQset
 from scoring.module import ScoreModule
 
-
 class Hangman(ScoreModule):
-    def __init__(self, play_id, instance, play=None):
-        super().__init__(play_id, instance, play)
+    def __init__(self, play=None):
+        super().__init__(play)
         self.scores = {}
 
     def check_answer(self, log):
-        item_id = str(log.item_id if hasattr(log, "item_id") else log["item_id"])
-        if item_id not in self.questions:
-            return 0
-
-        question = self.questions[item_id]
+        question = self.get_question_by_item_id(log.item_id)
         answer = question["answers"][0]["text"]
         answer_cleaned = self.clean_str(answer)
         answer_size = len(answer_cleaned)
 
         user_text = log.text if hasattr(log, "text") else log["text"]
         submitted = self.clean_str(user_text)
-
-        widget_qset = self.instance.get_latest_qset()
-        decoded_data = WidgetQset.decode_data(widget_qset.data)
-
-        wrong_limit = decoded_data.get("options", {}).get("wrong_limit", 6)
-        is_partial = decoded_data.get("options", {}).get("partial", False)
+        wrong_limit = self.qset.get("options", {}).get("wrong_limit", 6)
+        is_partial = self.qset.get("options", {}).get("partial", False)
 
         submitted = submitted[:answer_size + wrong_limit - 1]
         missed = len(set(answer_cleaned) - set(submitted))
@@ -39,10 +30,10 @@ class Hangman(ScoreModule):
         return 100
 
     def handle_log_question_answered(self, log):
-        item_id = str(log.item_id if hasattr(log, "item_id") else log["item_id"])
-        # skip duplicates logs
-        if item_id in self.scores:
-            return
+        item_id = log.item_id
+        # # skip duplicates logs
+        # if item_id in self.scores:
+        #     return
 
         score = self.check_answer(log)
         self.scores[item_id] = score
