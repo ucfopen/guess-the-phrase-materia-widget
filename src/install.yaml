@@ -102,3 +102,5 @@ meta_data:
     certain amount of letters.
   accessibility_keyboard: Full
   accessibility_reader: Full
+  update_method: github
+  repo: ucfopen/guess-the-phrase-materia-widget
